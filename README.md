@@ -1,3 +1,5 @@
+[![build state](https://travis-ci.org/KircheNeuenburg/nextcloud-openlp.svg?branch=master)](https://travis-ci.org/KircheNeuenburg/nextcloud-openlp)
+
 # Nexcloud-OpenLP
 
 This is just a playground to test my ideas regarding an app to synchronize OpenLP songs to a nextcloud instance.
