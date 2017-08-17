@@ -42,7 +42,7 @@ class NotesApiController extends ApiController {
      * @param NotesService $service
      * @param string $UserId
      */
-    public function __construct($AppName, IRequest $request, NotesService $service, MetaService $metaService, $UserId) {
+    public function __construct($AppName, IRequest $request, OpenLPService $service, MetaService $metaService, $UserId) {
         parent::__construct($AppName, $request);
         $this->service = $service;
         $this->metaService = $metaService;
@@ -51,20 +51,20 @@ class NotesApiController extends ApiController {
 
 
     /**
-     * @param Note $note
+     * @param Song $song
      * @param string[] $exclude the fields that should be removed from the
-     * notes
-     * @return Note
+     * songs
+     * @return Song
      */
-    private function excludeFields(Note &$note, array $exclude) {
+    private function excludeFields(Song &$song, array $exclude) {
         if(count($exclude) > 0) {
             foreach ($exclude as $field) {
-                if(property_exists($note, $field)) {
-                    unset($note->$field);
+                if(property_exists($song, $field)) {
+                    unset($song->$field);
                 }
             }
         }
-        return $note;
+        return $song;
     }
 
 
@@ -78,24 +78,23 @@ class NotesApiController extends ApiController {
      */
     public function index($exclude='', $pruneBefore=0) {
         $exclude = explode(',', $exclude);
-        $now = new \DateTime(); // this must be before loading notes if there are concurrent changes possible
-        $notes = $this->service->getAll($this->userId);
-        $metas = $this->metaService->updateAll($this->userId, $notes);
-        foreach ($notes as $note) {
-            $lastUpdate = $metas[$note->getId()]->getLastUpdate();
+        $now = new \DateTime(); // this must be before loading songs if there are concurrent changes possible
+        $songs = $this->service->getAll($this->userId);
+        foreach ($songs as $song) {
+            $lastUpdate = $metas[$song->getId()]->getLastUpdate();
             if($pruneBefore && $lastUpdate<$pruneBefore) {
-                $vars = get_object_vars($note);
+                $vars = get_object_vars($song);
                 unset($vars['id']);
-                $this->excludeFields($note, array_keys($vars));
+                $this->excludeFields($song, array_keys($vars));
             } else {
-                $this->excludeFields($note, $exclude);
+                $this->excludeFields($song, $exclude);
             }
         }
-        $etag = md5(json_encode($notes));
+        $etag = md5(json_encode($songs));
         if ($this->request->getHeader('If-None-Match') === '"'.$etag.'"') {
             return new DataResponse([], Http::STATUS_NOT_MODIFIED);
         }
-        return (new DataResponse($notes))
+        return (new DataResponse($songs))
             ->setLastModified($now)
             ->setETag($etag);
     }
@@ -114,9 +113,9 @@ class NotesApiController extends ApiController {
         $exclude = explode(',', $exclude);
 
         return $this->respond(function () use ($id, $exclude) {
-            $note = $this->service->get($id, $this->userId);
-            $note = $this->excludeFields($note, $exclude);
-            return $note;
+            $song = $this->service->get($id, $this->userId);
+            $song = $this->excludeFields($song, $exclude);
+            return $song;
         });
     }
 
@@ -127,15 +126,13 @@ class NotesApiController extends ApiController {
      * @NoCSRFRequired
      *
      * @param string $content
-     * @param string $category
      * @param int $modified
-     * @param boolean $favorite
      * @return DataResponse
      */
-    public function create($content, $category=null, $modified=0, $favorite=null) {
-        return $this->respond(function () use ($content, $category, $modified, $favorite) {
-            $note = $this->service->create($this->userId);
-            return $this->updateData($note->getId(), $content, $category, $modified, $favorite);
+    public function create($content, $modified=0) {
+        return $this->respond(function () use ($content, $modified) {
+            $song = $this->service->create($this->userId);
+            return $this->updateData($song->getId(), $content,  $modified);
         });
     }
 
@@ -147,33 +144,27 @@ class NotesApiController extends ApiController {
      *
      * @param int $id
      * @param string $content
-     * @param string $category
      * @param int $modified
-     * @param boolean $favorite
      * @return DataResponse
      */
-    public function update($id, $content=null, $category=null, $modified=0, $favorite=null) {
-        return $this->respond(function () use ($id, $content, $category, $modified, $favorite) {
-            return $this->updateData($id, $content, $category, $modified, $favorite);
+    public function update($id, $content=null, $modified=0) {
+        return $this->respond(function () use ($id, $content,  $modified) {
+            return $this->updateData($id, $content, $modified);
         });
     }
 
     /**
-     * Updates a note, used by create and update
+     * Updates a song, used by create and update
      * @param int $id
      * @param string $content
      * @param int $modified
-     * @param boolean $favorite
-     * @return Note
+     * @return Song
      */
-    private function updateData($id, $content, $category, $modified, $favorite) {
-        if($favorite!==null) {
-            $this->service->favorite($id, $favorite, $this->userId);
-        }
+    private function updateData($id, $content, $modified) {
         if($content===null) {
             return $this->service->get($id, $this->userId);
         } else {
-            return $this->service->update($id, $content, $this->userId, $category, $modified);
+            return $this->service->update($id, $content, $this->userId, $modified);
         }
     }
 

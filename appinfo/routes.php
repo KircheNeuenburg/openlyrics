@@ -18,7 +18,6 @@ return ['routes' => [
     ['name' => 'openlp#get', 'url' => '/openlp/{id}', 'verb' => 'GET'],
     ['name' => 'openlp#create', 'url' => '/openlp', 'verb' => 'POST'],
     ['name' => 'openlp#update', 'url' => '/openlp/{id}', 'verb' => 'PUT'],
-    ['name' => 'openlp#favorite', 'url' => '/openlp/{id}/favorite', 'verb' => 'PUT'],
     ['name' => 'openlp#destroy', 'url' => '/openlp/{id}', 'verb' => 'DELETE'],
 
     // api
