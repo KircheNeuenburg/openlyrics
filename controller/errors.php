@@ -14,12 +14,12 @@ namespace OCA\OpenLP\Controller;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 
-use OCA\Notes\Service\NoteDoesNotExistException;
+use OCA\OpenLP\Service\SongDoesNotExistException;
 
 /**
  * Class Errors
  *
- * @package OCA\Notes\Controller
+ * @package OCA\OpenLP\Controller
  */
 trait Errors {
     /**
@@ -29,7 +29,7 @@ trait Errors {
     protected function respond ($callback) {
         try {
             return new DataResponse($callback());
-        } catch(NoteDoesNotExistException $ex) {
+        } catch(SongDoesNotExistException $ex) {
             return new DataResponse([], Http::STATUS_NOT_FOUND);
         }
     }
