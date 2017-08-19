@@ -1,25 +1,25 @@
 <?php
 /**
- * Nextcloud - OpenLP
+ * Nextcloud - Notes
  *
  * This file is licensed under the Affero General Public License version 3 or
  * later. See the COPYING file.
  *
- * @author David Lang
- * @copyright David Lang 2017
+ * @author Bernhard Posselt <dev@bernhard-posselt.com>
+ * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\OpenLP\Controller;
+namespace OCA\Notes\Controller;
 
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 
-use OCA\OpenLP\Service\SongDoesNotExistException;
+use OCA\Notes\Service\NoteDoesNotExistException;
 
 /**
  * Class Errors
  *
- * @package OCA\OpenLP\Controller
+ * @package OCA\Notes\Controller
  */
 trait Errors {
     /**
@@ -29,7 +29,7 @@ trait Errors {
     protected function respond ($callback) {
         try {
             return new DataResponse($callback());
-        } catch(SongDoesNotExistException $ex) {
+        } catch(NoteDoesNotExistException $ex) {
             return new DataResponse([], Http::STATUS_NOT_FOUND);
         }
     }

@@ -4,7 +4,7 @@
 	<create>true</create>
 	<charset>utf8</charset>
 	<table>
-		<name>*dbprefix*openlp_songs</name>
+		<name>*dbprefix*notes_meta</name>
 		<declaration>
 			<field>
 				<name>id</name>

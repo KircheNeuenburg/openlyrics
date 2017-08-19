@@ -9,14 +9,14 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\OpenLP\Service;
+namespace OCA\Notes\Service;
 
 use PHPUnit_Framework_TestCase;
 
-use OCA\OpenLP\Db\Song;
+use OCA\Notes\Db\Note;
 
 
-class OPenLPServiceTest extends PHPUnit_Framework_TestCase {
+class NotesServiceTest extends PHPUnit_Framework_TestCase {
 
     private $root;
     private $service;
