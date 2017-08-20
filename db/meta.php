@@ -6,7 +6,7 @@
  * later. See the COPYING file.
  */
 
-namespace OCA\Notes\Db;
+namespace OCA\OpenLP\Db;
 
 use OCP\AppFramework\Db\Entity;
 
@@ -18,15 +18,15 @@ class Meta extends Entity {
 	public $etag;
 
 	/**
-	 * @param Note $note
+	 * @param Song $song
 	 * @return static
 	 */
-	public static function fromNote(Note $note, $userId) {
+	public static function fromSong(Song $song, $userId) {
 		$meta = new static();
 		$meta->setUserId($userId);
-		$meta->setFileId($note->getId());
+		$meta->setFileId($song->getId());
 		$meta->setLastUpdate(time());
-		$meta->setEtag($note->getEtag());
+		$meta->setEtag($song->getEtag());
 		return $meta;
 	}
 }

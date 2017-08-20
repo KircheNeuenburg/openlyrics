@@ -6,16 +6,16 @@
  * later. See the COPYING file.
  */
 
-namespace OCA\Notes\Service;
+namespace OCA\OpenLP\Service;
 
-use OCA\Notes\Db\Note;
-use OCA\Notes\Db\Meta;
-use OCA\Notes\Db\MetaMapper;
+use OCA\OpenLP\Db\Song;
+use OCA\OpenLP\Db\Meta;
+use OCA\OpenLP\Db\MetaMapper;
 
 /**
  * Class MetaService
  *
- * @package OCA\Notes\Service
+ * @package OCA\OpenLP\Service
  */
 class MetaService {
 
@@ -25,25 +25,25 @@ class MetaService {
 		$this->metaMapper = $metaMapper;
 	}
 
-	public function updateAll($userId, Array $notes) {
+	public function updateAll($userId, Array $songs) {
 		$metas = $this->metaMapper->getAll($userId);
 		$metas = $this->getIndexedArray($metas, 'fileId');
-		$notes = $this->getIndexedArray($notes, 'id');
+		$songs = $this->getIndexedArray($songs, 'id');
 		foreach($metas as $id=>$meta) {
-			if(!array_key_exists($id, $notes)) {
-				// DELETE obsolete notes
+			if(!array_key_exists($id, $songs)) {
+				// DELETE obsolete songs
 				$this->metaMapper->delete($meta);
 				unset($metas[$id]);
 			}
 		}
-		foreach($notes as $id=>$note) {
+		foreach($songs as $id=>$song) {
 			if(!array_key_exists($id, $metas)) {
 				// INSERT new notes
-				$metas[$note->getId()] = $this->create($userId, $note);
-			} elseif($note->getEtag()!==$metas[$id]->getEtag()) {
+				$metas[$song->getId()] = $this->create($userId, $song);
+			} elseif($song->getEtag()!==$metas[$id]->getEtag()) {
 				// UPDATE changed notes
 				$meta = $metas[$id];
-				$this->updateIfNeeded($meta, $note);
+				$this->updateIfNeeded($meta, $song);
 			}
 		}
 		return $metas;
@@ -59,15 +59,15 @@ class MetaService {
 		return $result;
 	}
 
-	private function create($userId, $note) {
-		$meta = Meta::fromNote($note, $userId);
+	private function create($userId, $song) {
+		$meta = Meta::fromSong($song, $userId);
 		$this->metaMapper->insert($meta);
 		return $meta;
 	}
 
-	private function updateIfNeeded(&$meta, $note) {
-		if($note->getEtag()!==$meta->getEtag()) {
-			$meta->setEtag($note->getEtag());
+	private function updateIfNeeded(&$meta, $song) {
+		if($song->getEtag()!==$meta->getEtag()) {
+			$meta->setEtag($song->getEtag());
 			$meta->setLastUpdate(time());
 			$this->metaMapper->update($meta);
 		}

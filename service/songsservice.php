@@ -1,6 +1,6 @@
 <?php
 /**
- * Nextcloud - Notes
+ * Nextcloud - OpenLP
  *
  * This file is licensed under the Affero General Public License version 3 or
  * later. See the COPYING file.
@@ -9,7 +9,7 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\Notes\Service;
+namespace OCA\OpenLP\Service;
 
 use OCP\Files\FileInfo;
 use OCP\IL10N;
@@ -17,14 +17,14 @@ use OCP\Files\IRootFolder;
 use OCP\Files\Folder;
 use OCP\ILogger;
 
-use OCA\Notes\Db\Note;
+use OCA\OpenLP\Db\Song;
 
 /**
- * Class NotesService
+ * Class SongsService
  *
- * @package OCA\Notes\Service
+ * @package OCA\OpenLP\Service
  */
-class NotesService {
+class SongsService {
 
     private $l10n;
     private $root;
@@ -47,14 +47,14 @@ class NotesService {
 
     /**
      * @param string $userId
-     * @return array with all notes in the current directory
+     * @return array with all songs in the current directory
      */
     public function getAll ($userId){
-        $notesFolder = $this->getFolderForUser($userId);
-        $notes = $this->gatherNoteFiles($notesFolder);
+        $songsFolder = $this->getFolderForUser($userId);
+        $songs = $this->gatherSongFiles($songsFolder);
         $filesById = [];
-        foreach($notes as $note) {
-            $filesById[$note->getId()] = $note;
+        foreach($notes as $song) {
+            $filesById[$song->getId()] = $song;
         }
         $tagger = \OC::$server->getTagManager()->load('files');
         if($tagger===null) {
@@ -63,25 +63,25 @@ class NotesService {
             $tags = $tagger->getTagsForObjects(array_keys($filesById));
         }
 
-        $notes = [];
+        $songs = [];
         foreach($filesById as $id=>$file) {
-            $notes[] = Note::fromFile($file, $notesFolder, array_key_exists($id, $tags) ? $tags[$id] : []);
+            $songs[] = Song::fromFile($file, $songsFolder, array_key_exists($id, $tags) ? $tags[$id] : []);
         }
 
-        return $notes;
+        return $songs;
     }
 
 
     /**
-     * Used to get a single note by id
-     * @param int $id the id of the note to get
+     * Used to get a single song by id
+     * @param int $id the id of the song to get
      * @param string $userId
-     * @throws NoteDoesNotExistException if note does not exist
-     * @return Note
+     * @throws SongDoesNotExistException if song does not exist
+     * @return Song
      */
     public function get ($id, $userId) {
         $folder = $this->getFolderForUser($userId);
-        return Note::fromFile($this->getFileById($folder, $id), $folder, $this->getTags($id));
+        return Song::fromFile($this->getFileById($folder, $id), $folder, $this->getTags($id));
     }
 
     private function getTags ($id) {
@@ -95,38 +95,38 @@ class NotesService {
     }
 
     /**
-     * Creates a note and returns the empty note
+     * Creates a song and returns the empty song
      * @param string $userId
-     * @see update for setting note content
-     * @return Note the newly created note
+     * @see update for setting song content
+     * @return Song the newly created song
      */
     public function create ($userId) {
-        $title = $this->l10n->t('New note');
+        $title = $this->l10n->t('New song');
         $folder = $this->getFolderForUser($userId);
 
-        // check new note exists already and we need to number it
+        // check new song exists already and we need to number it
         // pass -1 because no file has id -1 and that will ensure
         // to only return filenames that dont yet exist
-        $path = $this->generateFileName($folder, $title, "txt", -1);
+        $path = $this->generateFileName($folder, $title, "xml", -1);
         $file = $folder->newFile($path);
 
-        return Note::fromFile($file, $folder);
+        return Song::fromFile($file, $folder);
     }
 
 
     /**
-     * Updates a note. Be sure to check the returned note since the title is
+     * Updates a song. Be sure to check the returned song since the title is
      * dynamically generated and filename conflicts are resolved
-     * @param int $id the id of the note used to update
-     * @param string $content the content which will be written into the note
+     * @param int $id the id of the song used to update
+     * @param string $content the content which will be written into the song
      * the title is generated from the first line of the content
-     * @param int $mtime time of the note modification (optional)
-     * @throws NoteDoesNotExistException if note does not exist
-     * @return \OCA\Notes\Db\Note the updated note
+     * @param int $mtime time of the song modification (optional)
+     * @throws SongDoesNotExistException if song does not exist
+     * @return \OCA\Songs\Db\Song the updated song
      */
     public function update ($id, $content, $userId, $category=null, $mtime=0) {
-        $notesFolder = $this->getFolderForUser($userId);
-        $file = $this->getFileById($notesFolder, $id);
+        $songsFolder = $this->getFolderForUser($userId);
+        $file = $this->getFileById($songsFolder, $id);
         $folder = $file->getParent();
         $title = $this->getSafeTitleFromContent($content);
 
@@ -141,7 +141,7 @@ class NotesService {
             if($category===null) {
                 $basePath = pathinfo($file->getPath(), PATHINFO_DIRNAME);
             } else {
-                $basePath = $notesFolder->getPath();
+                $basePath = $songsFolder->getPath();
                 if(!empty($category))
                     $basePath .= '/'.$category;
                 $this->getOrCreateFolder($basePath);
@@ -155,7 +155,7 @@ class NotesService {
                 $file->move($newFilePath);
             }
         } catch(\OCP\Files\NotPermittedException $e) {
-            $this->logger->error('Moving this note to the desired target is not allowed. Please check the note\'s target category.', array('app' => $this->appName));
+            $this->logger->error('Moving this song to the desired target is not allowed. Please check the song\'s target category.', array('app' => $this->appName));
         }
 
         $file->putContent($content);
@@ -164,22 +164,22 @@ class NotesService {
             $file->touch($mtime);
         }
 
-        return Note::fromFile($file, $notesFolder, $this->getTags($id));
+        return Song::fromFile($file, $songsFolder, $this->getTags($id));
     }
 
 
     /**
-     * Set or unset a note as favorite.
-     * @param int $id the id of the note used to update
-     * @param boolean $favorite whether the note should be a favorite or not
-     * @throws NoteDoesNotExistException if note does not exist
-     * @return boolean the new favorite state of the note
+     * Set or unset a song as favorite.
+     * @param int $id the id of the song used to update
+     * @param boolean $favorite whether the song should be a favorite or not
+     * @throws SongDoesNotExistException if song does not exist
+     * @return boolean the new favorite state of the song
      */
     public function favorite ($id, $favorite, $userId){
         $folder = $this->getFolderForUser($userId);
         $file = $this->getFileById($folder, $id);
-        if(!$this->isNote($file)) {
-            throw new NoteDoesNotExistException();
+        if(!$this->isSong($file)) {
+            throw new SongDoesNotExistException();
         }
         $tagger = \OC::$server->getTagManager()->load('files');
         if($favorite)
@@ -193,10 +193,10 @@ class NotesService {
 
 
     /**
-     * Deletes a note
-     * @param int $id the id of the note which should be deleted
+     * Deletes a song
+     * @param int $id the id of the song which should be deleted
      * @param string $userId
-     * @throws NoteDoesNotExistException if note does not
+     * @throws SongDoesNotExistException if song does not
      * exist
      */
     public function delete ($id, $userId) {
@@ -219,7 +219,7 @@ class NotesService {
 
         // ensure that title is not empty
         if(empty($title)) {
-            $title = $this->l10n->t('New note');
+            $title = $this->l10n->t('New Song');
         }
 
         // prevent directory traversal
@@ -234,14 +234,14 @@ class NotesService {
     /**
      * @param Folder $folder
      * @param int $id
-     * @throws NoteDoesNotExistException
+     * @throws SongDoesNotExistException
      * @return \OCP\Files\File
      */
     private function getFileById ($folder, $id) {
         $file = $folder->getById($id);
 
-        if(count($file) <= 0 || !$this->isNote($file[0])) {
-            throw new NoteDoesNotExistException();
+        if(count($file) <= 0 || !$this->isSong($file[0])) {
+            throw new SongDoesNotExistException();
         }
         return $file[0];
     }
@@ -252,7 +252,7 @@ class NotesService {
      * @return Folder
      */
     private function getFolderForUser ($userId) {
-        $path = '/' . $userId . '/files/Notes';
+        $path = '/' . $userId . '/files/Songs';
         return $this->getOrCreateFolder($path);
     }
 
@@ -276,10 +276,10 @@ class NotesService {
      * get path of file and the title.txt and check if they are the same
      * file. If not the title needs to be renamed
      *
-     * @param Folder $folder a folder to the notes directory
+     * @param Folder $folder a folder to the song directory
      * @param string $title the filename which should be used
      * @param string $extension the extension which should be used
-     * @param int $id the id of the note for which the title should be generated
+     * @param int $id the id of the song for which the title should be generated
      * used to see if the file itself has the title and not a different file for
      * checking for filename collisions
      * @return string the resolved filename to prevent overwriting different
@@ -307,34 +307,34 @@ class NotesService {
     }
 
 	/**
-	 * gather note files in given directory and all subdirectories
+	 * gather song files in given directory and all subdirectories
 	 * @param Folder $folder
 	 * @return array
 	 */
-	private function gatherNoteFiles ($folder) {
-		$notes = [];
+	private function gatherSongFiles ($folder) {
+		$songs = [];
 		$nodes = $folder->getDirectoryListing();
 		foreach($nodes as $node) {
 			if($node->getType() === FileInfo::TYPE_FOLDER) {
-				$notes = array_merge($notes, $this->gatherNoteFiles($node));
+				$songs = array_merge($songs, $this->gatherSongFiles($node));
 				continue;
 			}
-			if($this->isNote($node)) {
-				$notes[] = $node;
+			if($this->isSong($node)) {
+				$songs[] = $node;
 			}
 		}
-		return $notes;
+		return $songs;
 	}
 
 
     /**
-     * test if file is a note
+     * test if file is a song
      *
      * @param \OCP\Files\File $file
      * @return bool
      */
-    private function isNote($file) {
-        $allowedExtensions = ['txt', 'org', 'markdown', 'md', 'note'];
+    private function isSong($file) {
+        $allowedExtensions = ['xml'];
 
         if($file->getType() !== 'file') return false;
         if(!in_array(
@@ -342,6 +342,11 @@ class NotesService {
             $allowedExtensions
         )) return false;
 
+        $xml = simplexml_load_file($file);
+        if(!$xml)
+            return false;
+        if(!isset($xml->Song))
+            return false;
         return true;
     }
 

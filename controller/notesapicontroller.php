@@ -9,27 +9,27 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\Notes\Controller;
+namespace OCA\OpenLP\Controller;
 
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;
 
-use OCA\Notes\Service\NotesService;
-use OCA\Notes\Service\MetaService;
-use OCA\Notes\Db\Note;
+use OCA\OpenLP\Service\SongsService;
+use OCA\OpenLP\Service\MetaService;
+use OCA\OpenLP\Db\Song;
 
 /**
- * Class NotesApiController
+ * Class OpenLPApiController
  *
- * @package OCA\Notes\Controller
+ * @package OCA\OpenLP\Controller
  */
-class NotesApiController extends ApiController {
+class OpenLPApiController extends ApiController {
 
     use Errors;
 
-    /** @var NotesService */
+    /** @var SongsService */
     private $service;
     /** @var MetaService */
     private $metaService;
@@ -39,10 +39,10 @@ class NotesApiController extends ApiController {
     /**
      * @param string $AppName
      * @param IRequest $request
-     * @param NotesService $service
+     * @param NSongsService $service
      * @param string $UserId
      */
-    public function __construct($AppName, IRequest $request, NotesService $service, MetaService $metaService, $UserId) {
+    public function __construct($AppName, IRequest $request, SongsService $service, MetaService $metaService, $UserId) {
         parent::__construct($AppName, $request);
         $this->service = $service;
         $this->metaService = $metaService;
@@ -51,20 +51,19 @@ class NotesApiController extends ApiController {
 
 
     /**
-     * @param Note $note
-     * @param string[] $exclude the fields that should be removed from the
-     * notes
-     * @return Note
+     * @param Song $song
+     * @param string[] $exclude the fields that should be removed from the songs
+     * @return Song
      */
-    private function excludeFields(Note &$note, array $exclude) {
+    private function excludeFields(Song &$song, array $exclude) {
         if(count($exclude) > 0) {
             foreach ($exclude as $field) {
-                if(property_exists($note, $field)) {
-                    unset($note->$field);
+                if(property_exists($song, $field)) {
+                    unset($song->$field);
                 }
             }
         }
-        return $note;
+        return $song;
     }
 
 
@@ -78,24 +77,24 @@ class NotesApiController extends ApiController {
      */
     public function index($exclude='', $pruneBefore=0) {
         $exclude = explode(',', $exclude);
-        $now = new \DateTime(); // this must be before loading notes if there are concurrent changes possible
-        $notes = $this->service->getAll($this->userId);
-        $metas = $this->metaService->updateAll($this->userId, $notes);
-        foreach ($notes as $note) {
-            $lastUpdate = $metas[$note->getId()]->getLastUpdate();
+        $now = new \DateTime(); // this must be before loading songs if there are concurrent changes possible
+        $songs = $this->service->getAll($this->userId);
+        $metas = $this->metaService->updateAll($this->userId, $songs);
+        foreach ($songs as $song) {
+            $lastUpdate = $metas[$song->getId()]->getLastUpdate();
             if($pruneBefore && $lastUpdate<$pruneBefore) {
-                $vars = get_object_vars($note);
+                $vars = get_object_vars($song);
                 unset($vars['id']);
-                $this->excludeFields($note, array_keys($vars));
+                $this->excludeFields($song, array_keys($vars));
             } else {
-                $this->excludeFields($note, $exclude);
+                $this->excludeFields($song, $exclude);
             }
         }
-        $etag = md5(json_encode($notes));
+        $etag = md5(json_encode($songs));
         if ($this->request->getHeader('If-None-Match') === '"'.$etag.'"') {
             return new DataResponse([], Http::STATUS_NOT_MODIFIED);
         }
-        return (new DataResponse($notes))
+        return (new DataResponse($songs))
             ->setLastModified($now)
             ->setETag($etag);
     }
@@ -114,9 +113,9 @@ class NotesApiController extends ApiController {
         $exclude = explode(',', $exclude);
 
         return $this->respond(function () use ($id, $exclude) {
-            $note = $this->service->get($id, $this->userId);
-            $note = $this->excludeFields($note, $exclude);
-            return $note;
+            $song = $this->service->get($id, $this->userId);
+            $song = $this->excludeFields($song, $exclude);
+            return $song;
         });
     }
 
@@ -134,8 +133,8 @@ class NotesApiController extends ApiController {
      */
     public function create($content, $category=null, $modified=0, $favorite=null) {
         return $this->respond(function () use ($content, $category, $modified, $favorite) {
-            $note = $this->service->create($this->userId);
-            return $this->updateData($note->getId(), $content, $category, $modified, $favorite);
+            $song = $this->service->create($this->userId);
+            return $this->updateData($song->getId(), $content, $category, $modified, $favorite);
         });
     }
 
@@ -159,12 +158,12 @@ class NotesApiController extends ApiController {
     }
 
     /**
-     * Updates a note, used by create and update
+     * Updates a song, used by create and update
      * @param int $id
      * @param string $content
      * @param int $modified
      * @param boolean $favorite
-     * @return Note
+     * @return Song
      */
     private function updateData($id, $content, $category, $modified, $favorite) {
         if($favorite!==null) {

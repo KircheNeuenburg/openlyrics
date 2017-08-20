@@ -9,15 +9,15 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\Notes\Controller;
+namespace OCA\OpenLP\Controller;
 
 use PHPUnit_Framework_TestCase;
 
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http;
 
-use OCA\Notes\Service\NoteDoesNotExistException;
-use OCA\Notes\Db\Note;
+use OCA\OpenLP\Service\NoteDoesNotExistException;
+use OCA\OpenLP\Db\Note;
 
 
 class NotesApiControllerTest extends PHPUnit_Framework_TestCase {
@@ -32,7 +32,7 @@ class NotesApiControllerTest extends PHPUnit_Framework_TestCase {
         $this->request = $this->getMockBuilder('OCP\IRequest')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->service = $this->getMockBuilder('OCA\Notes\Service\NotesService')
+        $this->service = $this->getMockBuilder('OCA\OpenLP\Service\NotesService')
             ->disableOriginalConstructor()
             ->getMock();
         $this->userId = 'john';

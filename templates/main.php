@@ -26,7 +26,7 @@ style('notes', [
 ?>
 
 <div id="app" ng-app="Notes" ng-controller="AppController"
-    ng-init="init(<?php p($_['lastViewedNote']); ?>)" ng-cloak>
+    ng-init="init(<?php p($_['lastViewedSong']); ?>)" ng-cloak>
 
     <script type="text/ng-template" id="note.html">
         <?php print_unescaped($this->inc('note')); ?>

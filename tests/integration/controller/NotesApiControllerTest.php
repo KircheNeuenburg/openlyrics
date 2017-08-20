@@ -9,7 +9,7 @@
  * @copyright Bernhard Posselt 2015
  */
 
-namespace OCA\Notes\Controller;
+namespace OCA\OpenLP\Controller;
 
 use PHPUnit_Framework_TestCase;
 
@@ -33,7 +33,7 @@ class NotesApiControllerTest extends PHPUnit_Framework_TestCase {
             return $this->userId;
         });
         $this->controller = $container->query(
-            'OCA\Notes\Controller\NotesApiController'
+            'OCA\OpenLP\Controller\NotesApiController'
         );
 
         $this->fs = $container->query(

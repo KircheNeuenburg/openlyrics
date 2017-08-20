@@ -9,7 +9,7 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\Notes\Controller;
+namespace OCA\OpenLP\Controller;
 
 use PHPUnit_Framework_TestCase;
 
@@ -17,8 +17,8 @@ use OCP\IRequest;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http;
 
-use OCA\Notes\Service\NoteDoesNotExistException;
-use OCA\Notes\Db\Note;
+use OCA\OpenLP\Service\NoteDoesNotExistException;
+use OCA\OpenLP\Db\Note;
 
 
 class NotesControllerTest extends PHPUnit_Framework_TestCase {
@@ -38,7 +38,7 @@ class NotesControllerTest extends PHPUnit_Framework_TestCase {
         $this->config = $this->getMockBuilder('OCP\IConfig')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->service = $this->getMockBuilder('OCA\Notes\Service\NotesService')
+        $this->service = $this->getMockBuilder('OCA\OpenLP\Service\NotesService')
             ->disableOriginalConstructor()
             ->getMock();
         $this->userId = 'john';
@@ -78,7 +78,7 @@ class NotesControllerTest extends PHPUnit_Framework_TestCase {
             ->method('setUserValue')
             ->with($this->equalTo($this->userId),
                 $this->equalTo($this->appName),
-                $this->equalTo('notesLastViewedNote'),
+                $this->equalTo('songsLastViewedSong'),
                 $this->equalTo($id));
 
         $this->service->expects($this->once())
@@ -102,7 +102,7 @@ class NotesControllerTest extends PHPUnit_Framework_TestCase {
             ->method('setUserValue')
             ->with($this->equalTo($this->userId),
                 $this->equalTo($this->appName),
-                $this->equalTo('notesLastViewedNote'),
+                $this->equalTo('songsLastViewedSong'),
                 $this->equalTo($id));
 
         $this->service->expects($this->once())

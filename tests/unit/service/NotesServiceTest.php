@@ -9,11 +9,11 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\Notes\Service;
+namespace OCA\OpenLP\Service;
 
 use PHPUnit_Framework_TestCase;
 
-use OCA\Notes\Db\Note;
+use OCA\OpenLP\Db\Note;
 
 
 class NotesServiceTest extends PHPUnit_Framework_TestCase {
@@ -119,7 +119,7 @@ class NotesServiceTest extends PHPUnit_Framework_TestCase {
 
 
     /**
-     * @expectedException OCA\Notes\Service\NoteDoesNotExistException
+     * @expectedException OCA\OpenLP\Service\NoteDoesNotExistException
      */
     public function testGetDoesNotExist(){
         $nodes = [];
@@ -134,7 +134,7 @@ class NotesServiceTest extends PHPUnit_Framework_TestCase {
 
 
     /**
-     * @expectedException OCA\Notes\Service\NoteDoesNotExistException
+     * @expectedException OCA\OpenLP\Service\NoteDoesNotExistException
      */
     public function testGetDoesNotExistWrongExtension(){
             $nodes = [];
@@ -169,7 +169,7 @@ class NotesServiceTest extends PHPUnit_Framework_TestCase {
 
 
     /**
-     * @expectedException OCA\Notes\Service\NoteDoesNotExistException
+     * @expectedException OCA\OpenLP\Service\NoteDoesNotExistException
      */
     public function testDeleteDoesNotExist(){
         $nodes = [];
@@ -184,7 +184,7 @@ class NotesServiceTest extends PHPUnit_Framework_TestCase {
 
 
     /**
-     * @expectedException OCA\Notes\Service\NoteDoesNotExistException
+     * @expectedException OCA\OpenLP\Service\NoteDoesNotExistException
      */
     public function testDeleteDoesNotExistWrongExtension(){
         $nodes = [];
