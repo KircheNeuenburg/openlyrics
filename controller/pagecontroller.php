@@ -27,8 +27,8 @@ use OCA\OpenLP\Service\NoteDoesNotExistException;
  */
 class PageController extends Controller {
 
-    /** @var OpenLPService */
-    private $openlpService;
+    /** @var SongsService */
+    private $songsService;
     /** @var IConfig */
     private $settings;
     /** @var string */
@@ -42,9 +42,9 @@ class PageController extends Controller {
      * @param string $UserId
      */
     public function __construct($AppName, IRequest $request, $UserId,
-                                OpenLPService $openlpService, IConfig $settings){
+                                SongsService $songsService, IConfig $settings){
         parent::__construct($AppName, $request);
-        $this->openlpService = $openlpService;
+        $this->songsService = $songsService;
         $this->userId = $UserId;
         $this->settings = $settings;
     }
@@ -61,7 +61,7 @@ class PageController extends Controller {
             $this->appName, 'songsLastViewedSong');
         // check if song exists
         try {
-            $this->openlpService->get($lastViewedSong, $this->userId);
+            $this->songsService->get($lastViewedSong, $this->userId);
         } catch(SongDoesNotExistException $ex) {
             $lastViewedSong = 0;
         }

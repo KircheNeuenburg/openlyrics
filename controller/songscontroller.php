@@ -27,7 +27,7 @@ class SongsController extends Controller {
 
     use Errors;
 
-    /** @var OpenLPService */
+    /** @var songsService */
     private $songsService;
     /** @var IConfig */
     private $settings;
@@ -37,7 +37,7 @@ class SongsController extends Controller {
     /**
      * @param string $AppName
      * @param IRequest $request
-     * @param OpenLPService $service
+     * @param SongsService $service
      * @param IConfig $settings
      * @param string $UserId
      */
