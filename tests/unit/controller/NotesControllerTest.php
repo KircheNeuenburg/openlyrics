@@ -9,7 +9,7 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\Notes\Controller;
+namespace OCA\OpenLP\Controller;
 
 use PHPUnit_Framework_TestCase;
 
@@ -17,8 +17,8 @@ use OCP\IRequest;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\AppFramework\Http;
 
-use OCA\Notes\Service\NoteDoesNotExistException;
-use OCA\Notes\Db\Note;
+use OCA\OpenLP\Service\SongDoesNotExistException;
+use OCA\OpenLP\Db\Note;
 
 
 class NotesControllerTest extends PHPUnit_Framework_TestCase {
@@ -38,7 +38,7 @@ class NotesControllerTest extends PHPUnit_Framework_TestCase {
         $this->config = $this->getMockBuilder('OCP\IConfig')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->service = $this->getMockBuilder('OCA\Notes\Service\NotesService')
+        $this->service = $this->getMockBuilder('OCA\OpenLP\Service\SongsService')
             ->disableOriginalConstructor()
             ->getMock();
         $this->userId = 'john';
@@ -109,7 +109,7 @@ class NotesControllerTest extends PHPUnit_Framework_TestCase {
             ->method('get')
             ->with($this->equalTo($id),
                    $this->equalTo($this->userId))
-            ->will($this->throwException(new NoteDoesNotExistException()));
+            ->will($this->throwException(new SongDoesNotExistException()));
 
         $response = $this->controller->get($id);
 
@@ -174,7 +174,7 @@ class NotesControllerTest extends PHPUnit_Framework_TestCase {
             ->with($this->equalTo($id),
                    $this->equalTo($content),
                    $this->equalTo($this->userId))
-            ->will($this->throwException(new NoteDoesNotExistException()));
+            ->will($this->throwException(new SongDoesNotExistException()));
 
         $response = $this->controller->update($id, $content);
 
@@ -207,7 +207,7 @@ class NotesControllerTest extends PHPUnit_Framework_TestCase {
             ->method('delete')
             ->with($this->equalTo($id),
                    $this->equalTo($this->userId))
-            ->will($this->throwException(new NoteDoesNotExistException()));
+            ->will($this->throwException(new SongDoesNotExistException()));
 
         $response = $this->controller->destroy($id);
 

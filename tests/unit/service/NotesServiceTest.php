@@ -9,14 +9,14 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\Notes\Service;
+namespace OCA\OpenLP\Service;
 
 use PHPUnit_Framework_TestCase;
 
-use OCA\Notes\Db\Note;
+use OCA\OpenLP\Db\Note;
 
 
-class NotesServiceTest extends PHPUnit_Framework_TestCase {
+class SongsServiceTest extends PHPUnit_Framework_TestCase {
 
     private $root;
     private $service;
@@ -32,7 +32,7 @@ class NotesServiceTest extends PHPUnit_Framework_TestCase {
         $this->l10n = $this->getMockBuilder('OCP\IL10N')
             ->getMock();
         $this->userId = 'john';
-        $this->service = new NotesService($this->root, $this->l10n);
+        $this->service = new SongsService($this->root, $this->l10n);
     }
 
     private function createNode($name, $type, $mime, $mtime=0, $content='', $id=0, $subdir='') {
@@ -119,7 +119,7 @@ class NotesServiceTest extends PHPUnit_Framework_TestCase {
 
 
     /**
-     * @expectedException OCA\Notes\Service\NoteDoesNotExistException
+     * @expectedException OCA\OpenLP\Service\SongDoesNotExistException
      */
     public function testGetDoesNotExist(){
         $nodes = [];
@@ -134,7 +134,7 @@ class NotesServiceTest extends PHPUnit_Framework_TestCase {
 
 
     /**
-     * @expectedException OCA\Notes\Service\NoteDoesNotExistException
+     * @expectedException OCA\OpenLP\Service\SongDoesNotExistException
      */
     public function testGetDoesNotExistWrongExtension(){
             $nodes = [];
@@ -169,7 +169,7 @@ class NotesServiceTest extends PHPUnit_Framework_TestCase {
 
 
     /**
-     * @expectedException OCA\Notes\Service\NoteDoesNotExistException
+     * @expectedException OCA\OpenLP\Service\SongDoesNotExistException
      */
     public function testDeleteDoesNotExist(){
         $nodes = [];
@@ -184,7 +184,7 @@ class NotesServiceTest extends PHPUnit_Framework_TestCase {
 
 
     /**
-     * @expectedException OCA\Notes\Service\NoteDoesNotExistException
+     * @expectedException OCA\OpenLP\Service\SongDoesNotExistException
      */
     public function testDeleteDoesNotExistWrongExtension(){
         $nodes = [];

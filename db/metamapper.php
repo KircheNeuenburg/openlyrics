@@ -6,7 +6,7 @@
  * later. See the COPYING file.
  */
 
-namespace OCA\Notes\Db;
+namespace OCA\OpenLP\Db;
 
 use OCP\IDBConnection;
 use OCP\AppFramework\Db\Mapper;

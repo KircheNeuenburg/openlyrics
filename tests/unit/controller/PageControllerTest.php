@@ -9,14 +9,14 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\Notes\Controller;
+namespace OCA\OpenLP\Controller;
 
 use PHPUnit_Framework_TestCase;
 
 use OCP\IRequest;
 use OCP\AppFramework\Http\TemplateResponse;
 
-use OCA\Notes\Service\NoteDoesNotExistException;
+use OCA\OpenLP\Service\SongDoesNotExistException;
 
 
 class PageControllerTest extends PHPUnit_Framework_TestCase {
@@ -33,7 +33,7 @@ class PageControllerTest extends PHPUnit_Framework_TestCase {
         $this->request = $this->getMockBuilder('OCP\IRequest')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->service = $this->getMockBuilder('OCA\Notes\Service\NotesService')
+        $this->service = $this->getMockBuilder('OCA\OpenLP\Service\SongsService')
             ->disableOriginalConstructor()
             ->getMock();
         $this->config = $this->getMockBuilder('OCP\IConfig')
@@ -92,7 +92,7 @@ class PageControllerTest extends PHPUnit_Framework_TestCase {
             ->method('get')
             ->with($this->equalTo(3),
                    $this->equalTo($this->userId))
-            ->will($this->throwException(new NoteDoesNotExistException()));
+            ->will($this->throwException(new SongDoesNotExistException()));
         $result = $this->controller->index();
 
         $this->assertEquals(['lastViewedNote' => 0], $result->getParams());

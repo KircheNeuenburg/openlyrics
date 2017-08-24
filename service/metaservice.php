@@ -6,16 +6,16 @@
  * later. See the COPYING file.
  */
 
-namespace OCA\Notes\Service;
+namespace OCA\OpenLP\Service;
 
-use OCA\Notes\Db\Note;
-use OCA\Notes\Db\Meta;
-use OCA\Notes\Db\MetaMapper;
+use OCA\OpenLP\Db\Note;
+use OCA\OpenLP\Db\Meta;
+use OCA\OpenLP\Db\MetaMapper;
 
 /**
  * Class MetaService
  *
- * @package OCA\Notes\Service
+ * @package OCA\OpenLP\Service
  */
 class MetaService {
 

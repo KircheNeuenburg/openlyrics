@@ -9,26 +9,26 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\Notes\Controller;
+namespace OCA\OpenLP\Controller;
 
 use OCP\AppFramework\Controller;
 use OCP\IRequest;
 use OCP\IConfig;
 use OCP\AppFramework\Http\DataResponse;
 
-use OCA\Notes\Service\NotesService;
+use OCA\OpenLP\Service\SongsService;
 
 /**
  * Class NotesController
  *
- * @package OCA\Notes\Controller
+ * @package OCA\OpenLP\Controller
  */
 class NotesController extends Controller {
 
     use Errors;
 
-    /** @var NotesService */
-    private $notesService;
+    /** @var SongsService */
+    private $songsService;
     /** @var IConfig */
     private $settings;
     /** @var string */
@@ -37,15 +37,15 @@ class NotesController extends Controller {
     /**
      * @param string $AppName
      * @param IRequest $request
-     * @param NotesService $service
+     * @param SongsService $service
      * @param IConfig $settings
      * @param string $UserId
      */
     public function __construct($AppName, IRequest $request,
-                                NotesService $service, IConfig $settings,
+                                SongsService $service, IConfig $settings,
                                 $UserId){
         parent::__construct($AppName, $request);
-        $this->notesService = $service;
+        $this->songsService = $service;
         $this->settings = $settings;
         $this->userId = $UserId;
     }
@@ -55,7 +55,7 @@ class NotesController extends Controller {
      * @NoAdminRequired
      */
     public function index() {
-        return new DataResponse($this->notesService->getAll($this->userId));
+        return new DataResponse($this->songsService->getAll($this->userId));
     }
 
 
@@ -72,7 +72,7 @@ class NotesController extends Controller {
         );
 
         return $this->respond(function ()  use ($id) {
-            return $this->notesService->get($id, $this->userId);
+            return $this->songsService->get($id, $this->userId);
         });
     }
 
@@ -83,8 +83,8 @@ class NotesController extends Controller {
      * @param string $content
      */
     public function create($content="") {
-        $note = $this->notesService->create($this->userId);
-        $note = $this->notesService->update(
+        $note = $this->songsService->create($this->userId);
+        $note = $this->songsService->update(
             $note->getId(), $content, $this->userId
         );
         return new DataResponse($note);
@@ -100,7 +100,7 @@ class NotesController extends Controller {
      */
     public function update($id, $content) {
         return $this->respond(function () use ($id, $content) {
-            return $this->notesService->update($id, $content, $this->userId);
+            return $this->songsService->update($id, $content, $this->userId);
         });
     }
 
@@ -114,7 +114,7 @@ class NotesController extends Controller {
      */
     public function favorite($id, $favorite) {
         return $this->respond(function () use ($id, $favorite) {
-            return $this->notesService->favorite($id, $favorite, $this->userId);
+            return $this->songsService->favorite($id, $favorite, $this->userId);
         });
     }
 
@@ -127,7 +127,7 @@ class NotesController extends Controller {
      */
     public function destroy($id) {
         return $this->respond(function () use ($id) {
-            $this->notesService->delete($id, $this->userId);
+            $this->songsService->delete($id, $this->userId);
             return [];
         });
     }

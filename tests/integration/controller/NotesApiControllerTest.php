@@ -9,7 +9,7 @@
  * @copyright Bernhard Posselt 2015
  */
 
-namespace OCA\Notes\Controller;
+namespace OCA\OpenLP\Controller;
 
 use PHPUnit_Framework_TestCase;
 
@@ -18,7 +18,7 @@ use OCP\AppFramework\App;
 use OCP\Files\File;
 
 
-class NotesApiControllerTest extends PHPUnit_Framework_TestCase {
+class SongsApiControllerTest extends PHPUnit_Framework_TestCase {
 
     private $controller;
     private $mapper;
@@ -33,7 +33,7 @@ class NotesApiControllerTest extends PHPUnit_Framework_TestCase {
             return $this->userId;
         });
         $this->controller = $container->query(
-            'OCA\Notes\Controller\NotesApiController'
+            'OCA\OpenLP\Controller\SongsApiController'
         );
 
         $this->fs = $container->query(

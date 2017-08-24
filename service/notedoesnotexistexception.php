@@ -9,13 +9,13 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\Notes\Service;
+namespace OCA\OpenLP\Service;
 
 use Exception;
 
 /**
- * Class NoteDoesNotExistException
+ * Class SongDoesNotExistException
  *
- * @package OCA\Notes\Service
+ * @package OCA\OpenLP\Service
  */
-class NoteDoesNotExistException extends Exception {}
+class SongDoesNotExistException extends Exception {}

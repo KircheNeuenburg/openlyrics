@@ -9,7 +9,7 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\Notes\Service;
+namespace OCA\OpenLP\Service;
 
 use OCP\Files\FileInfo;
 use OCP\IL10N;
@@ -17,14 +17,14 @@ use OCP\Files\IRootFolder;
 use OCP\Files\Folder;
 use OCP\ILogger;
 
-use OCA\Notes\Db\Note;
+use OCA\OpenLP\Db\Note;
 
 /**
- * Class NotesService
+ * Class SongsService
  *
- * @package OCA\Notes\Service
+ * @package OCA\OpenLP\Service
  */
-class NotesService {
+class SongsService {
 
     private $l10n;
     private $root;
@@ -76,7 +76,7 @@ class NotesService {
      * Used to get a single note by id
      * @param int $id the id of the note to get
      * @param string $userId
-     * @throws NoteDoesNotExistException if note does not exist
+     * @throws SongDoesNotExistException if note does not exist
      * @return Note
      */
     public function get ($id, $userId) {
@@ -121,8 +121,8 @@ class NotesService {
      * @param string $content the content which will be written into the note
      * the title is generated from the first line of the content
      * @param int $mtime time of the note modification (optional)
-     * @throws NoteDoesNotExistException if note does not exist
-     * @return \OCA\Notes\Db\Note the updated note
+     * @throws SongDoesNotExistException if note does not exist
+     * @return \OCA\OpenLP\Db\Note the updated note
      */
     public function update ($id, $content, $userId, $category=null, $mtime=0) {
         $notesFolder = $this->getFolderForUser($userId);
@@ -172,14 +172,14 @@ class NotesService {
      * Set or unset a note as favorite.
      * @param int $id the id of the note used to update
      * @param boolean $favorite whether the note should be a favorite or not
-     * @throws NoteDoesNotExistException if note does not exist
+     * @throws SongDoesNotExistException if note does not exist
      * @return boolean the new favorite state of the note
      */
     public function favorite ($id, $favorite, $userId){
         $folder = $this->getFolderForUser($userId);
         $file = $this->getFileById($folder, $id);
         if(!$this->isNote($file)) {
-            throw new NoteDoesNotExistException();
+            throw new SongDoesNotExistException();
         }
         $tagger = \OC::$server->getTagManager()->load('files');
         if($favorite)
@@ -196,7 +196,7 @@ class NotesService {
      * Deletes a note
      * @param int $id the id of the note which should be deleted
      * @param string $userId
-     * @throws NoteDoesNotExistException if note does not
+     * @throws SongDoesNotExistException if note does not
      * exist
      */
     public function delete ($id, $userId) {
@@ -234,14 +234,14 @@ class NotesService {
     /**
      * @param Folder $folder
      * @param int $id
-     * @throws NoteDoesNotExistException
+     * @throws SongDoesNotExistException
      * @return \OCP\Files\File
      */
     private function getFileById ($folder, $id) {
         $file = $folder->getById($id);
 
         if(count($file) <= 0 || !$this->isNote($file[0])) {
-            throw new NoteDoesNotExistException();
+            throw new SongDoesNotExistException();
         }
         return $file[0];
     }

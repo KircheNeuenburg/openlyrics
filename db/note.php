@@ -9,7 +9,7 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\Notes\Db;
+namespace OCA\OpenLP\Db;
 
 use OCP\Files\File;
 use OCP\Files\Folder;
@@ -31,7 +31,7 @@ use OCP\AppFramework\Db\Entity;
  * @method void setContent(string $value)
  * @method boolean getFavorite()
  * @method void setFavorite(boolean $value)
- * @package OCA\Notes\Db
+ * @package OCA\OpenLP\Db
  */
 class Note extends Entity {
 

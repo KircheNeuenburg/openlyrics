@@ -9,27 +9,27 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\Notes\Controller;
+namespace OCA\OpenLP\Controller;
 
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;
 
-use OCA\Notes\Service\NotesService;
-use OCA\Notes\Service\MetaService;
-use OCA\Notes\Db\Note;
+use OCA\OpenLP\Service\SongsService;
+use OCA\OpenLP\Service\MetaService;
+use OCA\OpenLP\Db\Note;
 
 /**
- * Class NotesApiController
+ * Class SongsApiController
  *
- * @package OCA\Notes\Controller
+ * @package OCA\OpenLP\Controller
  */
-class NotesApiController extends ApiController {
+class SongsApiController extends ApiController {
 
     use Errors;
 
-    /** @var NotesService */
+    /** @var SongsService */
     private $service;
     /** @var MetaService */
     private $metaService;
@@ -39,10 +39,10 @@ class NotesApiController extends ApiController {
     /**
      * @param string $AppName
      * @param IRequest $request
-     * @param NotesService $service
+     * @param SongsService $service
      * @param string $UserId
      */
-    public function __construct($AppName, IRequest $request, NotesService $service, MetaService $metaService, $UserId) {
+    public function __construct($AppName, IRequest $request, SongsService $service, MetaService $metaService, $UserId) {
         parent::__construct($AppName, $request);
         $this->service = $service;
         $this->metaService = $metaService;

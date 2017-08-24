@@ -9,7 +9,7 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\Notes\AppInfo;
+namespace OCA\OpenLP\AppInfo;
 
 use OCP\AppFramework\App;
 

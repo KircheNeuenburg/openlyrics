@@ -9,7 +9,7 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\Notes\Controller;
+namespace OCA\OpenLP\Controller;
 
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
@@ -17,18 +17,18 @@ use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\IRequest;
 use OCP\IConfig;
 
-use OCA\Notes\Service\NotesService;
-use OCA\Notes\Service\NoteDoesNotExistException;
+use OCA\OpenLP\Service\SongsService;
+use OCA\OpenLP\Service\SongDoesNotExistException;
 
 /**
  * Class PageController
  *
- * @package OCA\Notes\Controller
+ * @package OCA\OpenLP\Controller
  */
 class PageController extends Controller {
 
-    /** @var NotesService */
-    private $notesService;
+    /** @var SongsService */
+    private $songsService;
     /** @var IConfig */
     private $settings;
     /** @var string */
@@ -37,14 +37,14 @@ class PageController extends Controller {
     /**
      * @param string $AppName
      * @param IRequest $request
-     * @param NotesService $notesService
+     * @param SongsService $songsService
      * @param IConfig $settings
      * @param string $UserId
      */
     public function __construct($AppName, IRequest $request, $UserId,
-                                NotesService $notesService, IConfig $settings){
+                                SongsService $songsService, IConfig $settings){
         parent::__construct($AppName, $request);
-        $this->notesService = $notesService;
+        $this->songsService = $songsService;
         $this->userId = $UserId;
         $this->settings = $settings;
     }
@@ -61,8 +61,8 @@ class PageController extends Controller {
             $this->appName, 'notesLastViewedNote');
         // check if note exists
         try {
-            $this->notesService->get($lastViewedNote, $this->userId);
-        } catch(NoteDoesNotExistException $ex) {
+            $this->songsService->get($lastViewedNote, $this->userId);
+        } catch(SongDoesNotExistException $ex) {
             $lastViewedNote = 0;
         }
 
