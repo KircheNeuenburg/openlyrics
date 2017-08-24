@@ -18,7 +18,7 @@
 
 
 # Makefile for building the project
-app_name=nextcloud-openlp
+app_name=notes
 project_dir=$(CURDIR)/../$(app_name)
 build_dir=$(CURDIR)/build/artifacts
 sign_dir=$(build_dir)/sign

@@ -9,7 +9,7 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\OpenLP\Db;
+namespace OCA\Notes\Db;
 
 use PHPUnit_Framework_TestCase;
 

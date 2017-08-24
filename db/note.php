@@ -9,14 +9,14 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\OpenLP\Db;
+namespace OCA\Notes\Db;
 
 use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\AppFramework\Db\Entity;
 
 /**
- * Class Song
+ * Class Note
  * @method integer getId()
  * @method void setId(integer $value)
  * @method string getEtag()
@@ -31,9 +31,9 @@ use OCP\AppFramework\Db\Entity;
  * @method void setContent(string $value)
  * @method boolean getFavorite()
  * @method void setFavorite(boolean $value)
- * @package OCA\OpenLP\Db
+ * @package OCA\Notes\Db
  */
-class Song extends Entity {
+class Note extends Entity {
 
     public $etag;
     public $modified;
@@ -51,21 +51,21 @@ class Song extends Entity {
      * @param File $file
      * @return static
      */
-    public static function fromFile(File $file, Folder $songsFolder, $tags=[]){
-        $song = new static();
-        $song->setId($file->getId());
-        $song->setContent(self::convertEncoding($file->getContent()));
-        $song->setModified($file->getMTime());
-        $song->setTitle(pathinfo($file->getName(),PATHINFO_FILENAME)); // remove extension
-        $subdir = substr(dirname($file->getPath()), strlen($songsFolder->getPath())+1);
-        $song->setCategory($subdir ? $subdir : null);
+    public static function fromFile(File $file, Folder $notesFolder, $tags=[]){
+        $note = new static();
+        $note->setId($file->getId());
+        $note->setContent(self::convertEncoding($file->getContent()));
+        $note->setModified($file->getMTime());
+        $note->setTitle(pathinfo($file->getName(),PATHINFO_FILENAME)); // remove extension
+        $subdir = substr(dirname($file->getPath()), strlen($notesFolder->getPath())+1);
+        $note->setCategory($subdir ? $subdir : null);
         if(is_array($tags) && in_array(\OC\Tags::TAG_FAVORITE, $tags)) {
-            $song->setFavorite(true);
+            $note->setFavorite(true);
             //unset($tags[array_search(\OC\Tags::TAG_FAVORITE, $tags)]);
         }
-        $song->updateETag();
-        $song->resetUpdatedFields();
-        return $song;
+        $note->updateETag();
+        $note->resetUpdatedFields();
+        return $note;
     }
 
     private static function convertEncoding($str) {

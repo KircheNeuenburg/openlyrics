@@ -9,7 +9,7 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\OpenLP\Controller;
+namespace OCA\Notes\Controller;
 
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
@@ -17,18 +17,18 @@ use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\IRequest;
 use OCP\IConfig;
 
-use OCA\OpenLP\Service\NotesService;
-use OCA\OpenLP\Service\NoteDoesNotExistException;
+use OCA\Notes\Service\NotesService;
+use OCA\Notes\Service\NoteDoesNotExistException;
 
 /**
  * Class PageController
  *
- * @package OCA\OpenLP\Controller
+ * @package OCA\Notes\Controller
  */
 class PageController extends Controller {
 
-    /** @var SongsService */
-    private $songsService;
+    /** @var NotesService */
+    private $notesService;
     /** @var IConfig */
     private $settings;
     /** @var string */
@@ -42,9 +42,9 @@ class PageController extends Controller {
      * @param string $UserId
      */
     public function __construct($AppName, IRequest $request, $UserId,
-                                SongsService $songsService, IConfig $settings){
+                                NotesService $notesService, IConfig $settings){
         parent::__construct($AppName, $request);
-        $this->songsService = $songsService;
+        $this->notesService = $notesService;
         $this->userId = $UserId;
         $this->settings = $settings;
     }
@@ -57,20 +57,20 @@ class PageController extends Controller {
      * @return TemplateResponse
      */
     public function index() {
-        $lastViewedSong = (int) $this->settings->getUserValue($this->userId,
-            $this->appName, 'songsLastViewedSong');
-        // check if song exists
+        $lastViewedNote = (int) $this->settings->getUserValue($this->userId,
+            $this->appName, 'notesLastViewedNote');
+        // check if note exists
         try {
-            $this->songsService->get($lastViewedSong, $this->userId);
-        } catch(SongDoesNotExistException $ex) {
-            $lastViewedSong = 0;
+            $this->notesService->get($lastViewedNote, $this->userId);
+        } catch(NoteDoesNotExistException $ex) {
+            $lastViewedNote = 0;
         }
 
         $response = new TemplateResponse(
             $this->appName,
             'main',
             [
-                'lastViewedSong' => $lastViewedSong
+                'lastViewedNote' => $lastViewedNote
             ]
         );
 

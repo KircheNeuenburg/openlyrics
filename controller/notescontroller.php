@@ -9,26 +9,26 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\OpenLP\Controller;
+namespace OCA\Notes\Controller;
 
 use OCP\AppFramework\Controller;
 use OCP\IRequest;
 use OCP\IConfig;
 use OCP\AppFramework\Http\DataResponse;
 
-use OCA\OpenLP\Service\SongsService;
+use OCA\Notes\Service\NotesService;
 
 /**
- * Class SongsController
+ * Class NotesController
  *
- * @package OCA\OpenLP\Controller
+ * @package OCA\Notes\Controller
  */
-class SongsController extends Controller {
+class NotesController extends Controller {
 
     use Errors;
 
-    /** @var songsService */
-    private $songsService;
+    /** @var NotesService */
+    private $notesService;
     /** @var IConfig */
     private $settings;
     /** @var string */
@@ -37,15 +37,15 @@ class SongsController extends Controller {
     /**
      * @param string $AppName
      * @param IRequest $request
-     * @param SongsService $service
+     * @param NotesService $service
      * @param IConfig $settings
      * @param string $UserId
      */
     public function __construct($AppName, IRequest $request,
-                                SongsService $service, IConfig $settings,
+                                NotesService $service, IConfig $settings,
                                 $UserId){
         parent::__construct($AppName, $request);
-        $this->songsService = $service;
+        $this->notesService = $service;
         $this->settings = $settings;
         $this->userId = $UserId;
     }
@@ -55,7 +55,7 @@ class SongsController extends Controller {
      * @NoAdminRequired
      */
     public function index() {
-        return new DataResponse($this->songsService->getAll($this->userId));
+        return new DataResponse($this->notesService->getAll($this->userId));
     }
 
 
@@ -66,13 +66,13 @@ class SongsController extends Controller {
      * @return DataResponse
      */
     public function get($id) {
-        // save the last viewed song
+        // save the last viewed note
         $this->settings->setUserValue(
-            $this->userId, $this->appName, 'songsLastViewedSong', $id
+            $this->userId, $this->appName, 'notesLastViewedNote', $id
         );
 
         return $this->respond(function ()  use ($id) {
-            return $this->songsService->get($id, $this->userId);
+            return $this->notesService->get($id, $this->userId);
         });
     }
 
@@ -83,11 +83,11 @@ class SongsController extends Controller {
      * @param string $content
      */
     public function create($content="") {
-        $song = $this->songsService->create($this->userId);
-        $song = $this->songsService->update(
-            $song->getId(), $content, $this->userId
+        $note = $this->notesService->create($this->userId);
+        $note = $this->notesService->update(
+            $note->getId(), $content, $this->userId
         );
-        return new DataResponse($song);
+        return new DataResponse($note);
     }
 
 
@@ -100,7 +100,7 @@ class SongsController extends Controller {
      */
     public function update($id, $content) {
         return $this->respond(function () use ($id, $content) {
-            return $this->songsService->update($id, $content, $this->userId);
+            return $this->notesService->update($id, $content, $this->userId);
         });
     }
 
@@ -114,7 +114,7 @@ class SongsController extends Controller {
      */
     public function favorite($id, $favorite) {
         return $this->respond(function () use ($id, $favorite) {
-            return $this->songsService->favorite($id, $favorite, $this->userId);
+            return $this->notesService->favorite($id, $favorite, $this->userId);
         });
     }
 
@@ -127,7 +127,7 @@ class SongsController extends Controller {
      */
     public function destroy($id) {
         return $this->respond(function () use ($id) {
-            $this->songsService->delete($id, $this->userId);
+            $this->notesService->delete($id, $this->userId);
             return [];
         });
     }
