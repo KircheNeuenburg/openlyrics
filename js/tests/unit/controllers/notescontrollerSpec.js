@@ -5,7 +5,7 @@
  * See the COPYING file.
  */
 
-describe('NotesController', function() {
+describe('SongsController', function() {
     'use strict';
 
     var controller,
@@ -39,7 +39,7 @@ describe('NotesController', function() {
         ];
         http.expectGET('/notes').respond(200, notes);
 
-        controller = controller('NotesController', {
+        controller = controller('SongsController', {
             $routeParams: routeParams,
             $scope: scope,
             $location: location,
@@ -56,7 +56,7 @@ describe('NotesController', function() {
     it ('should do a create request', function() {
         http.expectGET('/notes').respond(200, [{}]);
 
-        controller = controller('NotesController', {
+        controller = controller('SongsController', {
             $routeParams: routeParams,
             $scope: scope,
             $location: location,
@@ -85,7 +85,7 @@ describe('NotesController', function() {
 
         http.expectGET('/notes').respond(200, notes);
 
-        controller = controller('NotesController', {
+        controller = controller('SongsController', {
             $routeParams: routeParams,
             $scope: scope,
             $location: location,

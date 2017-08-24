@@ -5,8 +5,8 @@
  * See the COPYING file.
  */
 
-// This is available by using ng-controller="NotesController" in your HTML
-app.controller('NotesController', function($routeParams, $scope, $location,
+// This is available by using ng-controller="SongsController" in your HTML
+app.controller('SongsController', function($routeParams, $scope, $location,
                                            Restangular, NotesModel) {
     'use strict';
 

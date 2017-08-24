@@ -18,7 +18,7 @@ use OCP\AppFramework\App;
 use OCP\Files\File;
 
 
-class NotesControllerTest extends PHPUnit_Framework_TestCase {
+class SongsControllerTest extends PHPUnit_Framework_TestCase {
 
     private $controller;
     private $userId = 'test';
@@ -32,7 +32,7 @@ class NotesControllerTest extends PHPUnit_Framework_TestCase {
             return $this->userId;
         });
         $this->controller = $container->query(
-            'OCA\OpenLP\Controller\NotesController'
+            'OCA\OpenLP\Controller\SongsController'
         );
 
         $this->fs = $container->query(

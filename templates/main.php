@@ -32,7 +32,7 @@ style('notes', [
         <?php print_unescaped($this->inc('note')); ?>
     </script>
 
-    <div id="app-navigation" ng-controller="NotesController">
+    <div id="app-navigation" ng-controller="SongsController">
         <ul>
             <li class="note-search">
                 <span class="nav-entry icon-search">

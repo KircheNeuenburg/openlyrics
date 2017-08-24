@@ -19,11 +19,11 @@ use OCP\AppFramework\Http\DataResponse;
 use OCA\OpenLP\Service\SongsService;
 
 /**
- * Class NotesController
+ * Class SongsController
  *
  * @package OCA\OpenLP\Controller
  */
-class NotesController extends Controller {
+class SongsController extends Controller {
 
     use Errors;
 

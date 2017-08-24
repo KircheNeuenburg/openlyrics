@@ -21,7 +21,7 @@ use OCA\OpenLP\Service\SongDoesNotExistException;
 use OCA\OpenLP\Db\Note;
 
 
-class NotesControllerTest extends PHPUnit_Framework_TestCase {
+class SongsControllerTest extends PHPUnit_Framework_TestCase {
 
 
     private $request;
@@ -43,7 +43,7 @@ class NotesControllerTest extends PHPUnit_Framework_TestCase {
             ->getMock();
         $this->userId = 'john';
         $this->appName = 'notes';
-        $this->controller = new NotesController(
+        $this->controller = new SongsController(
             $this->appName, $this->request, $this->service, $this->config,
             $this->userId
         );
