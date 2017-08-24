@@ -66,7 +66,7 @@ class SongsController extends Controller {
      * @return DataResponse
      */
     public function get($id) {
-        // save the last viewed note
+        // save the last viewed song
         $this->settings->setUserValue(
             $this->userId, $this->appName, 'notesLastViewedNote', $id
         );
@@ -83,11 +83,11 @@ class SongsController extends Controller {
      * @param string $content
      */
     public function create($content="") {
-        $note = $this->songsService->create($this->userId);
-        $note = $this->songsService->update(
-            $note->getId(), $content, $this->userId
+        $song = $this->songsService->create($this->userId);
+        $song = $this->songsService->update(
+            $song->getId(), $content, $this->userId
         );
-        return new DataResponse($note);
+        return new DataResponse($song);
     }
 
 

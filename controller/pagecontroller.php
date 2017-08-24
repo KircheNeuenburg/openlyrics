@@ -59,7 +59,7 @@ class PageController extends Controller {
     public function index() {
         $lastViewedNote = (int) $this->settings->getUserValue($this->userId,
             $this->appName, 'notesLastViewedNote');
-        // check if note exists
+        // check if song exists
         try {
             $this->songsService->get($lastViewedNote, $this->userId);
         } catch(SongDoesNotExistException $ex) {

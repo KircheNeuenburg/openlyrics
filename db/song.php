@@ -51,21 +51,21 @@ class Song extends Entity {
      * @param File $file
      * @return static
      */
-    public static function fromFile(File $file, Folder $notesFolder, $tags=[]){
-        $note = new static();
-        $note->setId($file->getId());
-        $note->setContent(self::convertEncoding($file->getContent()));
-        $note->setModified($file->getMTime());
-        $note->setTitle(pathinfo($file->getName(),PATHINFO_FILENAME)); // remove extension
-        $subdir = substr(dirname($file->getPath()), strlen($notesFolder->getPath())+1);
-        $note->setCategory($subdir ? $subdir : null);
+    public static function fromFile(File $file, Folder $songsFolder, $tags=[]){
+        $song = new static();
+        $song->setId($file->getId());
+        $song->setContent(self::convertEncoding($file->getContent()));
+        $song->setModified($file->getMTime());
+        $song->setTitle(pathinfo($file->getName(),PATHINFO_FILENAME)); // remove extension
+        $subdir = substr(dirname($file->getPath()), strlen($songsFolder->getPath())+1);
+        $song->setCategory($subdir ? $subdir : null);
         if(is_array($tags) && in_array(\OC\Tags::TAG_FAVORITE, $tags)) {
-            $note->setFavorite(true);
+            $song->setFavorite(true);
             //unset($tags[array_search(\OC\Tags::TAG_FAVORITE, $tags)]);
         }
-        $note->updateETag();
-        $note->resetUpdatedFields();
-        return $note;
+        $song->updateETag();
+        $song->resetUpdatedFields();
+        return $song;
     }
 
     private static function convertEncoding($str) {
