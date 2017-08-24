@@ -21,7 +21,7 @@ config(function($provide, $routeProvider, RestangularProvider, $httpProvider,
     });
 
     // define your routes that that load templates into the ng-view
-    $routeProvider.when('/notes/:noteId', {
+    $routeProvider.when('/openlp/:noteId', {
         templateUrl: 'note.html',
         controller: 'NoteController',
         resolve: {
@@ -35,7 +35,7 @@ config(function($provide, $routeProvider, RestangularProvider, $httpProvider,
                 var noteId = $route.current.params.noteId;
                 is.loading = true;
 
-                Restangular.one('notes', noteId).get().then(function (note) {
+                Restangular.one('openlp', noteId).get().then(function (note) {
                     is.loading = false;
                     deferred.resolve(note);
                 }, function () {
@@ -50,7 +50,7 @@ config(function($provide, $routeProvider, RestangularProvider, $httpProvider,
         redirectTo: '/'
     });
 
-    var baseUrl = OC.generateUrl('/apps/notes');
+    var baseUrl = OC.generateUrl('/apps/openlp');
     RestangularProvider.setBaseUrl(baseUrl);
 
 
@@ -60,7 +60,7 @@ config(function($provide, $routeProvider, RestangularProvider, $httpProvider,
 
     $('link[rel="shortcut icon"]').attr(
 		    'href',
-		    OC.filePath('notes', 'img', 'favicon.png')
+		    OC.filePath('openlp', 'img', 'favicon.png')
     );
 
     // handle route errors
@@ -80,7 +80,7 @@ config(function($provide, $routeProvider, RestangularProvider, $httpProvider,
             });
 
             var note = notes[sorted.length-1];
-            $location.path('/notes/' + note.id);
+            $location.path('/openlp/' + note.id);
         } else {
             $location.path('/');
         }

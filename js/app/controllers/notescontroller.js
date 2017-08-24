@@ -23,7 +23,7 @@ app.controller('SongsController', function($routeParams, $scope, $location,
     $scope.create = function () {
         notesResource.post().then(function (note) {
             NotesModel.add(note);
-            $location.path('/notes/' + note.id);
+            $location.path('/openlp/' + note.id);
         });
     };
 

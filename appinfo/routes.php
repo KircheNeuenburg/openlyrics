@@ -14,12 +14,12 @@ return ['routes' => [
     ['name' => 'page#index', 'url' => '/', 'verb' => 'GET'],
 
     // notes
-    ['name' => 'notes#index', 'url' => '/notes', 'verb' => 'GET'],
-    ['name' => 'notes#get', 'url' => '/notes/{id}', 'verb' => 'GET'],
-    ['name' => 'notes#create', 'url' => '/notes', 'verb' => 'POST'],
-    ['name' => 'notes#update', 'url' => '/notes/{id}', 'verb' => 'PUT'],
-    ['name' => 'notes#favorite', 'url' => '/notes/{id}/favorite', 'verb' => 'PUT'],
-    ['name' => 'notes#destroy', 'url' => '/notes/{id}', 'verb' => 'DELETE'],
+    ['name' => 'openlp#index', 'url' => '/openlp', 'verb' => 'GET'],
+    ['name' => 'openlp#get', 'url' => '/openlp/{id}', 'verb' => 'GET'],
+    ['name' => 'openlp#create', 'url' => '/openlp', 'verb' => 'POST'],
+    ['name' => 'openlp#update', 'url' => '/openlp/{id}', 'verb' => 'PUT'],
+    ['name' => 'openlp#favorite', 'url' => '/openlp/{id}/favorite', 'verb' => 'PUT'],
+    ['name' => 'openlp#destroy', 'url' => '/openlp/{id}', 'verb' => 'DELETE'],
 
     // api
     ['name' => 'notes_api#index', 'url' => '/api/v0.2/notes', 'verb' => 'GET'],

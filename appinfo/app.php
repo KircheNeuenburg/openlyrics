@@ -13,18 +13,18 @@ namespace OCA\OpenLP\AppInfo;
 
 use OCP\AppFramework\App;
 
-$app = new App('notes');
+$app = new App('openlp');
 $container = $app->getContainer();
 
 $container->query('OCP\INavigationManager')->add(function () use ($container) {
     $urlGenerator = $container->query('OCP\IURLGenerator');
     $l10n = $container->query('OCP\IL10N');
     return [
-        'id' => 'notes',
+        'id' => 'openlp',
         'order' => 10,
-        'href' => $urlGenerator->linkToRoute('notes.page.index'),
-        'icon' => $urlGenerator->imagePath('notes', 'notes.svg'),
-        'name' => $l10n->t('Notes')
+        'href' => $urlGenerator->linkToRoute('openlp.page.index'),
+        'icon' => $urlGenerator->imagePath('openlp', 'openlp.png'),
+        'name' => $l10n->t('OpenLP')
     ];
 });
 
