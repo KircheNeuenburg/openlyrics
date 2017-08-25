@@ -1,3 +1,6 @@
+	<div class="song-title">
+		<h1>{{ song.title | songTitle }} </h1>
+	</div>
 	<textarea editor songs-timeout-change="save()" name="editor"></textarea>
 	<div class="song-meta">
 		<span class="song-meta-right">

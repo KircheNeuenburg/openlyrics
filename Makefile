@@ -91,7 +91,7 @@ php-acceptance-tests: deps
 # general
 deps:
 	cd js
-	npm install --deps
+	npm install package.json
 	cd ..
 
 clean:

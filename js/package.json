@@ -1,6 +1,6 @@
 {
   "name": "openlp",
-  "description": "Notes app",
+  "description": "OpenLP app",
   "version": "0.0.1",
   "private": true,
   "homepage": "https://github.com/nextcloud/notes",

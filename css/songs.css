@@ -143,9 +143,22 @@
     z-index: 5;
 }
 
+#app-content .song-title {
+    position: relative;
+    padding: 0 45px 30px 30px;
+    margin: 45px 0 0;
+    opacity: 1;
+    font-size: 20pt;
+    line-height: 1.0;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
 #app-content .song-meta-right {
     float: right;
 }
+
 
 #app-content .saving {
     background: url('../img/loading.gif') no-repeat right 15px top 15px / 24px !important;
