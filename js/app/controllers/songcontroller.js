@@ -18,8 +18,8 @@ app.controller('SongController', function($routeParams, $scope, SongsModel,
     };
 
     $scope.updateTitle = function () {
-        $scope.song.title = $scope.song.content.split('\n')[0] ||
-            t('songs', 'New song');
+        //$scope.song.title = $scope.song.content.split('\n')[0] ||
+        //    t('songs', 'New song');
     };
 
     $scope.save = debounce(function() {

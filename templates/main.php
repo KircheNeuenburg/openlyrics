@@ -58,12 +58,12 @@ style('openlp', [
                         songs-tooltip
                         data-placement="bottom"
                         ng-click="delete(song.id)"></button>
-                    <button class="svg action icon-star"
+                    <!--<button class="svg action icon-star"
                         title="<?php p($l->t('Favorite')); ?>"
                         songs-tooltip
                         data-placement="bottom"
                         ng-click="toggleFavorite(song.id)"
-                        ng-class="{'icon-starred': song.favorite}"></button>
+                        ng-class="{'icon-starred': song.favorite}"></button>-->
                 </span>
             </li>
             <li ng-hide="filteredSongs.length">
