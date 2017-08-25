@@ -17,12 +17,12 @@ app.directive('editor', ['$timeout',
 			});
 			var editorElement = $(simplemde.codemirror.getWrapperElement());
 
-			simplemde.value(scope.note.content);
+			simplemde.value(scope.song.content);
 
 			simplemde.codemirror.on('change', function() {
 				$timeout(function() {
 					scope.$apply(function () {
-						scope.note.content = simplemde.value();
+						scope.song.content = simplemde.value();
 						scope.save();
 						scope.updateTitle();
 					});

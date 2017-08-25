@@ -5,7 +5,7 @@
  * See the COPYING file.
  */
 
-app.directive('notesAutofocus', function () {
+app.directive('songsAutofocus', function () {
     'use strict';
     return {
         restrict: 'A',

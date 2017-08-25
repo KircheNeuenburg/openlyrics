@@ -6,7 +6,7 @@
  */
 
 /* jshint unused: false */
-var app = angular.module('Notes', ['restangular', 'ngRoute']).
+var app = angular.module('OpenLP', ['restangular', 'ngRoute']).
 config(function($provide, $routeProvider, RestangularProvider, $httpProvider,
                 $windowProvider) {
     'use strict';
@@ -21,23 +21,23 @@ config(function($provide, $routeProvider, RestangularProvider, $httpProvider,
     });
 
     // define your routes that that load templates into the ng-view
-    $routeProvider.when('/openlp/:noteId', {
-        templateUrl: 'note.html',
-        controller: 'NoteController',
+    $routeProvider.when('/songs/:songId', {
+        templateUrl: 'song.html',
+        controller: 'SongController',
         resolve: {
             // $routeParams does not work inside resolve so use $route
-            // note is the name of the argument that will be injected into the
+            // song is the name of the argument that will be injected into the
             // controller
             /* @ngInject */
-            note: function ($route, $q, is, Restangular) {
+            song: function ($route, $q, is, Restangular) {
 
                 var deferred = $q.defer();
-                var noteId = $route.current.params.noteId;
+                var songId = $route.current.params.songId;
                 is.loading = true;
 
-                Restangular.one('openlp', noteId).get().then(function (note) {
+                Restangular.one('songs', songId).get().then(function (song) {
                     is.loading = false;
-                    deferred.resolve(note);
+                    deferred.resolve(song);
                 }, function () {
                     is.loading = false;
                     deferred.reject();
@@ -55,21 +55,21 @@ config(function($provide, $routeProvider, RestangularProvider, $httpProvider,
 
 
 
-}).run(function ($rootScope, $location, NotesModel) {
+}).run(function ($rootScope, $location, SongsModel) {
     'use strict';
 
     $('link[rel="shortcut icon"]').attr(
 		    'href',
-		    OC.filePath('openlp', 'img', 'favicon.png')
+		    OC.filePath('songs', 'img', 'favicon.png')
     );
 
     // handle route errors
     $rootScope.$on('$routeChangeError', function () {
-        var notes = NotesModel.getAll();
+        var songs = SongsModel.getAll();
 
-        // route change error should redirect to the latest note if possible
-        if (notes.length > 0) {
-            var sorted = notes.sort(function (a, b) {
+        // route change error should redirect to the latest song if possible
+        if (songs.length > 0) {
+            var sorted = songs.sort(function (a, b) {
                 if(a.modified > b.modified) {
                     return 1;
                 } else if(a.modified < b.modified) {
@@ -79,8 +79,8 @@ config(function($provide, $routeProvider, RestangularProvider, $httpProvider,
                 }
             });
 
-            var note = notes[sorted.length-1];
-            $location.path('/openlp/' + note.id);
+            var song = songs[sorted.length-1];
+            $location.path('/songs/' + song.id);
         } else {
             $location.path('/');
         }

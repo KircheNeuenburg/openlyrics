@@ -5,17 +5,17 @@
  * See the COPYING file.
  */
 
-app.directive('notesIsSaving', function ($window) {
+app.directive('songsIsSaving', function ($window) {
     'use strict';
     return {
         restrict: 'A',
         scope: {
-            'notesIsSaving': '='
+            'songsIsSaving': '='
         },
         link: function (scope) {
             $window.onbeforeunload = function () {
-                if (scope.notesIsSaving) {
-                    return t('notes', 'Note is currently saving. Leaving ' +
+                if (scope.songsIsSaving) {
+                    return t('songs', 'Note is currently saving. Leaving ' +
                                       'the page will delete all changes!');
                 } else {
                     return null;

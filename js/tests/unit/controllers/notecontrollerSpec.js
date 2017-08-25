@@ -12,61 +12,61 @@ describe('NoteController', function() {
         scope,
         model,
         routeParams,
-        note,
+        song,
         SaveQueue;
 
-    // use the Notes container
-    beforeEach(module('Notes'));
+    // use the Songs container
+    beforeEach(module('Songs'));
 
 
-    beforeEach(inject(function ($controller, $rootScope, NotesModel) {
+    beforeEach(inject(function ($controller, $rootScope, SongsModel) {
         scope = $rootScope.$new();
         routeParams = {
-            noteId: 3
+            songId: 3
         };
-        note = {
+        song = {
             id: 3,
             title: 'yo',
             content: 'hi im here\nand this is a line'
         };
-        model = NotesModel;
+        model = SongsModel;
 
         SaveQueue = {
             add: jasmine.createSpy('add')
         };
 
-        controller = $controller('NoteController', {
+        controller = $controller('SongController', {
             $routeParams: routeParams,
             $scope: scope,
-            NotesModel: model,
+            SongsModel: model,
             SaveQueue: SaveQueue,
-            note: note
+            song: song
         });
 
     }));
 
 
-    it('should bind the correct note on scope', function () {
-        expect(scope.note.title).toBe(note.title);
+    it('should bind the correct song on scope', function () {
+        expect(scope.song.title).toBe(song.title);
     });
 
 
     it ('should set the first line as title on save', function() {
         scope.updateTitle();
-        expect(note.title).toBe('hi im here');
+        expect(song.title).toBe('hi im here');
     });
 
 
-    it ('should add the saved note to the save queue', function() {
+    it ('should add the saved song to the save queue', function() {
         scope.save();
-        expect(SaveQueue.add).toHaveBeenCalledWith(scope.note);
+        expect(SaveQueue.add).toHaveBeenCalledWith(scope.song);
     });
 
 
-    it ('should use new note if content is empty', function() {
-        scope.note.content = '';
+    it ('should use new song if content is empty', function() {
+        scope.song.content = '';
         scope.updateTitle();
-        expect(note.title).toBe('New note');
+        expect(song.title).toBe('New song');
     });
 
 });

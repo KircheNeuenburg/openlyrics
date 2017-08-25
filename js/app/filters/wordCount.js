@@ -9,7 +9,7 @@ app.filter('wordCount', function () {
 					return value.search(/[A-Za-z0-9]/) !== -1;
 				}
 			).length;
-			return window.n('notes', '%n word', '%n words', wordCount);
+			return window.n('songs', '%n word', '%n words', wordCount);
 		} else {
 			return 0;
 		}

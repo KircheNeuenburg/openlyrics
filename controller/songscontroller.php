@@ -68,7 +68,7 @@ class SongsController extends Controller {
     public function get($id) {
         // save the last viewed song
         $this->settings->setUserValue(
-            $this->userId, $this->appName, 'notesLastViewedNote', $id
+            $this->userId, $this->appName, 'songsLastViewedSong', $id
         );
 
         return $this->respond(function ()  use ($id) {

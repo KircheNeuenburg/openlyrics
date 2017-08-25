@@ -78,7 +78,7 @@ class SongsControllerTest extends PHPUnit_Framework_TestCase {
             ->method('setUserValue')
             ->with($this->equalTo($this->userId),
                 $this->equalTo($this->appName),
-                $this->equalTo('notesLastViewedNote'),
+                $this->equalTo('songsLastViewedSong'),
                 $this->equalTo($id));
 
         $this->service->expects($this->once())
@@ -102,7 +102,7 @@ class SongsControllerTest extends PHPUnit_Framework_TestCase {
             ->method('setUserValue')
             ->with($this->equalTo($this->userId),
                 $this->equalTo($this->appName),
-                $this->equalTo('notesLastViewedNote'),
+                $this->equalTo('songsLastViewedSong'),
                 $this->equalTo($id));
 
         $this->service->expects($this->once())

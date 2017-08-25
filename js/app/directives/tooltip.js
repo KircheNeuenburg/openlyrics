@@ -5,7 +5,7 @@
  * See the COPYING file.
  */
 
-app.directive('notesTooltip', function () {
+app.directive('songsTooltip', function () {
     'use strict';
 
     return {

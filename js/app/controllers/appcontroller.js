@@ -12,7 +12,7 @@ app.controller('AppController', function ($scope, $location, is) {
 
     $scope.init = function (lastViewedNote) {
         if(lastViewedNote !== 0) {
-            $location.path('/openlp/' + lastViewedNote);
+            $location.path('/songs/' + lastViewedNote);
         }
     };
 

@@ -1,7 +1,7 @@
-	<textarea editor notes-timeout-change="save()" name="editor"></textarea>
-	<div class="note-meta">
-		<span class="note-word-count" ng-if="note.content.length > 0">{{note.content | wordCount}}</span>
-		<span class="note-meta-right">
-			<button class="icon-fullscreen has-tooltip btn-fullscreen" notes-tooltip ng-click="toggleDistractionFree()"></button>
+	<textarea editor songs-timeout-change="save()" name="editor"></textarea>
+	<div class="song-meta">
+		<span class="song-word-count" ng-if="song.content.length > 0">{{song.content | wordCount}}</span>
+		<span class="song-meta-right">
+			<button class="icon-fullscreen has-tooltip btn-fullscreen" songs-tooltip ng-click="toggleDistractionFree()"></button>
 		</span>
 	</div>

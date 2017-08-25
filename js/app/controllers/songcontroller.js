@@ -5,26 +5,26 @@
  * See the COPYING file.
  */
 
-app.controller('NoteController', function($routeParams, $scope, NotesModel,
-                                          SaveQueue, note, debounce) {
+app.controller('SongController', function($routeParams, $scope, SongsModel,
+                                          SaveQueue, song, debounce) {
     'use strict';
 
-    NotesModel.updateIfExists(note);
+    SongsModel.updateIfExists(song);
 
-    $scope.note = NotesModel.get($routeParams.noteId);
+    $scope.song = SongsModel.get($routeParams.songId);
 
     $scope.isSaving = function () {
         return SaveQueue.isSaving();
     };
 
     $scope.updateTitle = function () {
-        $scope.note.title = $scope.note.content.split('\n')[0] ||
-            t('notes', 'New note');
+        $scope.song.title = $scope.song.content.split('\n')[0] ||
+            t('songs', 'New song');
     };
 
     $scope.save = debounce(function() {
-        var note = $scope.note;
-        SaveQueue.add(note);
+        var song = $scope.song;
+        SaveQueue.add(song);
     }, 300);
 
     $scope.toggleDistractionFree = function() {

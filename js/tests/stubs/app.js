@@ -6,7 +6,7 @@
  */
 
 /*jshint unused:false*/
-var app = angular.module('Notes', ['ngMock', 'restangular', 'ngRoute']).
+var app = angular.module('OpenLPs', ['ngMock', 'restangular', 'ngRoute']).
 config(['RestangularProvider', function (RestangularProvider) {
     'use strict';
     RestangularProvider.setBaseUrl('/');

@@ -12,8 +12,8 @@ describe('AppController', function() {
         scope,
         location;
 
-    // use the Notes container
-    beforeEach(module('Notes'));
+    // use the Songs container
+    beforeEach(module('Songs'));
 
     beforeEach(inject(function ($controller, $rootScope) {
         scope = $rootScope.$new();
@@ -37,19 +37,19 @@ describe('AppController', function() {
     });
 
 
-    it('should redirect if last viewed note is not 0', function () {
+    it('should redirect if last viewed song is not 0', function () {
         controller('AppController', {
             $scope: scope,
             $location: location
         });
 
         scope.init(3);
-        expect(location.path).toHaveBeenCalledWith('/notes/3');
+        expect(location.path).toHaveBeenCalledWith('/songs/3');
 
     });
 
 
-    it('should not redirect if last viewed note is 0', function () {
+    it('should not redirect if last viewed song is 0', function () {
         controller('AppController', {
             $scope: scope,
             $location: location

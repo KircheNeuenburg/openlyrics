@@ -59,7 +59,7 @@ class PageControllerTest extends PHPUnit_Framework_TestCase {
             ->method('getUserValue')
             ->with($this->equalTo($this->userId),
                 $this->equalTo($this->appName),
-                $this->equalTo('notesLastViewedNote'))
+                $this->equalTo('songsLastViewedSong'))
             ->will($this->returnValue('3'));
         $result = $this->controller->index();
 
@@ -73,7 +73,7 @@ class PageControllerTest extends PHPUnit_Framework_TestCase {
             ->method('getUserValue')
             ->with($this->equalTo($this->userId),
                 $this->equalTo($this->appName),
-                $this->equalTo('notesLastViewedNote'))
+                $this->equalTo('songsLastViewedSong'))
             ->will($this->returnValue(''));
         $result = $this->controller->index();
 
@@ -86,7 +86,7 @@ class PageControllerTest extends PHPUnit_Framework_TestCase {
             ->method('getUserValue')
             ->with($this->equalTo($this->userId),
                 $this->equalTo($this->appName),
-                $this->equalTo('notesLastViewedNote'))
+                $this->equalTo('songsLastViewedSong'))
             ->will($this->returnValue('3'));
         $this->service->expects($this->once())
             ->method('get')

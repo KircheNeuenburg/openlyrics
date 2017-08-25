@@ -7,7 +7,7 @@
  */
 
 
-script('notes', [
+script('openlp', [
     'vendor/bootstrap/tooltip',
     'vendor/angular/angular',
     'vendor/angular-route/angular-route',
@@ -17,10 +17,10 @@ script('notes', [
     'public/app.min'
 ]);
 
-style('notes', [
+style('openlp', [
     '../js/vendor/simplemde/dist/simplemde.min',
     'vendor/bootstrap/tooltip',
-    'notes'
+    'songs'
 ]);
 
 ?>
@@ -28,47 +28,47 @@ style('notes', [
 <div id="app" ng-app="OpenLP" ng-controller="AppController"
     ng-init="init(<?php p($_['lastViewedNote']); ?>)" ng-cloak>
 
-    <script type="text/ng-template" id="note.html">
-        <?php print_unescaped($this->inc('note')); ?>
+    <script type="text/ng-template" id="song.html">
+        <?php print_unescaped($this->inc('song')); ?>
     </script>
 
     <div id="app-navigation" ng-controller="SongsController">
         <ul>
-            <li class="note-search">
+            <li class="song-search">
                 <span class="nav-entry icon-search">
                     <input type="text" ng-model="search" />
                 </span>
             </li>
-            <!-- new note button -->
-            <div id="note-add">            
-                <button class="icon-add app-content-list-button ng-binding" id="new-note-button" type="button" name="button" ng-click="create()"
+            <!-- new song button -->
+            <div id="song-add">            
+                <button class="icon-add app-content-list-button ng-binding" id="new-song-button" type="button" name="button" ng-click="create()"
                 oc-click-focus="{ selector: '#app-content textarea' }">
-                    <?php p($l->t('New note')); ?> 
+                    <?php p($l->t('New song')); ?> 
                 </button>
             </div>
-            <!-- notes list -->
-            <li ng-repeat="note in filteredNotes = (notes| and:search | orderBy:['-favorite','-modified'])"
-                ng-class="{ active: note.id == route.noteId }">
-                <a href="#/notes/{{ note.id }}">
-                    {{ note.title | noteTitle }}
+            <!-- songs list -->
+            <li ng-repeat="song in filteredNotes = (songs| and:search | orderBy:['-favorite','-modified'])"
+                ng-class="{ active: song.id == route.songId }">
+                <a href="#/songs/{{ song.id }}">
+                    {{ song.title | songTitle }}
                 </a>
                 <span class="utils">
                     <button class="svg action icon-delete"
-                        title="<?php p($l->t('Delete note')); ?>"
-                        notes-tooltip
+                        title="<?php p($l->t('Delete song')); ?>"
+                        songs-tooltip
                         data-placement="bottom"
-                        ng-click="delete(note.id)"></button>
+                        ng-click="delete(song.id)"></button>
                     <button class="svg action icon-star"
                         title="<?php p($l->t('Favorite')); ?>"
-                        notes-tooltip
+                        songs-tooltip
                         data-placement="bottom"
-                        ng-click="toggleFavorite(note.id)"
-                        ng-class="{'icon-starred': note.favorite}"></button>
+                        ng-click="toggleFavorite(song.id)"
+                        ng-class="{'icon-starred': song.favorite}"></button>
                 </span>
             </li>
             <li ng-hide="filteredNotes.length">
                 <span class="nav-entry">
-                    <?php p($l->t('No notes found')); ?>
+                    <?php p($l->t('No songs found')); ?>
                 </span>
             </li>
 

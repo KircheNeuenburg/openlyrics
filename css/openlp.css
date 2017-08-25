@@ -8,7 +8,7 @@
 	padding-bottom: 0; /* no settings bar, so no padding needed */
 }
 
-#app-navigation #note-add #new-note-button {
+#app-navigation #song-add #new-song-button {
 	margin: 14px auto;
 	width: calc(100% - 20px) !important;
 	text-align: left;
@@ -45,8 +45,8 @@
 	opacity: 1;
 }
 
-#app-navigation #note-add:hover span,
-#app-navigation #note-add:focus span {
+#app-navigation #song-add:hover span,
+#app-navigation #song-add:focus span {
     display: inline;
 }
 
@@ -83,12 +83,12 @@
     opacity: 1 !important;
 }
 
-.note-search span {
+.song-search span {
     background-position: 0 center;
     background-origin: content-box;
 }
 
-.note-search input {
+.song-search input {
     width: 100%;
     padding-left: 20px;
     background-color: transparent;
@@ -96,9 +96,9 @@
     border-radius: 0;
 }
 
-.note-search input:active,
-.note-search input:focus,
-.note-search input:hover {
+.song-search input:active,
+.song-search input:focus,
+.song-search input:hover {
     border-bottom: 1px solid grey;
 }
 
@@ -132,7 +132,7 @@
     pointer-events: none;
 }
 
-#app-content .note-meta {
+#app-content .song-meta {
     position: relative;
     padding: 0 45px 30px 45px;
     margin: -10px 0 0;
@@ -143,7 +143,7 @@
     z-index: 5;
 }
 
-#app-content .note-meta-right {
+#app-content .song-meta-right {
     float: right;
 }
 
@@ -257,7 +257,7 @@
 @media only screen and (min-width: 769px) {
     /* use slightly more space on the left so all # signs of h3–h6 show */
     .CodeMirror .CodeMirror-code .CodeMirror-line,
-    #app-content .note-meta {
+    #app-content .song-meta {
         padding-left: 90px;
     }
 }

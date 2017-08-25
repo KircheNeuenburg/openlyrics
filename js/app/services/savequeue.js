@@ -14,8 +14,8 @@ app.factory('SaveQueue', function($q) {
     };
 
     SaveQueue.prototype = {
-        add: function (note) {
-            this._queue[note.id] = note;
+        add: function (song) {
+            this._queue[song.id] = song;
             this._flush();
         },
         _flush: function () {
@@ -33,25 +33,25 @@ app.factory('SaveQueue', function($q) {
             // iterate over updated objects and run an update request for
             // each one of them
             for(var i=0; i<keys.length; i+=1) {
-                var note = this._queue[keys[i]];
+                var song = this._queue[keys[i]];
                 // if the update finished, update the modified and title
-                // attributes on the note
-                requests.push(note.put().then(
-                    this._noteUpdateRequest.bind(null, note))
+                // attributes on the song
+                requests.push(song.put().then(
+                    this._songUpdateRequest.bind(null, song))
                 );
             }
             this._queue = {};
 
             // if all update requests are completed, run the flush
-            // again to update the next batch of queued notes
+            // again to update the next batch of queued songs
             $q.all(requests).then(function () {
                 self._flushLock = false;
                 self._flush();
             });
         },
-        _noteUpdateRequest: function (note, response) {
-            note.title = response.title;
-            note.modified = response.modified;
+        _songUpdateRequest: function (song, response) {
+            song.title = response.title;
+            song.modified = response.modified;
         },
         isSaving: function () {
             return this._flushLock;

@@ -107,7 +107,7 @@ class SongsService {
         // check new song exists already and we need to number it
         // pass -1 because no file has id -1 and that will ensure
         // to only return filenames that dont yet exist
-        $path = $this->generateFileName($folder, $title, "txt", -1);
+        $path = $this->generateFileName($folder, $title, "xml", -1);
         $file = $folder->newFile($path);
 
         return Song::fromFile($file, $folder);
