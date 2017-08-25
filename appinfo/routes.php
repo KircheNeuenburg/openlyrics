@@ -22,11 +22,11 @@ return ['routes' => [
     ['name' => 'songs#destroy', 'url' => '/songs/{id}', 'verb' => 'DELETE'],
 
     // api
-    ['name' => 'notes_api#index', 'url' => '/api/v0.2/notes', 'verb' => 'GET'],
-    ['name' => 'notes_api#get', 'url' => '/api/v0.2/notes/{id}', 'verb' => 'GET'],
-    ['name' => 'notes_api#create', 'url' => '/api/v0.2/notes', 'verb' => 'POST'],
-    ['name' => 'notes_api#update', 'url' => '/api/v0.2/notes/{id}', 'verb' => 'PUT'],
-    ['name' => 'notes_api#destroy', 'url' => '/api/v0.2/notes/{id}', 'verb' => 'DELETE'],
-    ['name' => 'notes_api#preflighted_cors', 'url' => '/api/v0.2/{path}',
+    ['name' => 'songs_api#index', 'url' => '/api/v0.2/songs', 'verb' => 'GET'],
+    ['name' => 'songs_api#get', 'url' => '/api/v0.2/songs/{id}', 'verb' => 'GET'],
+    ['name' => 'songs_api#create', 'url' => '/api/v0.2/songs', 'verb' => 'POST'],
+    ['name' => 'songs_api#update', 'url' => '/api/v0.2/songs/{id}', 'verb' => 'PUT'],
+    ['name' => 'songs_api#destroy', 'url' => '/api/v0.2/songs/{id}', 'verb' => 'DELETE'],
+    ['name' => 'songs_api#preflighted_cors', 'url' => '/api/v0.2/{path}',
      'verb' => 'OPTIONS', 'requirements' => ['path' => '.+']],
 ]];

@@ -6,7 +6,7 @@ php:
 env:
   global:
     - CORE_BRANCH=master
-    - APP_NAME=notes
+    - APP_NAME=openlp
   matrix:
     - DB=mysql
 
@@ -24,7 +24,7 @@ before_install:
   - wget https://raw.githubusercontent.com/owncloud/administration/master/travis-ci/before_install.sh
   - bash ./before_install.sh $APP_NAME $CORE_BRANCH $DB
   - cd ../core
-  - php occ app:enable notes
+  - php occ app:enable openlp
 
 script:
   # Test lint
@@ -36,7 +36,7 @@ script:
   # Check PHP syntax errors
   - find . -name \*.php -exec php -l "{}" \;
   # Check app validity
-  - php ../../occ app:check-code notes
+  - php ../../occ app:check-code openlp
   # Run PHP unit tests
   - phpunit --coverage-clover clover.xml -c phpunit.xml
   - phpunit -c phpunit.integration.xml

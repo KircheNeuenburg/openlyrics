@@ -10,9 +10,9 @@ app.controller('AppController', function ($scope, $location, is) {
 
     $scope.is = is;
 
-    $scope.init = function (lastViewedNote) {
-        if(lastViewedNote !== 0) {
-            $location.path('/songs/' + lastViewedNote);
+    $scope.init = function (lastViewedSong) {
+        if(lastViewedSong !== 0) {
+            $location.path('/songs/' + lastViewedSong);
         }
     };
 

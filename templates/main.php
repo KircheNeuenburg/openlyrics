@@ -26,7 +26,7 @@ style('openlp', [
 ?>
 
 <div id="app" ng-app="OpenLP" ng-controller="AppController"
-    ng-init="init(<?php p($_['lastViewedNote']); ?>)" ng-cloak>
+    ng-init="init(<?php p($_['lastViewedSong']); ?>)" ng-cloak>
 
     <script type="text/ng-template" id="song.html">
         <?php print_unescaped($this->inc('song')); ?>
@@ -47,7 +47,7 @@ style('openlp', [
                 </button>
             </div>
             <!-- songs list -->
-            <li ng-repeat="song in filteredNotes = (songs| and:search | orderBy:['-favorite','-modified'])"
+            <li ng-repeat="song in filteredSongs = (songs| and:search | orderBy:['-favorite','-modified'])"
                 ng-class="{ active: song.id == route.songId }">
                 <a href="#/songs/{{ song.id }}">
                     {{ song.title | songTitle }}
@@ -66,7 +66,7 @@ style('openlp', [
                         ng-class="{'icon-starred': song.favorite}"></button>
                 </span>
             </li>
-            <li ng-hide="filteredNotes.length">
+            <li ng-hide="filteredSongs.length">
                 <span class="nav-entry">
                     <?php p($l->t('No songs found')); ?>
                 </span>

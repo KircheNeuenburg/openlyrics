@@ -15,7 +15,7 @@ app.directive('songsIsSaving', function ($window) {
         link: function (scope) {
             $window.onbeforeunload = function () {
                 if (scope.songsIsSaving) {
-                    return t('songs', 'Note is currently saving. Leaving ' +
+                    return t('songs', 'Song is currently saving. Leaving ' +
                                       'the page will delete all changes!');
                 } else {
                     return null;

@@ -57,20 +57,20 @@ class PageController extends Controller {
      * @return TemplateResponse
      */
     public function index() {
-        $lastViewedNote = (int) $this->settings->getUserValue($this->userId,
+        $lastViewedSong = (int) $this->settings->getUserValue($this->userId,
             $this->appName, 'songsLastViewedSong');
         // check if song exists
         try {
-            $this->songsService->get($lastViewedNote, $this->userId);
+            $this->songsService->get($lastViewedSong, $this->userId);
         } catch(SongDoesNotExistException $ex) {
-            $lastViewedNote = 0;
+            $lastViewedSong = 0;
         }
 
         $response = new TemplateResponse(
             $this->appName,
             'main',
             [
-                'lastViewedNote' => $lastViewedNote
+                'lastViewedSong' => $lastViewedSong
             ]
         );
 
