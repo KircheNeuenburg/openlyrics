@@ -206,17 +206,23 @@ class SongsService {
     }
 
     private function getSafeTitleFromContent($content) {
-        // prepare content: remove markdown characters and empty spaces
-        $content = preg_replace("/^\s*[*+-]\s+/mu", "", $content); // list item
-        $content = preg_replace("/^#+\s+(.*?)\s*#*$/mu", "$1", $content); // headline
-        $content = preg_replace("/^(=+|-+)$/mu", "", $content); // separate line for headline
-        $content = preg_replace("/(\*+|_+)(.*?)\\1/mu", "$2", $content); // emphasis
-        $content = trim($content);
-
-        // generate content from the first line of the title
-        $splitContent = preg_split("/\R/u", $content, 2);
-        $title = trim($splitContent[0]);
-
+        
+        $xml = simplexml_load_string($content);
+        if($xml) {
+            $title = $xml->properties->titles->title;
+            if(isset($xml->properties->authors->author))
+            {
+                $title .= ' (';
+                foreach($xml->properties->authors->children() as $author) { 
+                    
+                    $title .= $author.', ';
+                    
+                } 
+                $title = rtrim($title, ", ");
+                $title .= ')';
+            }
+        }
+        
         // ensure that title is not empty
         if(empty($title)) {
             $title = $this->l10n->t('New song');
@@ -335,13 +341,25 @@ class SongsService {
      */
     private function isSong($file) {
         $allowedExtensions = ['xml'];
+        $content = $file->getContent();
+        if(!mb_check_encoding($content, 'UTF-8')) {
+            $content = mb_convert_encoding($content, 'UTF-8');
+        }
 
         if($file->getType() !== 'file') return false;
         if(!in_array(
             pathinfo($file->getName(), PATHINFO_EXTENSION),
             $allowedExtensions
-        )) return false;
+        )) return false;  
 
+        // check if file is in xml format
+        $xml = simplexml_load_string($content);
+        if(!$xml)
+            return false;
+        // check if xml actually represents a song
+        if(0 !== strcmp($xml->getName(), 'song'))
+            return false;
+            
         return true;
     }
 
