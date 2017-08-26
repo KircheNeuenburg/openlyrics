@@ -4,7 +4,7 @@
  * See the COPYING file.
  */
 
-#app-navigation {
+ #app-navigation {
 	padding-bottom: 0; /* no settings bar, so no padding needed */
 }
 
@@ -143,9 +143,54 @@
     z-index: 5;
 }
 
+#app-content .song-title {
+    position: relative;
+    padding: 0 45px 30px 30px;
+    margin: 45px 0 0;
+    opacity: 1;
+    font-size: 20pt;
+    line-height: 1.0;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
+#app-content .song-label {
+    position: 50%;
+    padding: 0 10px 30px 30px;
+    margin: 45px 0 0;
+    opacity: 1;
+    line-height: 1.0;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
+.song-textinput span {
+    background-position: 0 center;
+    background-origin: content-box;
+}
+
+.song-textinput input {
+    position: 50%;
+    width: auto;
+    padding-left: 45px;
+    margin: 45px 0 0;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+}
+
+.song-textinput input:active,
+.song-textinput input:focus,
+.song-textinput input:hover {
+    border-bottom: 1px solid grey;
+}
+
 #app-content .song-meta-right {
     float: right;
 }
+
 
 #app-content .saving {
     background: url('../img/loading.gif') no-repeat right 15px top 15px / 24px !important;

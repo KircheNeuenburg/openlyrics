@@ -1,5 +1,5 @@
 /*global SimpleMDE*/
-app.directive('editor', ['$timeout',
+app.directive('properties', ['$timeout',
                          'urlFinder',
                          function ($timeout, urlFinder) {
 	'use strict';
@@ -22,9 +22,7 @@ app.directive('editor', ['$timeout',
 			simplemde.codemirror.on('change', function() {
 				$timeout(function() {
 					scope.$apply(function () {
-						var x2js = new X2JS();
-						scope.song.content = x2js.json2xml_str( scope.songjson );
-						//scope.song.content = simplemde.value();
+						scope.song.content = simplemde.value();
 						scope.save();
 						scope.updateTitle();
 					});
@@ -42,3 +40,4 @@ app.directive('editor', ['$timeout',
 		}
 	};
 }]);
+

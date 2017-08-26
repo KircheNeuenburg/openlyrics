@@ -13,13 +13,30 @@ app.controller('SongController', function($routeParams, $scope, SongsModel,
 
     $scope.song = SongsModel.get($routeParams.songId);
 
+    var x2js = new X2JS();
+    
+    
+    
+    $scope.songjson = x2js.xml_str2json( $scope.song.content);
+    var parser = new DOMParser();
+    var songxml = parser.parseFromString($scope.song.content,"text/xml");
+    var names = [];
+    var n = songxml.getElementsByTagName("title");
+    if (n[0]) {
+      for (var i = 0, len1 = n.length; i < len1; i++) {
+        names.push({"title": n[i].firstChild.nodeValue, 
+            "lang": n[i].getAttribute("lang")});
+      }
+    }
+    $scope.songjson.song.properties.titles.title = names[0].title;
+
     $scope.isSaving = function () {
         return SaveQueue.isSaving();
     };
 
     $scope.updateTitle = function () {
-        //$scope.song.title = $scope.song.content.split('\n')[0] ||
-        //    t('songs', 'New song');
+        $scope.song.title = $scope.songjson.song.properties.titles.title ||
+            t('songs', 'New song');
     };
 
     $scope.save = debounce(function() {

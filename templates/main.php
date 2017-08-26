@@ -14,13 +14,14 @@ script('openlp', [
     'vendor/restangular/dist/restangular',
     'vendor/underscore/underscore',
     'vendor/simplemde/dist/simplemde.min',
+    'vendor/x2js/xml2json.min',
     'public/app.min'
 ]);
 
 style('openlp', [
     '../js/vendor/simplemde/dist/simplemde.min',
     'vendor/bootstrap/tooltip',
-    'songs'
+    'openlp'
 ]);
 
 ?>
