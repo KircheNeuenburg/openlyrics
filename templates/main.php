@@ -15,7 +15,10 @@ script('openlp', [
     'vendor/underscore/underscore',
     'vendor/simplemde/dist/simplemde.min',
     'vendor/x2js/xml2json.min',
+    'vendor/openlyricshandler/readopenlyrics',
+    'vendor/openlyricshandler/writeopenlyrics',
     'public/app.min'
+
 ]);
 
 style('openlp', [

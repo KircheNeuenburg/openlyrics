@@ -13,34 +13,23 @@ app.controller('SongController', function($routeParams, $scope, SongsModel,
 
     $scope.song = SongsModel.get($routeParams.songId);
 
-    var x2js = new X2JS();
-    
-    
-    
-    $scope.songjson = x2js.xml_str2json( $scope.song.content);
-    var parser = new DOMParser();
-    var songxml = parser.parseFromString($scope.song.content,"text/xml");
-    var names = [];
-    var n = songxml.getElementsByTagName("title");
-    if (n[0]) {
-      for (var i = 0, len1 = n.length; i < len1; i++) {
-        names.push({"title": n[i].firstChild.nodeValue, 
-            "lang": n[i].getAttribute("lang")});
-      }
-    }
-    $scope.songjson.song.properties.titles.title = names[0].title;
 
+    $scope.song.songtitle = readOpenLyrics.titlesToString(readOpenLyrics.get_titles(readOpenLyrics.parse_dom(song.content)));
+    $scope.song.author = readOpenLyrics.authorsToString(readOpenLyrics.get_authors(readOpenLyrics.parse_dom(song.content))).join(', ');
+
+    $scope.song.title = $scope.song.songtitle + ' (' +  $scope.song.author + ')';
     $scope.isSaving = function () {
         return SaveQueue.isSaving();
     };
 
     $scope.updateTitle = function () {
-        $scope.song.title = $scope.songjson.song.properties.titles.title ||
+        $scope.song.title ||
             t('songs', 'New song');
     };
 
     $scope.save = debounce(function() {
         var song = $scope.song;
+        //insert transform here
         SaveQueue.add(song);
     }, 300);
 
