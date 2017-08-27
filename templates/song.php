@@ -3,17 +3,19 @@
 	</div>
 	<form class="song-form">
 		<ul>
-			<li>
-				<label class="song-label">SongTitle</label>
-				<input class="song-txtinput" type="text" ng-model="song.songtitle">
+			<li ng-repeat="titleElement in song.meta.titles">
+				<label class="song-label">Title {{$index + 1}}</label>
+				<input class="song-txtinput" type="text" ng-model="titleElement.title">
 			</li>
-			<li>
-				<label class="song-label">Authors</label>
-				<input class="song-txtinput" type="text" ng-model="song.author">
+			<li ng-repeat="authorElement in song.meta.authors">
+				<label class="song-label">Author {{$index + 1}}</label>
+				<input class="song-txtinput" type="text" ng-model="authorElement.author">
 			</li>
 		</ul>
 	</form>
 	<p>{{song.content}}</p>
+	<p>{{song.meta}}</p>
+	<p>{{song.lyrics}}</p>
 	<!--<textarea editor songs-timeout-change="save()" name="editor"></textarea>-->
 	<div class="song-meta">
 		<span class="song-meta-right">
