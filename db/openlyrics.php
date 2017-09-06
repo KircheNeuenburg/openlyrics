@@ -145,4 +145,36 @@ class OpenLyrics extends Entity {
         return $authors;
     } 
 
+    public static function getVerses($content) {
+        $xml = simplexml_load_string($content);
+        $verses = []; 
+        foreach($xml->lyrics->verse as $verse) { 
+            $verseObject;
+            if(isset($verse['name']))
+            {
+                $verseObject->name = $verse['name']->__toString();
+            }
+            else
+            {
+                $verseObject->name = '';
+            }
+            if(isset($verse['lang']))
+            {
+                $verseObject->lang = $verse['lang']->__toString();
+            }
+            else
+            {
+                $verseObject->lang = '';
+            }
+            foreach($verse->lines as $lines) 
+            {
+                $verseObject->lines[] = $lines->__toString();
+            }
+                
+            $verses[] = $verseObject;
+            unset($verseObject);            
+        }
+        return $verses;
+    } 
+
 }

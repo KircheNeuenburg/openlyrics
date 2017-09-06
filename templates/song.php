@@ -44,10 +44,29 @@
 					<option value="cs">Czech</option>
 				</select>
 			</li>
+			<div ng-repeat="verse in song.lyrics">
+				<li>
+				<label class="song-label">Name </label>
+				<input class="song-txtinput" type="text" ng-model="verse.name">
+				<select name="lang" ng-model="verse.lang">
+					<option value="">Unknown</option>
+				  	<option value="de">German</option>
+				  	<option value="en">English</option>
+				  	<option value="fr">French</option>
+				  	<option value="es">Spanish</option>
+				</select>
+				</li>
+				<li ng-repeat="line in verse.lines">
+					<textarea class="song-txtarea" rows="2" cols="160">{{line}}</textarea>
+				</li>
+			</div>
 		</ul>
+
 	</form>
+
 	<p>{{song.content}}</p>
-	<p>{{song.meta}}</p>
+	<p>{{song.metadata}}</p>
+	<p>{{song.properties}}</p>
 	<p>{{song.lyrics}}</p>
 	<!--<textarea editor songs-timeout-change="save()" name="editor"></textarea>-->
 	<div class="song-meta">

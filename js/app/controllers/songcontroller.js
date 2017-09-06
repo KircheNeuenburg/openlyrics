@@ -13,13 +13,6 @@ app.controller('SongController', function($routeParams, $scope, SongsModel,
 
     $scope.song = SongsModel.get($routeParams.songId);
 
-
-    $scope.song.songtitle = readOpenLyrics.titlesToString(readOpenLyrics.get_titles(readOpenLyrics.parse_dom(song.content)));
-    //$scope.song.author = readOpenLyrics.authorsToString(readOpenLyrics.get_authors(readOpenLyrics.parse_dom(song.content))).join(', ');
-    $scope.song.meta = readOpenLyrics.allMetadata(readOpenLyrics.parse_dom(song.content));
-    $scope.song.lyrics = readOpenLyrics.editLyrics(readOpenLyrics.parse_dom(song.content));
-    
-    //$scope.song.title = $scope.song.properties.titles + ' (' +  $scope.song.properties.authors + ')';
     $scope.isSaving = function () {
         return SaveQueue.isSaving();
     };

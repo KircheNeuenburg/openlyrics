@@ -111,26 +111,7 @@
     height: 100%;
 }
 
-/* special styling to make editor subtle and fit the window */
-.CodeMirror {
-    position: relative;
-    min-height: 100%;
-    max-width: 47em;
-    margin: 0 0 -50px;
-    padding: 30px 0 90px;
-    border: none;
-    font-size: 16px;
-    line-height: 1.5em;
-}
 
-.CodeMirror-scroll {
-    overflow-x: auto !important;
-}
-
-/* enable clickthrough for links */
-.CodeMirror-cursor {
-    pointer-events: none;
-}
 
 #app-content .song-meta {
     position: relative;
@@ -193,6 +174,22 @@
     border-radius: 0;
 }
 
+.song-textarea textarea {
+    position: 50%;
+    width: 300px;
+    padding-left: 45px;
+    margin: 45px 0 0;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+}
+
+.song-textarea textarea:active,
+.song-textarea textarea:focus,
+.song-textarea textarea:hover {
+    border-bottom: 1px solid grey;
+}
+
 .song-textinput input:active,
 .song-textinput input:focus,
 .song-textinput input:hover {
@@ -215,67 +212,9 @@
 }
 
 
-/* markdown styling */
-
-.CodeMirror .CodeMirror-code .cm-header {
-    /* break from core in using semibold, otherwise not emphasized in texts */
-	font-weight: 600;
-}
-.CodeMirror .CodeMirror-code .cm-header-1 {
-    font-size: 28px;
-    margin: 50px 0 20px;
-    line-height: 120%;
-}
-.CodeMirror .CodeMirror-code .cm-header-2 {
-	font-size: 20px;
-    margin-top: 12px;
-    line-height: 150%;
-}
-.CodeMirror .CodeMirror-code .cm-header-3,
-.CodeMirror .CodeMirror-code .cm-header-4,
-.CodeMirror .CodeMirror-code .cm-header-5,
-.CodeMirror .CodeMirror-code .cm-header-6 {
-	font-size: 16px;
-    margin: 0;
-    font-weight: 300;
-}
-.CodeMirror .CodeMirror-code .cm-header-3 {
-    font-weight: 600;
-}
-
-.CodeMirror .CodeMirror-code .cm-hr {
-    position: relative;
-    display: inline-block;
-    width: 100%;
-}
-
-.CodeMirror .CodeMirror-code .cm-hr:before {
-    position: absolute;
-    content: "";
-    top: 50%;
-    width: 100%;
-    z-index: -1;
-    border-top: 5px solid rgba(120, 120, 120, 0.2);
-}
 
 
-/* hanging punctuation */
-.CodeMirror .CodeMirror-code .CodeMirror-line {
-    padding-left: 45px;
-}
 
-.CodeMirror .CodeMirror-code .cm-formatting-header:not(:only-child),
-.CodeMirror .CodeMirror-code .cm-formatting-list,
-.CodeMirror .CodeMirror-code .cm-formatting-quote {
-    position: absolute;
-    display: inline-block;
-    width: 90px;
-    margin-top: 0;
-    margin-left: -90px;
-    text-align: right;
-    white-space: pre;
-    color: rgba(120, 120, 120, 0.5);
-}
 
 
 /* distraction free styles */
@@ -310,11 +249,4 @@
 }
 
 
-/* larger screen sizes */
-@media only screen and (min-width: 769px) {
-    /* use slightly more space on the left so all # signs of h3–h6 show */
-    .CodeMirror .CodeMirror-code .CodeMirror-line,
-    #app-content .song-meta {
-        padding-left: 90px;
-    }
-}
+

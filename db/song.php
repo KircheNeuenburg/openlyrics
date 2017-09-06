@@ -69,6 +69,7 @@ class Song extends Entity {
         $song->metadata = $openlyrics->getMetadata($song->getContent());
         $song->properties->authors = $openlyrics->getAuthors($song->getContent());
         $song->properties->titles = $openlyrics->getTitles($song->getContent());
+        $song->lyrics = $openlyrics->getVerses($song->getContent());
         $song->setModified($file->getMTime());
         $song->setTitle(pathinfo($file->getName(),PATHINFO_FILENAME)); // remove extension
         $subdir = substr(dirname($file->getPath()), strlen($songsFolder->getPath())+1);
