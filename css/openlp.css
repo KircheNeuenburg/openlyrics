@@ -155,6 +155,16 @@
     -webkit-user-select: none;
 }
 
+#app-content .song-metadata {
+    
+    padding: 0 0 0 30px;
+    opacity: 1;
+    line-height: 1.5;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+}
+
 #app-content .song-label {
     position: 50%;
     padding: 0 10px 30px 30px;
@@ -165,6 +175,8 @@
     -moz-user-select: none;
     -webkit-user-select: none;
 }
+
+
 
 .song-textinput span {
     background-position: 0 center;

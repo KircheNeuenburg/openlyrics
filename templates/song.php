@@ -1,15 +1,48 @@
 	<div class="song-title">
-		<h1>{{ song.title | songTitle }} </h1>
+		<h1 >{{ song.title  }} </h1>
+		
+	</div>
+	<div class="song-metadata">
+		<p> Version: {{ song.metadata.version}}</p>
+		<p> Created in: {{ song.metadata.createdIn}}</p>
+		<p> Modified in: {{ song.metadata.modifiedIn}}</p>
+		<p> Modified Date: {{ song.metadata.modifiedDate | date : 'medium'}}</p>
 	</div>
 	<form class="song-form">
 		<ul>
-			<li ng-repeat="titleElement in song.meta.titles">
-				<label class="song-label">Title {{$index + 1}}</label>
-				<input class="song-txtinput" type="text" ng-model="titleElement.title">
+			<li ng-repeat="title in song.properties.titles">
+				<label ng-if="$first && $last" class="song-label">Title</label>
+				<label ng-if="!($first && $last)" class="song-label">Title {{$index + 1}}</label>
+				<input class="song-txtinput" type="text" ng-model="title.value">
+				<select name="lang" ng-model="title.lang">
+					<option value="">Unknown</option>
+  					<option value="de">German</option>
+  					<option value="en">English</option>
+  					<option value="fr">French</option>
+  					<option value="es">Spanish</option>
+				</select>
+				<input ng-if="title.original == 'true'" type="radio" name="original" value="false" checked="true">
+				<input ng-if="!(title.original == 'true')" type="radio" name="original" value="false">
 			</li>
-			<li ng-repeat="authorElement in song.meta.authors">
-				<label class="song-label">Author {{$index + 1}}</label>
-				<input class="song-txtinput" type="text" ng-model="authorElement.author">
+			<li ng-repeat="author in song.properties.authors">
+				<label ng-if="$first && $last" class="song-label">Author </label>
+				<label ng-if="!($first && $last)" class="song-label">Author {{$index + 1}}</label>
+				<input class="song-txtinput" type="text" ng-model="author.value">
+				<select name="lang" ng-model="author.type">
+					<option value=""></option>
+  					<option value="music">Music</option>
+  					<option value="translation">Translation</option>
+  					<option value="words">Words</option>
+				</select>
+				
+				<select ng-if="author.type == 'translation'" name="lang" ng-model="author.lang" >
+					<option value="">Unknown</option>
+  					<option value="de">German</option>
+  					<option value="en">English</option>
+  					<option value="fr">French</option>
+  					<option value="es">Spanish</option>
+					<option value="cs">Czech</option>
+				</select>
 			</li>
 		</ul>
 	</form>

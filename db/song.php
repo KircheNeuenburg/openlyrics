@@ -15,6 +15,7 @@ use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\AppFramework\Db\Entity;
 
+use OCA\OpenLP\Db\OpenLyrics;
 /**
  * Class Song
  * @method integer getId()
@@ -29,6 +30,12 @@ use OCP\AppFramework\Db\Entity;
  * @method void setCategory(string $value)
  * @method string getContent()
  * @method void setContent(string $value)
+ * @method string getMetadata()
+ * @method void setMetadata()
+ * @method string getProperties()
+ * @method void setProperties(string $value)
+ * @method string getLyrics()
+ * @method void setLyrics(string $value)
  * @method boolean getFavorite()
  * @method void setFavorite(boolean $value)
  * @package OCA\OpenLP\Db
@@ -40,6 +47,9 @@ class Song extends Entity {
     public $title;
     public $category;
     public $content;
+    public $metadata;
+    public $properties;
+    public $lyrics;
     public $favorite = false;
 
     public function __construct() {
@@ -53,8 +63,12 @@ class Song extends Entity {
      */
     public static function fromFile(File $file, Folder $songsFolder, $tags=[]){
         $song = new static();
+        $openlyrics = new OpenLyrics();
         $song->setId($file->getId());
         $song->setContent(self::convertEncoding($file->getContent()));
+        $song->metadata = $openlyrics->getMetadata($song->getContent());
+        $song->properties->authors = $openlyrics->getAuthors($song->getContent());
+        $song->properties->titles = $openlyrics->getTitles($song->getContent());
         $song->setModified($file->getMTime());
         $song->setTitle(pathinfo($file->getName(),PATHINFO_FILENAME)); // remove extension
         $subdir = substr(dirname($file->getPath()), strlen($songsFolder->getPath())+1);

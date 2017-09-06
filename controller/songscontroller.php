@@ -61,7 +61,7 @@ class SongsController extends Controller {
 
     /**
      * @NoAdminRequired
-     *
+     * @NoCSRFRequired
      * @param int $id
      * @return DataResponse
      */
