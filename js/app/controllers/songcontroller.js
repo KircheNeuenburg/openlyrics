@@ -28,36 +28,6 @@ app.controller('SongController', function($routeParams, $scope, SongsModel,
         SaveQueue.add(song);
     }, 300);
 
-    $scope.toggleDistractionFree = function() {
-        function launchIntoFullscreen(element) {
-            if(element.requestFullscreen) {
-                element.requestFullscreen();
-            } else if(element.mozRequestFullScreen) {
-                element.mozRequestFullScreen();
-            } else if(element.webkitRequestFullscreen) {
-                element.webkitRequestFullscreen();
-            } else if(element.msRequestFullscreen) {
-                element.msRequestFullscreen();
-            }
-        }
-
-        function exitFullscreen() {
-            if(document.exitFullscreen) {
-                document.exitFullscreen();
-            } else if(document.mozCancelFullScreen) {
-                document.mozCancelFullScreen();
-            } else if(document.webkitExitFullscreen) {
-                document.webkitExitFullscreen();
-            }
-        }
-
-        if(document.fullscreenElement ||
-           document.mozFullScreenElement ||
-           document.webkitFullscreenElement) {
-            exitFullscreen();
-        } else {
-            launchIntoFullscreen(document.getElementById('app-content'));
-        }
-    };
+    
 
 });

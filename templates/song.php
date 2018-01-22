@@ -57,17 +57,20 @@
 				</select>
 				</li>
 				<li ng-repeat="line in verse.lines">
-					<textarea class="song-txtarea" rows="2" cols="160">{{line}}</textarea>
+					<textarea class="song-textarea"  ng-model="line"></textarea>
+					
 				</li>
 			</div>
 		</ul>
 
 	</form>
 
-	<p>{{song.content}}</p>
+
 	<p>{{song.metadata}}</p>
 	<p>{{song.properties}}</p>
 	<p>{{song.lyrics}}</p>
+	<p><br/></p>
+	<p>{{song.content}}</p>
 	<!--<textarea editor songs-timeout-change="save()" name="editor"></textarea>-->
 	<div class="song-meta">
 		<span class="song-meta-right">

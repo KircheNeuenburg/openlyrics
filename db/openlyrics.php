@@ -20,7 +20,7 @@ use OCP\AppFramework\Db\Entity;
 class OpenLyrics extends Entity {
 
 
-
+    
 
     /**
      * @param String $xml
@@ -43,6 +43,19 @@ class OpenLyrics extends Entity {
         return $song;
     }
 
+    public function __construct($xml_content)
+    {
+        $this->song_xml = simplexml_load_string($xml_content);
+
+        
+        $this->process_titles();
+        $this->process_lyrics();
+        $this->process_metadata();
+        $this->process_authors();
+        $this->process_ccli_number();
+        $this->process_copyright();
+    }
+
     private static function convertEncoding($str) {
         if(!mb_check_encoding($str, 'UTF-8')) {
             $str = mb_convert_encoding($str, 'UTF-8');
@@ -51,78 +64,50 @@ class OpenLyrics extends Entity {
     
     }
 
-    public static function getMetadata($content) {
-        $xml = simplexml_load_string($content);
-        $metadata; 
+    public function process_metadata()
+    {
         
-        if(isset($xml['version']))
+        if(isset($this->song_xml['version']))
         {
-            $metadata->version = $xml['version']->__toString();
+            $this->metadata->version = $this->song_xml['version']->__toString();
         }
         else
         {
-            $metadata->version = '';
+            $this->metadata->version = '';
         }
 
-        if(isset($xml['createdIn']))
+        if(isset($this->song_xml['createdIn']))
         {
-            $metadata->createdIn = $xml['createdIn']->__toString();
+            $this->metadata->createdIn = $this->song_xml['createdIn']->__toString();
         }
         else
         {
-            $metadata->createdIn = '';
+            $this->metadata->createdIn = '';
         }
 
-        if(isset($xml['modifiedIn']))
+        if(isset($this->song_xml['modifiedIn']))
         {
-            $metadata->modifiedIn = $xml['modifiedIn']->__toString();
+            $this->metadata->modifiedIn = $this->song_xml['modifiedIn']->__toString();
         }
         else
         {
-            $metadata->modifiedIn = '';
+            $this->metadata->modifiedIn = '';
         }
 
-        if(isset($xml['modifiedDate']))
+        if(isset($this->song_xml['modifiedDate']))
         {
-            $metadata->modifiedDate = $xml['modifiedDate']->__toString();
+            $this->metadata->modifiedDate = $this->song_xml['modifiedDate']->__toString();
         }
         else
         {
-            $metadata->modifiedDate = '';
+            $this->metadata->modifiedDate = '';
         }
-        return $metadata;
         
-    } 
+    }
 
-    public static function getTitles($content) {
-        $xml = simplexml_load_string($content);
-        $titles = []; 
-        foreach($xml->properties->titles->title as $title) { 
-            $titleObject->value = $title->__toString();
-            if(isset($title['lang']))
-            {
-                $titleObject->lang = $title['lang']->__toString();
-            }
-            if(isset($title['original']))
-            {
-                $titleObject->original = $title['original']->__toString();
-            }
-            else
-            {
-                $titleObject->original = "false";
-            }
-            $titles[] = $titleObject;
-            unset($titleObject);            
-        }
-        return $titles;
-        
-    } 
-
-
-    public static function getAuthors($content) {
-        $xml = simplexml_load_string($content);
-        $authors = []; 
-        foreach($xml->properties->authors->author as $author) { 
+    public function process_authors()
+    {
+        foreach($this->song_xml->properties->authors->author as $author) { 
             $authorObject->value = $author->__toString();
             if(isset($author['type']))
             {
@@ -139,17 +124,88 @@ class OpenLyrics extends Entity {
                     }
                 }
             }
-            $authors[] = $authorObject;
+            $this->properties->authors[] = $authorObject;
             unset($authorObject);            
         }
-        return $authors;
+    }
+  
+
+    private function process_copyright()
+    {
+        if(isset($song_xml['copyright']))
+        {
+            $this->properties->copyright = $song_xml['copyright']->__toString();
+        }
+        else
+        {
+            $this->properties->copyright = '';
+        }
+    }
+    
+    private function process_ccli_number()
+    {
+        if(isset($song_xml['ccliNo']))
+        {
+            $this->properties->ccli_number = $song_xml['ccliNo']->__toString();
+        }
+        else
+        {
+            $this->properties->ccli_number = '';
+        }
+    }
+
+    private function process_titles() {
+        
+        foreach($this->song_xml->properties->titles->title as $title) { 
+            $titleObject->value = $title->__toString();
+
+            if(isset($title['lang']))
+            {
+                $titleObject->lang = $title['lang']->__toString();
+            }
+
+            if(isset($title['original']))
+            {
+                $titleObject->original = $title['original']->__toString();
+            }
+            else
+            {
+                $titleObject->original = "false";
+            }
+
+            $this->properties->titles[] = $titleObject;
+            unset($titleObject);            
+        }
+        
+        
     } 
 
-    public static function getVerses($content) {
-        $xml = simplexml_load_string($content);
-        $verses = []; 
-        foreach($xml->lyrics->verse as $verse) { 
+    private function process_lyrics()
+    {
+        
+
+        if(isset($this->song_xml->properties->verseOrder))
+        {
+            $this->verse_order = $this->song_xml->properties->verseOrder->__toString();
+        }
+
+        foreach($this->song_xml->lyrics->verse as $verse) { 
+
             $verseObject;
+            
+            $text = '';
+
+            foreach($verse->lines as $lines)
+            {
+                
+                $line = $lines->asxml();//$lines->__toString();
+                 $line = str_replace("<br/>","\r\n",$line); 
+                 $line = str_replace(['<lines>',"</lines>"],'',$line);
+                 $verseObject->lines[] = $line;
+                 //$verseObject->lines[] = $this->process_lines_mixed_content($lines);
+
+            }
+
             if(isset($verse['name']))
             {
                 $verseObject->name = $verse['name']->__toString();
@@ -166,15 +222,23 @@ class OpenLyrics extends Entity {
             {
                 $verseObject->lang = '';
             }
-            foreach($verse->lines as $lines) 
-            {
-                $verseObject->lines[] = $lines->__toString();
-            }
-                
-            $verses[] = $verseObject;
-            unset($verseObject);            
-        }
-        return $verses;
-    } 
 
+            $this->verses[] = $verseObject;
+            unset($verseObject); 
+        }
+
+    }
+
+    private function process_lines_mixed_content($lines)
+    {
+        return "";
+    }
+    
+       
+
+    private $song_xml;
+    public $verses;
+    public $metadata;
+    public $properties;
+    
 }

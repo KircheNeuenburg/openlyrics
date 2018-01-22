@@ -175,19 +175,22 @@
 }
 
 .song-textarea textarea {
-    position: 50%;
+    /*position: 50%;*/
     width: 300px;
-    padding-left: 45px;
+    height: 100px;
+    /*padding-left: 45px;
     margin: 45px 0 0;
     background-color: transparent;
     border: none;
-    border-radius: 0;
+    border-radius: 0;*/
 }
 
 .song-textarea textarea:active,
 .song-textarea textarea:focus,
 .song-textarea textarea:hover {
     border-bottom: 1px solid grey;
+    width: 300px;
+    height: 100px;
 }
 
 .song-textinput input:active,

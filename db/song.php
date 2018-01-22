@@ -50,6 +50,7 @@ class Song extends Entity {
     public $metadata;
     public $properties;
     public $lyrics;
+    public $verse_order;
     public $favorite = false;
 
     public function __construct() {
@@ -63,13 +64,15 @@ class Song extends Entity {
      */
     public static function fromFile(File $file, Folder $songsFolder, $tags=[]){
         $song = new static();
-        $openlyrics = new OpenLyrics();
+        
         $song->setId($file->getId());
         $song->setContent(self::convertEncoding($file->getContent()));
-        $song->metadata = $openlyrics->getMetadata($song->getContent());
-        $song->properties->authors = $openlyrics->getAuthors($song->getContent());
-        $song->properties->titles = $openlyrics->getTitles($song->getContent());
-        $song->lyrics = $openlyrics->getVerses($song->getContent());
+        $openlyrics = new OpenLyrics($song->getContent());
+        $song->metadata = $openlyrics->metadata;
+        $song->properties = $openlyrics->properties;
+        
+        $song->lyrics = $openlyrics->verses;
+       
         $song->setModified($file->getMTime());
         $song->setTitle(pathinfo($file->getName(),PATHINFO_FILENAME)); // remove extension
         $subdir = substr(dirname($file->getPath()), strlen($songsFolder->getPath())+1);
