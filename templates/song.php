@@ -4,9 +4,9 @@
 	</div>
 	<div class="song-metadata">
 		<p> Version: {{ song.metadata.version}}</p>
-		<p> Created in: {{ song.metadata.createdIn}}</p>
-		<p> Modified in: {{ song.metadata.modifiedIn}}</p>
-		<p> Modified Date: {{ song.metadata.modifiedDate | date : 'medium'}}</p>
+		<p> Created in: {{ song.metadata.created_in}}</p>
+		<p> Modified in: {{ song.metadata.modified_in}}</p>
+		<p> Modified Date: {{ song.metadata.modified_date | date : 'medium'}}</p>
 	</div>
 	<form class="song-form">
 		<ul>
@@ -71,6 +71,8 @@
 	<p>{{song.lyrics}}</p>
 	<p><br/></p>
 	<p>{{song.content}}</p>
+	<p><br/></p>
+	<p>{{song.xml_output}}</p>
 	<!--<textarea editor songs-timeout-change="save()" name="editor"></textarea>-->
 	<div class="song-meta">
 		<span class="song-meta-right">

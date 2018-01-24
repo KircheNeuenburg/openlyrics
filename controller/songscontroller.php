@@ -82,10 +82,10 @@ class SongsController extends Controller {
      *
      * @param string $content
      */
-    public function create($content="") {
+    public function create() {
         $song = $this->songsService->create($this->userId);
         $song = $this->songsService->update(
-            $song->getId(), $content, $this->userId
+            $song->getId(), $this->userId
         );
         return new DataResponse($song);
     }

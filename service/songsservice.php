@@ -124,7 +124,7 @@ class SongsService {
      * @throws SongDoesNotExistException if song does not exist
      * @return \OCA\OpenLP\Db\Song the updated song
      */
-    public function update ($id, $content, $userId, $category=null, $mtime=0) {
+    public function update ($id,  $userId, $category=null, $mtime=0) {
         $songsFolder = $this->getFolderForUser($userId);
         $file = $this->getFileById($songsFolder, $id);
         $folder = $file->getParent();
