@@ -44,7 +44,7 @@
 					<option value="cs">Czech</option>
 				</select>
 			</li>
-			<div ng-repeat="verse in song.lyrics">
+			<div ng-repeat="verse in song.lyrics.verses">
 				<li>
 				<label class="song-label">Name </label>
 				<input class="song-txtinput" type="text" ng-model="verse.name">

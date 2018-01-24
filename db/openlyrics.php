@@ -30,12 +30,17 @@ class OpenLyrics extends Entity {
     {
         $this->song_xml = simplexml_load_string($xml_content);
 
+        $song_dom = new DOMDocument('1.0', 'utf-8');
+        $song_dom->loadXML($xml_content);
+        $this->song_dom = $song_dom->getElementsByTagName('song')->item(0);
+
         $this->process_titles();
         $this->process_lyrics();
         $this->process_metadata();
         $this->process_authors();
         $this->process_ccli_number();
         $this->process_copyright();
+        $this->process_verse_order();
     }
 
     public function export_xml()
@@ -99,7 +104,7 @@ class OpenLyrics extends Entity {
                 $attr_type->value = $author->type;
                 $author_el->appendChild($attr_type);
             }
-            if($author->lang)
+            if($author->lang != '')
             {
                 $attr_lang = $dom->createAttribute('lang');
                 $attr_lang->value = $author->lang;
@@ -110,175 +115,131 @@ class OpenLyrics extends Entity {
         }
         $properties->appendChild($authors);
 
+        if($this->properties->copyright!= '')
+        {
+            $properties->appendChild($this->export_copyright($dom));
+        }
+        if($this->properties->ccli_number != '')
+        {
+            $properties->appendChild($this->export_ccli_number($dom));
+        }
+        if($this->properties->verse_order != '')
+        {
+            $properties->appendChild($this->export_verse_order($dom));
+        }
         $song->appendChild($properties);
         $dom->appendChild($song);
 
         return $dom->saveXML();
     }
 
-    public function process_metadata()
+    private function export_copyright(DOMDocument $dom)
     {
-        
-        if(isset($this->song_xml['version']))
-        {
-            $this->metadata->version = $this->song_xml['version']->__toString();
-        }
-        else
-        {
-            $this->metadata->version = '';
-        }
-
-        if(isset($this->song_xml['createdIn']))
-        {
-            $this->metadata->created_in = $this->song_xml['createdIn']->__toString();
-        }
-        else
-        {
-            $this->metadata->created_in = '';
-        }
-
-        if(isset($this->song_xml['modifiedIn']))
-        {
-            $this->metadata->modified_in = $this->song_xml['modifiedIn']->__toString();
-        }
-        else
-        {
-            $this->metadata->modified_in = '';
-        }
-
-        if(isset($this->song_xml['modifiedDate']))
-        {
-            $this->metadata->modified_date = $this->song_xml['modifiedDate']->__toString();
-        }
-        else
-        {
-            $this->metadata->modified_date = '';
-        }
-        
+        return $dom->createElement('copyright',$this->properties->copyright);
     }
+
+    private function export_ccli_number(DOMDocument $dom)
+    {
+        return $dom->createElement('ccliNo',$this->properties->ccli_number);
+    }
+
+    private function export_verse_order(DOMDocument $dom)
+    {
+        return $dom->createElement('verseOrder',$this->properties->verse_order);
+    }
+    
+    private function process_metadata()
+    {
+        $this->metadata->version = $this->song_dom->getAttribute('version');
+        $this->metadata->created_in = $this->song_dom->getAttribute('createdIn');
+        $this->metadata->modified_in = $this->song_dom->getAttribute('modifiedIn');
+        $this->metadata->modified_date = $this->song_dom->getAttribute('modifiedDate');
+    }
+
+    
 
     public function process_authors()
     {
-        foreach($this->song_xml->properties->authors->author as $author) { 
-            $authorObject->value = $author->__toString();
-            if(isset($author['type']))
-            {
-                $authorObject->type = $author['type']->__toString();
-                
-                if(strcmp($authorObject->type,"translation") === 0 )
-                {
-                    if(isset($author['lang']))
-                    {
-                        $authorObject->lang = $author['lang']->__toString();
-                    }
-                    else{
-                        $authorObject->lang = "en";
-                    }
-                }
-            }
+        $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
+        $authors = $properties->getElementsByTagName('author');
+        foreach( $authors as $author)
+        {
+            $authorObject->value = $author->nodeValue;
+            $authorObject->lang = $author->getAttribute('lang');
+            $authorObject->type = $author->getAttribute('type');
+
             $this->properties->authors[] = $authorObject;
-            unset($authorObject);            
-        }
+            unset($authorObject); 
+        } 
     }
   
 
     private function process_copyright()
     {
-        if(isset($song_xml['copyright']))
-        {
-            $this->properties->copyright = $song_xml['copyright']->__toString();
-        }
-        else
-        {
-            $this->properties->copyright = '';
-        }
+        $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
+        $copyright = $properties->getElementsByTagName('copyright')->item(0);
+        $this->properties->copyright = $copyright->nodeValue;
     }
     
     private function process_ccli_number()
     {
-        if(isset($song_xml['ccliNo']))
-        {
-            $this->properties->ccli_number = $song_xml['ccliNo']->__toString();
-        }
-        else
-        {
-            $this->properties->ccli_number = '';
-        }
+        $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
+        $ccli_number = $properties->getElementsByTagName('ccliNo')->item(0);
+        $this->properties->ccli_number = $ccli_number->nodeValue;
     }
 
-    private function process_titles() {
-        
-        foreach($this->song_xml->properties->titles->title as $title) { 
-            $titleObject->value = $title->__toString();
+    private function process_verse_order()
+    {
+        $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
+        $verse_order = $properties->getElementsByTagName('verseOrder')->item(0);
+        $this->properties->verse_order = $verse_order->nodeValue;
+    }
 
-            if(isset($title['lang']))
-            {
-                $titleObject->lang = $title['lang']->__toString();
-            }
-
-            if(isset($title['original']))
-            {
-                $titleObject->original = $title['original']->__toString();
-            }
-            else
-            {
-                $titleObject->original = "false";
-            }
+    private function process_titles() 
+    {    
+        $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
+        $titles = $properties->getElementsByTagName('title');
+        foreach( $titles as $title)
+        {
+            $titleObject->value = $title->nodeValue;
+            $titleObject->lang = $title->getAttribute('lang');
+            $titleObject->original = $title->getAttribute('original');
 
             $this->properties->titles[] = $titleObject;
-            unset($titleObject);            
-        }
-        
-        
+            unset($titleObject); 
+        }   
     } 
 
     private function process_lyrics()
     {
-        
+        $lyrics = $this->song_dom->getElementsByTagName('lyrics')->item(0);
+        $verses = $lyrics->getElementsByTagName('verse');
 
-        if(isset($this->song_xml->properties->verseOrder))
-        {
-            $this->verse_order = $this->song_xml->properties->verseOrder->__toString();
-        }
+        foreach($verses as $verse) { 
 
-        foreach($this->song_xml->lyrics->verse as $verse) { 
-
-            $verseObject;
             
-            $text = '';
+            $verseObject->name = $verse->getAttribute('name');
+            $verseObject->lang = $verse->getAttribute('lang');
+            $verseObject->translit = $verse->getAttribute('translit');
 
-            foreach($verse->lines as $lines)
+            $lines = $verse->getElementsByTagName('lines');
+
+            foreach($lines as $line)
             {
-                
-                $line = $lines->asxml();//$lines->__toString();
+                $line = $this->song_dom->ownerDocument->saveXML($line);
                  $line = str_replace("<br/>","\r\n",$line); 
                  $line = str_replace(['<lines>',"</lines>"],'',$line);
                  $verseObject->lines[] = $line;
-                 //$verseObject->lines[] = $this->process_lines_mixed_content($lines);
-
+                 
             }
 
-            if(isset($verse['name']))
-            {
-                $verseObject->name = $verse['name']->__toString();
-            }
-            else
-            {
-                $verseObject->name = '';
-            }
-            if(isset($verse['lang']))
-            {
-                $verseObject->lang = $verse['lang']->__toString();
-            }
-            else
-            {
-                $verseObject->lang = '';
-            }
-
-            $this->verses[] = $verseObject;
+            $this->lyrics->verses[] = $verseObject;
             unset($verseObject); 
-        }
+            
+            
 
+            
+        }
     }
 
     private function process_lines_mixed_content($lines)
@@ -289,7 +250,7 @@ class OpenLyrics extends Entity {
        
 
     private $song_xml;
-    public $verses;
+    public $lyrics;
     public $metadata;
     public $properties;
     

@@ -71,7 +71,7 @@ class Song extends Entity {
         $song->metadata = $openlyrics->metadata;
         $song->properties = $openlyrics->properties;
         
-        $song->lyrics = $openlyrics->verses;
+        $song->lyrics = $openlyrics->lyrics;
         $song->xml_output = $openlyrics->export_xml();
         $song->setModified($file->getMTime());
         $song->setTitle(pathinfo($file->getName(),PATHINFO_FILENAME)); // remove extension
