@@ -57,7 +57,7 @@
 				</select>
 				</li>
 				<li ng-repeat="line in verse.lines">
-					<textarea class="song-textarea"  ng-model="line"></textarea>
+					<textarea class="song-textarea"  type="text" ng-model="line"></textarea>
 					
 				</li>
 			</div>

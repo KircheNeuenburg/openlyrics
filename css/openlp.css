@@ -159,44 +159,35 @@
 
 
 
-.song-textinput span {
+.song-txtinput span {
     background-position: 0 center;
     background-origin: content-box;
 }
 
-.song-textinput input {
+input.song-txtinput {
     position: 50%;
     width: auto;
-    padding-left: 45px;
-    margin: 45px 0 0;
     background-color: transparent;
-    border: none;
-    border-radius: 0;
+    
 }
 
-.song-textarea textarea {
-    /*position: 50%;*/
-    width: 300px;
-    height: 100px;
-    /*padding-left: 45px;
-    margin: 45px 0 0;
-    background-color: transparent;
-    border: none;
-    border-radius: 0;*/
+textarea.song-textarea {
+    width: 600px;
+    height: 200px;
+    
 }
 
-.song-textarea textarea:active,
-.song-textarea textarea:focus,
-.song-textarea textarea:hover {
+textarea.song-textarea:active,
+textarea.song-textarea:focus,
+textarea.song-textarea:hover {
     border-bottom: 1px solid grey;
-    width: 300px;
-    height: 100px;
+    border-color: #0082c9;
 }
 
-.song-textinput input:active,
-.song-textinput input:focus,
-.song-textinput input:hover {
-    border-bottom: 1px solid grey;
+input.song-txtinput:active,
+input.song-txtinput:focus,
+input.song-txtinput:hover {
+    border-bottom: 1px solid #0082c9;
 }
 
 #app-content .song-meta-right {

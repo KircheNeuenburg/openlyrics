@@ -34,13 +34,24 @@ class OpenLyrics extends Entity {
         $song_dom->loadXML($xml_content);
         $this->song_dom = $song_dom->getElementsByTagName('song')->item(0);
 
-        $this->process_titles();
-        $this->process_lyrics();
         $this->process_metadata();
+        $this->process_titles();
         $this->process_authors();
-        $this->process_ccli_number();
         $this->process_copyright();
+        $this->process_ccli_number();
+        $this->process_release_date();
+        $this->process_transposition();
+        $this->process_tempo();
+        $this->process_key();
+        $this->process_variant();
+        $this->process_publisher();
+        $this->process_version();
+        $this->process_keywords();
         $this->process_verse_order();
+        $this->process_songbooks() ;
+        $this->process_themes() ;
+        $this->process_comments(); 
+        $this->process_lyrics();
     }
 
     public function export_xml()
@@ -156,7 +167,20 @@ class OpenLyrics extends Entity {
         $this->metadata->modified_date = $this->song_dom->getAttribute('modifiedDate');
     }
 
-    
+    private function process_titles() 
+    {    
+        $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
+        $titles = $properties->getElementsByTagName('title');
+        foreach( $titles as $title)
+        {
+            $titleObject->value = $title->nodeValue;
+            $titleObject->lang = $title->getAttribute('lang');
+            $titleObject->original = $title->getAttribute('original');
+
+            $this->properties->titles[] = $titleObject;
+            unset($titleObject); 
+        }   
+    } 
 
     public function process_authors()
     {
@@ -173,7 +197,6 @@ class OpenLyrics extends Entity {
         } 
     }
   
-
     private function process_copyright()
     {
         $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
@@ -188,6 +211,66 @@ class OpenLyrics extends Entity {
         $this->properties->ccli_number = $ccli_number->nodeValue;
     }
 
+    private function process_release_date()
+    {
+        $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
+        $release_date = $properties->getElementsByTagName('released')->item(0);
+        $this->properties->release_date = $verse_order->nodeValue;
+    }
+
+    private function process_transposition()
+    {
+        $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
+        $transposition = $properties->getElementsByTagName('transposition')->item(0);
+        $this->properties->transposition = $transposition->nodeValue;
+    }
+
+    private function process_tempo()
+    {
+        $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
+        $tempo = $properties->getElementsByTagName('tempo')->item(0);
+        if($tempo)
+        {
+            $this->properties->tempo->value = $tempo->nodeValue;
+            $this->properties->tempo->type = $tempo->getAttribute('type');
+        }
+    }
+
+    private function process_key()
+    {
+        $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
+        $key = $properties->getElementsByTagName('key')->item(0);
+        $this->properties->key = $key->nodeValue;
+    }
+
+    private function process_variant()
+    {
+        $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
+        $variant = $properties->getElementsByTagName('variant')->item(0);
+        $this->properties->variant = $variant->nodeValue;
+    }
+
+    private function process_publisher()
+    {
+        $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
+        $publisher = $properties->getElementsByTagName('publisher')->item(0);
+        $this->properties->publisher = $publisher->nodeValue;
+    }
+
+    private function process_version()
+    {
+        $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
+        $version = $properties->getElementsByTagName('version')->item(0);
+        $this->properties->version = $version->nodeValue;
+    }
+
+    private function process_keywords()
+    {
+        $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
+        $keywords = $properties->getElementsByTagName('keywords')->item(0);
+        $this->properties->keywords = $keywords->nodeValue;
+    }
+
     private function process_verse_order()
     {
         $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
@@ -195,18 +278,41 @@ class OpenLyrics extends Entity {
         $this->properties->verse_order = $verse_order->nodeValue;
     }
 
-    private function process_titles() 
+    private function process_songbooks() 
     {    
         $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
-        $titles = $properties->getElementsByTagName('title');
-        foreach( $titles as $title)
+        $songbooks = $properties->getElementsByTagName('songbook');
+        foreach( $songbooks as $songbook)
         {
-            $titleObject->value = $title->nodeValue;
-            $titleObject->lang = $title->getAttribute('lang');
-            $titleObject->original = $title->getAttribute('original');
+            $songbookObject->name = $songbook->getAttribute('name');
+            $songbookObject->entry = $songbook->getAttribute('entry');
 
-            $this->properties->titles[] = $titleObject;
-            unset($titleObject); 
+            $this->properties->songbooks[] = $songbookObject;
+            unset($songbookObject); 
+        }   
+    }
+
+    private function process_themes() 
+    {    
+        $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
+        $themes = $properties->getElementsByTagName('theme');
+        foreach( $themes as $theme)
+        {
+            $themeObject->value = $theme->nodeValue;
+            $themeObject->lang = $theme->getAttribute('lang');
+
+            $this->properties->themes[] = $themeObject;
+            unset($themeObject); 
+        }   
+    } 
+
+    private function process_comments() 
+    {    
+        $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
+        $comments = $properties->getElementsByTagName('comment');
+        foreach( $comments as $comment)
+        {
+            $this->properties->comments[] = $comment->nodeValue;
         }   
     } 
 
@@ -226,25 +332,58 @@ class OpenLyrics extends Entity {
 
             foreach($lines as $line)
             {
-                $line = $this->song_dom->ownerDocument->saveXML($line);
-                 $line = str_replace("<br/>","\r\n",$line); 
-                 $line = str_replace(['<lines>',"</lines>"],'',$line);
-                 $verseObject->lines[] = $line;
+                $line_text = $this->process_lines_mixed_content($line);
+                if($line->getAttribute('break')=== 'optional')
+                {
+                    $line_text .= "\r\n".'[---]';
+                }
+                $verseObject->lines[] = $line_text;
                  
             }
 
             $this->lyrics->verses[] = $verseObject;
             unset($verseObject); 
-            
-            
-
-            
         }
     }
 
-    private function process_lines_mixed_content($lines)
+    private function process_lines_mixed_content($line_children)
     {
-        return "";
+        $text = '';
+
+        foreach($line_children->childNodes as $child)
+        {
+            $use_endtag = true;
+
+            if($child->nodeName === 'chord')
+            {
+                $text .= '['.$child->getAttribute('name').']';
+            }
+            elseif($child->nodeName === 'br')
+            {
+                $text .= "\r\n";
+            }
+            elseif($child->nodeName == 'tag')
+            {
+                $text .= '{'.$child->getAttribute('name').'}';
+                if(!$child->firstChild and $child->textContent === '')
+                {
+                    $use_endtag = false;
+                }
+            }
+            elseif($child->nodeName === '#text')
+            {
+                $text .= $child->textContent;
+            }
+            
+            $text .= $this->process_lines_mixed_content($child);
+            
+            if($child->nodeName == 'tag' and $use_endtag)
+            {
+                $text .= '{/'.$child->getAttribute('name').'}';
+                $use_endtag = true;
+            }    
+        }
+        return $text;
     }
     
        
