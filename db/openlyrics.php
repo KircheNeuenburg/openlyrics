@@ -126,18 +126,10 @@ class OpenLyrics extends Entity {
         {
             $properties->appendChild($this->export_verse_order($dom));
         }
-        if($this->properties->songbooks != '')
-        {
-            $properties->appendChild($this->export_songbooks($dom));
-        }
-        if($this->properties->themes != '')
-        {
-            $properties->appendChild($this->export_themes($dom));
-        }
-        if($this->properties->comments != '')
-        {
-            $properties->appendChild($this->export_comments($dom));
-        }
+        $properties->appendChild($this->export_songbooks($dom));
+        $properties->appendChild($this->export_themes($dom));
+        $properties->appendChild($this->export_comments($dom));
+        
         return $properties;
     }
 
@@ -291,7 +283,7 @@ class OpenLyrics extends Entity {
         $comments = $dom->createElement('comments');
         foreach($this->properties->comments as $comment)
         {
-            $comment_el = $dom->createElement('comment',$comment->value);
+            $comment_el = $dom->createElement('comment',$comment);
             $comments->appendChild($comment_el);
         }
         return $comments;
@@ -353,10 +345,9 @@ class OpenLyrics extends Entity {
             $text = str_replace('{/'.$tag.'}','</tag>',$text);
         }
 
-        $text = str_replace("\r\n",'<br/>',$text);
-        $text = str_replace("\r",'<br/>',$text);
-        $text = str_replace("\n",'<br/>',$text);
+        $text = preg_replace("/\r\n|\r|\n/", "<br />", $text);
 
+        $text = preg_replace('/\[(\w.*?)\]/','<chord name="${1}"/>',$text);
         $tmp_dom = new DOMDocument('1.0', 'utf-8');
         $tmp_dom->loadXML('<lines>'.$text.'</lines>');
                                 
@@ -580,8 +571,13 @@ class OpenLyrics extends Entity {
         foreach($line_children->childNodes as $child)
         {
             $use_endtag = true;
+            $use_endcomment = false;
 
-            if($child->nodeName === 'chord')
+            if($child->nodeName === 'comment')
+            {
+                $use_endcomment = true;
+            }
+            elseif($child->nodeName === 'chord')
             {
                 $text .= '['.$child->getAttribute('name').']';
             }
@@ -589,7 +585,7 @@ class OpenLyrics extends Entity {
             {
                 $text .= "\r\n";
             }
-            elseif($child->nodeName == 'tag')
+            elseif($child->nodeName === 'tag')
             {
                 $text .= '{'.$child->getAttribute('name').'}';
                 if(!$child->firstChild and $child->textContent === '')
@@ -601,10 +597,11 @@ class OpenLyrics extends Entity {
             {
                 $text .= $child->textContent;
             }
-            
-            $text .= $this->process_lines_mixed_content($child);
-            
-            if($child->nodeName == 'tag' and $use_endtag)
+            if($use_endcomment == false)
+            {
+                $text .= $this->process_lines_mixed_content($child);
+            }
+            if($child->nodeName === 'tag' and $use_endtag)
             {
                 $text .= '{/'.$child->getAttribute('name').'}';
                 $use_endtag = true;
