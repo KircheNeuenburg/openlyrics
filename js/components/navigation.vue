@@ -1,15 +1,28 @@
 <template>
 	<div id="app-navigation">
 		<ul>
-			<template v-for="account in accounts">
+			<template v-for="song in song_list">
 				<li>
-					<a href="#">{{ account.email }}</a>
+					<router-link :to="{name: 'song', params: {id: song.id}}">
+					
+						{{ song.title }}
+					
+                    	<span v-if="song.unsaved">*</span>
+                	</router-link>
+                	<span class="utils">
+                    	<button class="svg action icon-delete"
+                        	title="Delete song"
+                        	notes-tooltip
+                        	data-placement="bottom"
+                        	ng-click="delete(song.id)">
+						</button>
+                    	<button class="svg action icon-star"
+                        	title="Favorite"
+                        	notes-tooltip
+                        	data-placement="bottom">
+                        </button>
+                	</span>
 				</li>
-				<template >
-					<li v-for="folder in account.folders">
-						<a href="#">{{ folder.name }}</a>
-					</li>
-				</template>
 			</template>
 		</ul>
 		<app-settings></app-settings>
@@ -23,10 +36,18 @@
 
 		export default {
 			computed: mapState([
-				'accounts'
+				'accounts',
+				'song_list'
 			]),
+			
 			components: {
 				'app-settings': AppSettingsView
-			}
+			},
+			
+			created () {
+					store.dispatch('load_song_list');
+				}
+			
+			
 		};
 </script>

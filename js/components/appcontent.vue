@@ -1,18 +1,19 @@
 <template>
 	<div id="app-content">
 		<div id="app-content-wrapper">
-			<hello></hello>
+			<router-view></router-view>
+			
 		</div>
 	</div>
 </template>
 
 <script>
-		import HelloView from "./hello.vue";
+		import WelcomeView from "./welcome.vue";
 		import L10nView from "./l10n.vue";
 
 		export default {
 			components: {
-				hello: HelloView,
+				welcome: WelcomeView,
 				t: L10nView
 			}
 		}

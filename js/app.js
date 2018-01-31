@@ -22,10 +22,19 @@
 
 import Vue from 'vue';
 import Vuex from 'vuex';
+import axios from 'axios';
 
 import AppContentView from './components/appcontent.vue';
 import NavigationView from './components/navigation.vue';
 import store from './store';
+
+import router from './router/router'
+
+
+
+
+window.axios = axios;
+window.store = store;
 
 export class App {
 	start() {
@@ -35,13 +44,14 @@ export class App {
 
 		let appView = new Vue({
 			el: "#app",
+			router,
 			store,
 			components: {
 				'nc-app-content': AppContentView,
 				'nc-app-navigation': NavigationView
 			}
+			
 		});
 
-		store.dispatch('loadAccounts');
 	}
 }

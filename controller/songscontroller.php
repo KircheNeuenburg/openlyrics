@@ -53,6 +53,7 @@ class SongsController extends Controller {
 
     /**
      * @NoAdminRequired
+     * @NoCSRFRequired
      */
     public function index() {
         return new DataResponse($this->songsService->getAll($this->userId));

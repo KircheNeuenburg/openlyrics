@@ -28,49 +28,29 @@ Vue.use(Vuex);
 export default new Vuex.Store({
 	state: {
 		accounts: [],
+		song_list: [],
 		count: 0
 	},
 	mutations: {
 		setAccounts(state, payload) {
 			state.accounts = payload.accounts;
+		},
+		set_song_list(state, payload) {
+			state.song_list = payload;
+			
 		}
 	},
 	actions: {
-		loadAccounts( {commit}) {
+		load_song_list( {commit}) {
 			return new Promise(function(resolve) {
-				setTimeout(function( ) {
-					commit('setAccounts', {
-						accounts: [
-							{
-								id: 1,
-								email: 'account1@domain.tld',
-								folders: [
-									{
-										name: 'folder1'
-									},
-									{
-										name: 'folder2'
-									}
-								]
-							},
-							{
-								id: 2,
-								email: 'account2@domaint.dl',
-								folders: [
-									{
-										name: 'folder1'
-									},
-									{
-										name: 'folder2'
-									},
-									{
-										name: 'folder3'
-									}
-								]
-							}
-						]});
-					resolve();
-				}, 1000);
+				axios.get('/nextcloud/index.php/apps/openlp/songs').then(response => 
+					{commit('set_song_list', response.data);
+					
+					}
+					)
+					
+					
+				
 			});
 		}
 	}

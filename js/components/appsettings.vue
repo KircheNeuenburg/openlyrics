@@ -7,7 +7,7 @@
 			</button>
 		</div>
 		<div id="app-settings-content">
-			<!-- Your settings in here -->
+			<input placeholder="Test">
 		</div>
         </div>
 </template>
