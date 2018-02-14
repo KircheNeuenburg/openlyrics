@@ -29,14 +29,17 @@ class OpenLyrics extends Entity {
     public function __construct($xml_content)
     {
         $this->song_xml = simplexml_load_string($xml_content);
+        if($xml_content !== '')
+        {
+        
+            $song_dom = new DOMDocument('1.0', 'utf-8');
+            $song_dom->loadXML($xml_content);
+            $this->song_dom = $song_dom->getElementsByTagName('song')->item(0);
 
-        $song_dom = new DOMDocument('1.0', 'utf-8');
-        $song_dom->loadXML($xml_content);
-        $this->song_dom = $song_dom->getElementsByTagName('song')->item(0);
-
-        $this->process_metadata();
-        $this->process_properties();
-        $this->process_lyrics();
+            $this->process_metadata();
+            $this->process_properties();
+            $this->process_lyrics();
+        }
     }
 
     public function export_xml()
@@ -70,7 +73,8 @@ class OpenLyrics extends Entity {
         $song->appendChild($this->export_properties($dom));
         $song->appendChild($this->export_lyrics($dom));
         $dom->appendChild($song);
-
+        $dom->formatOutput = true;
+        
         return $dom->saveXML();
     }
 

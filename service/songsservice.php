@@ -18,6 +18,7 @@ use OCP\Files\Folder;
 use OCP\ILogger;
 
 use OCA\OpenLP\Db\Song;
+use OCA\OpenLP\Db\OpenLyrics;
 
 /**
  * Class SongsService
@@ -66,6 +67,32 @@ class SongsService {
         $songs = [];
         foreach($filesById as $id=>$file) {
             $songs[] = Song::fromFile($file, $songsFolder, array_key_exists($id, $tags) ? $tags[$id] : []);
+        }
+
+        return $songs;
+    }
+
+    /**
+     * @param string $userId
+     * @return array with all songs in the current directory
+     */
+    public function get_song_list ($userId){
+        $songsFolder = $this->getFolderForUser($userId);
+        $songs = $this->gatherSongFiles($songsFolder);
+        $filesById = [];
+        foreach($songs as $song) {
+            $filesById[$song->getId()] = $song;
+        }
+        $tagger = \OC::$server->getTagManager()->load('files');
+        if($tagger===null) {
+            $tags = [];
+        } else {
+            $tags = $tagger->getTagsForObjects(array_keys($filesById));
+        }
+
+        $songs = [];
+        foreach($filesById as $id=>$file) {
+            $songs[] = Song::fromFile($file, $songsFolder, array_key_exists($id, $tags) ? $tags[$id] : [], false);
         }
 
         return $songs;
@@ -124,16 +151,21 @@ class SongsService {
      * @throws SongDoesNotExistException if song does not exist
      * @return \OCA\OpenLP\Db\Song the updated song
      */
-    public function update ($id,  $userId, $category=null, $mtime=0) {
+    public function update ($id, $content, $song, $userId, $category=null, $mtime=0) {
         $songsFolder = $this->getFolderForUser($userId);
         $file = $this->getFileById($songsFolder, $id);
         $folder = $file->getParent();
         $title = $this->getSafeTitleFromContent($content);
 
+        $song = json_decode(json_encode($song), FALSE);
+        $openlyrics = new OpenLyrics("");
+        $openlyrics->properties = $song->properties;
+        $openlyrics->metadata = $song->metadata;
+        $openlyrics->lyrics = $song->lyrics;
 
         // rename/move file with respect to title/category
         // this can fail if access rights are not sufficient or category name is illegal
-        try {
+        /*try {
             $currentFilePath = $file->getPath();
             $fileExtension = pathinfo($file->getName(), PATHINFO_EXTENSION);
 
@@ -156,9 +188,13 @@ class SongsService {
             }
         } catch(\OCP\Files\NotPermittedException $e) {
             $this->logger->error('Moving this song to the desired target is not allowed. Please check the song\'s target category.', array('app' => $this->appName));
-        }
-
-        $file->putContent($content);
+        }*/
+        //$song = json_decode(json_encode($song), FALSE);
+        $this->logger->error( var_export($openlyrics,true), array('app' => $this->appName));
+        $this->logger->error( var_export($song->metadata->version,true), array('app' => $this->appName));
+        //$this->logger->error( serialize($openlyrics->metadata), array('app' => $this->appName));
+        $file->putContent($openlyrics->export_xml());
+        //$file->putContent($song);
 
         if($mtime) {
             $file->touch($mtime);

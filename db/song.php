@@ -62,17 +62,20 @@ class Song extends Entity {
      * @param File $file
      * @return static
      */
-    public static function fromFile(File $file, Folder $songsFolder, $tags=[]){
+    public static function fromFile(File $file, Folder $songsFolder, $tags=[],$content = true){
         $song = new static();
         
         $song->setId($file->getId());
-        $song->setContent(self::convertEncoding($file->getContent()));
-        $openlyrics = new OpenLyrics($song->getContent());
-        $song->metadata = $openlyrics->metadata;
-        $song->properties = $openlyrics->properties;
+        if($content == true)
+        {
+            $song->setContent(self::convertEncoding($file->getContent()));
+            $openlyrics = new OpenLyrics($song->getContent());
+            $song->song->metadata = $openlyrics->metadata;
+            $song->song->properties = $openlyrics->properties;
         
-        $song->lyrics = $openlyrics->lyrics;
-        $song->xml_output = $openlyrics->export_xml();
+            $song->song->lyrics = $openlyrics->lyrics;
+            $song->xml_output = $openlyrics->export_xml();
+        }
         $song->setModified($file->getMTime());
         $song->setTitle(pathinfo($file->getName(),PATHINFO_FILENAME)); // remove extension
         $subdir = substr(dirname($file->getPath()), strlen($songsFolder->getPath())+1);

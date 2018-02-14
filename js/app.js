@@ -36,6 +36,8 @@ import router from './router/router'
 window.axios = axios;
 window.store = store;
 
+axios.defaults.baseURL = '/nextcloud/index.php/apps/openlp'
+
 export class App {
 	start() {
 		Vue.mixin({

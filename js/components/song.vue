@@ -1,7 +1,7 @@
 <template>
 	<div>
 		<div class="song-title">
-			<h1 >{{ song.title  }} </h1>
+			<h1 >{{ song.properties.titles[0].value  }} </h1>
 		</div>
 		<div class="song-metadata">
 		<p> Version: {{ song.metadata.version}}</p>
@@ -9,7 +9,9 @@
 		<p> Modified in: {{ song.metadata.modified_in}}</p>
 		<p> Modified Date: {{ song.metadata.modified_date }}</p>
 	</div>
-	<form class="song-form">
+	<button @click="save_song()">Save </button>
+	<button @click="load_song(active_song.id)">Discard </button>
+	<div>
 		<ul>
 			<li v-for="(title, index) in song.properties.titles">
 				<label v-if="index == 0 && index == song.properties.titles.length -1" class="song-label">Title</label>
@@ -23,7 +25,9 @@
   					<option value="es">Spanish</option>
 				</select>
 				<input  type="radio" name="original" value="false" :checked="title.original">
-				</li>
+				<button @click="remove_title(index)">Remove Title </button>
+			</li>
+			<button @click="add_empty_title()">Add Title </button>
 			<li v-for="(author, index) in song.properties.authors">
 				<label v-if="index == 0 && index == song.properties.authors.length -1" class="song-label">Author </label>
 				<label v-if="!(index == 0 && index == song.properties.authors.length -1)" class="song-label">Author {{index + 1}}</label>
@@ -63,7 +67,7 @@
 			</div>
 		</ul>
 
-	</form>
+	</div>
 		
 	</div>
 </template>
@@ -74,10 +78,11 @@
   	export default {
         computed: {
       		...mapState([
-        		'song_list'
+				'songs',
+				'active_song'
       		]),
       		song () {
-        		return this.song_list.find((song) => song.id === this.id) || {}
+        		return this.active_song.song
 			},
 			id () {
 				return parseInt(this.$route.params.id)
@@ -86,8 +91,17 @@
     	methods: {
       		...mapActions([
         	'getAllProducts',
-        	'addToCart'
+			'addToCart',
+			'save_song',
+			'add_empty_title',
+			'remove_title',
+			'discard_changes',
+			'load_song'
       		])
-    	}
+		},
+		mounted () {
+					//store.dispatch('load_song');
+					console.log('debug')
+		}
   	}
 </script>

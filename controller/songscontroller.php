@@ -59,6 +59,15 @@ class SongsController extends Controller {
         return new DataResponse($this->songsService->getAll($this->userId));
     }
 
+    /**
+     * @NoAdminRequired
+     * @NoCSRFRequired
+     * @param int $id
+     * @return DataResponse
+     */
+    public function getSongList() {
+        return new DataResponse($this->songsService->get_song_list($this->userId));
+    }
 
     /**
      * @NoAdminRequired
@@ -94,14 +103,15 @@ class SongsController extends Controller {
 
     /**
      * @NoAdminRequired
+     * @NoCSRFRequired
      *
      * @param int $id
      * @param string $content
      * @return DataResponse
      */
-    public function update($id, $content) {
-        return $this->respond(function () use ($id, $content) {
-            return $this->songsService->update($id, $content, $this->userId);
+    public function update($id, $content, $song) {
+        return $this->respond(function () use ($id, $content, $song) {
+            return $this->songsService->update($id, $content, $song, $this->userId);
         });
     }
 

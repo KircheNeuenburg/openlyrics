@@ -15,6 +15,7 @@ return ['routes' => [
 
     // songs
     ['name' => 'songs#index', 'url' => '/songs', 'verb' => 'GET'],
+    ['name' => 'songs#get_song_list', 'url' => '/song_list', 'verb' => 'GET'],
     ['name' => 'songs#get', 'url' => '/songs/{id}', 'verb' => 'GET'],
     ['name' => 'songs#create', 'url' => '/songs', 'verb' => 'POST'],
     ['name' => 'songs#update', 'url' => '/songs/{id}', 'verb' => 'PUT'],
