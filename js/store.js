@@ -45,7 +45,7 @@ export default new Vuex.Store({
 
             let index = state.songs.indexOf(song);
 
-            if (index !== -1) {
+            if (index !== -1 ) {
                 state.songs[index] = payload;
                 // updated active song, if selected
                 if(state.songs[index].id === state.active_song.id)
@@ -82,8 +82,16 @@ export default new Vuex.Store({
             state.active_song.song.properties.titles.push(title)
         },
         remove_title(state,index) {
-            if (index > -1) {
+            if (index > -1 && (state.active_song.song.properties.titles.length > 1)) {
                 state.active_song.song.properties.titles.splice(index, 1);
+            }
+        },
+        add_author(state, author) {
+            state.active_song.song.properties.authors.push(author)
+        },
+        remove_author(state,index) {
+            if (index > -1 ) {
+                state.active_song.song.properties.authors.splice(index, 1);
             }
         },
         discard_changes(state) {
@@ -127,12 +135,19 @@ export default new Vuex.Store({
                 }
                 )
         },
-        add_empty_title({commit}) {
+        add_title({commit}) {
             let tmp_title = {value: '', lang: '', original: false}
             commit('add_title', tmp_title)
         },
         remove_title({commit}, index) {
             commit('remove_title', index)
+        },
+        add_author({commit}) {
+            let tmp_author = {value: '', lang: '', type: ''}
+            commit('add_author', tmp_author)
+        },
+        remove_author({commit}, index) {
+            commit('remove_author', index)
         },
         discard_changes({commit}) {
             commit('discard_changes')

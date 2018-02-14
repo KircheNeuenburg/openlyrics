@@ -25,9 +25,9 @@
   					<option value="es">Spanish</option>
 				</select>
 				<input  type="radio" name="original" value="false" :checked="title.original">
-				<button @click="remove_title(index)">Remove Title </button>
+				<button v-if="!(index == 0 && index == song.properties.titles.length -1)" @click="remove_title(index)">Remove Title </button>
 			</li>
-			<button @click="add_empty_title()">Add Title </button>
+			<button @click="add_title()">Add Title </button>
 			<li v-for="(author, index) in song.properties.authors">
 				<label v-if="index == 0 && index == song.properties.authors.length -1" class="song-label">Author </label>
 				<label v-if="!(index == 0 && index == song.properties.authors.length -1)" class="song-label">Author {{index + 1}}</label>
@@ -47,7 +47,85 @@
   					<option value="es">Spanish</option>
 					<option value="cs">Czech</option>
 				</select>
+				<button @click="remove_author(index)">Remove Author </button>
 			</li>
+			<button @click="add_author()">Add Author</button>
+			<li >
+				<label class="song-label">Copyright </label>
+				<input class="song-txtinput" type="text" v-model="song.properties.copyright">
+			</li>
+			<li >
+				<label class="song-label">CCLI Number </label>
+				<input class="song-txtinput" type="text" v-model="song.properties.ccli_number">
+			</li>
+			<li >
+				<label class="song-label">Released </label>
+				<input class="song-txtinput" type="text" v-model="song.properties.release_date">
+			</li>
+			<li >
+				<label class="song-label">Transposition </label>
+				<input class="song-txtinput" type="text" v-model="song.properties.transposition">
+			</li>
+			<li >
+				<label class="song-label">Tempo </label>
+				<input class="song-txtinput" type="text" v-model="song.properties.tempo.value">
+				<input class="song-txtinput" type="text" v-model="song.properties.tempo.type">
+			</li>
+			<li >
+				<label class="song-label">Key </label>
+				<input class="song-txtinput" type="text" v-model="song.properties.key">
+			</li>
+			<li >
+				<label class="song-label">Variant </label>
+				<input class="song-txtinput" type="text" v-model="song.properties.variant">
+			</li>
+			<li >
+				<label class="song-label">Publisher </label>
+				<input class="song-txtinput" type="text" v-model="song.properties.publisher">
+			</li>
+			<li >
+				<label class="song-label">Keywords </label>
+				<input class="song-txtinput" type="text" v-model="song.properties.keywords">
+			</li>
+			<li >
+				<label class="song-label">Verse Order </label>
+				<input class="song-txtinput" type="text" v-model="song.properties.verse_order">
+			</li>
+			<li >
+				<label class="song-label">Transposition </label>
+				<input class="song-txtinput" type="text" v-model="song.properties.transposition">
+			</li>
+			<li v-for="(songbook, index) in song.properties.songbooks">
+				<label v-if="index == 0 && index == song.properties.songbooks.length -1" class="song-label">Songbook </label>
+				<label v-if="!(index == 0 && index == song.properties.songbooks.length -1)" class="song-label">Songbook {{index + 1}}</label>
+				<input class="song-txtinput" type="text" v-model="songbook.name">
+				<input class="song-txtinput" type="text" v-model="songbook.entry">
+				<button @click="remove_songbook(index)">Remove Songbook</button>
+			</li>
+			<button @click="add_songbook()">Add Songbook</button>
+			<li v-for="(theme, index) in song.properties.authors">
+				<label v-if="index == 0 && index == song.properties.themes.length -1" class="song-label">Theme </label>
+				<label v-if="!(index == 0 && index == song.properties.themes.length -1)" class="song-label">Theme {{index + 1}}</label>
+				<input class="song-txtinput" type="text" v-model="theme.value">		
+				<select  name="lang" v-model="theme.lang" >
+					<option value="">Unknown</option>
+  					<option value="de">German</option>
+  					<option value="en">English</option>
+  					<option value="fr">French</option>
+  					<option value="es">Spanish</option>
+					<option value="cs">Czech</option>
+				</select>
+				<button @click="remove_theme(index)">Remove Theme </button>
+			</li>
+			<button @click="add_theme()">Add Theme</button>
+			<li v-for="(comment, index) in song.properties.comments">
+				<label v-if="index == 0 && index == song.properties.comments.length -1" class="song-label">Comment </label>
+				<label v-if="!(index == 0 && index == song.properties.comments.length -1)" class="song-label">Comment {{index + 1}}</label>
+				<input class="song-txtinput" type="text" v-model="comment.name">
+				<input class="song-txtinput" type="text" v-model="comment.entry">
+				<button @click="remove_comment(index)">Remove Comment</button>
+			</li>
+			<button @click="add_comment()">Add Comment</button>
 			<div v-for="verse in song.lyrics.verses">
 				<li>
 				<label class="song-label">Name </label>
@@ -65,6 +143,7 @@
 					
 				</li>
 			</div>
+			
 		</ul>
 
 	</div>
@@ -93,8 +172,10 @@
         	'getAllProducts',
 			'addToCart',
 			'save_song',
-			'add_empty_title',
+			'add_title',
 			'remove_title',
+			'add_author',
+			'remove_author',
 			'discard_changes',
 			'load_song'
       		])
