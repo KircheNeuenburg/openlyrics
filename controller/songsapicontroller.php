@@ -9,21 +9,21 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\OpenLP\Controller;
+namespace OCA\OpenLyrics\Controller;
 
 use OCP\AppFramework\ApiController;
 use OCP\AppFramework\Http;
 use OCP\AppFramework\Http\DataResponse;
 use OCP\IRequest;
 
-use OCA\OpenLP\Service\SongsService;
-use OCA\OpenLP\Service\MetaService;
-use OCA\OpenLP\Db\Song;
+use OCA\OpenLyrics\Service\SongsService;
+use OCA\OpenLyrics\Service\MetaService;
+use OCA\OpenLyrics\Db\Song;
 
 /**
  * Class SongsApiController
  *
- * @package OCA\OpenLP\Controller
+ * @package OCA\OpenLyrics\Controller
  */
 class SongsApiController extends ApiController {
 

@@ -6,7 +6,7 @@
  * later. See the COPYING file.
  */
 
-namespace OCA\OpenLP\Db;
+namespace OCA\OpenLyrics\Db;
 
 use OCP\AppFramework\Db\Entity;
 

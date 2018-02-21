@@ -9,7 +9,7 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\OpenLP\Db;
+namespace OCA\OpenLyrics\Db;
 
 use DOMDocument;
 use DateTime;
@@ -17,7 +17,7 @@ use OCP\AppFramework\Db\Entity;
 
 /**
  * Class OpenLyrics
- * @package OCA\OpenLP\Db
+ * @package OCA\OpenLyrics\Db
  */
 class OpenLyrics extends Entity {
 

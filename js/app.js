@@ -36,7 +36,7 @@ import router from './router/router'
 window.axios = axios;
 window.store = store;
 
-axios.defaults.baseURL = '/nextcloud/index.php/apps/openlp'
+axios.defaults.baseURL = '/nextcloud/index.php/apps/openlyrics'
 
 export class App {
 	start() {

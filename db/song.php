@@ -9,13 +9,13 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\OpenLP\Db;
+namespace OCA\OpenLyrics\Db;
 
 use OCP\Files\File;
 use OCP\Files\Folder;
 use OCP\AppFramework\Db\Entity;
 
-use OCA\OpenLP\Db\OpenLyrics;
+use OCA\OpenLyrics\Db\OpenLyrics;
 /**
  * Class Song
  * @method integer getId()
@@ -38,7 +38,7 @@ use OCA\OpenLP\Db\OpenLyrics;
  * @method void setLyrics(string $value)
  * @method boolean getFavorite()
  * @method void setFavorite(boolean $value)
- * @package OCA\OpenLP\Db
+ * @package OCA\OpenLyrics\Db
  */
 class Song extends Entity {
 

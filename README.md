@@ -1,4 +1,4 @@
-# openlp
+# openlyrics
 
 > A Vue.js project
 

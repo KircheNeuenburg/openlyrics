@@ -6,16 +6,16 @@
  * later. See the COPYING file.
  */
 
-namespace OCA\OpenLP\Service;
+namespace OCA\OpenLyrics\Service;
 
-use OCA\OpenLP\Db\Song;
-use OCA\OpenLP\Db\Meta;
-use OCA\OpenLP\Db\MetaMapper;
+use OCA\OpenLyrics\Db\Song;
+use OCA\OpenLyrics\Db\Meta;
+use OCA\OpenLyrics\Db\MetaMapper;
 
 /**
  * Class MetaService
  *
- * @package OCA\OpenLP\Service
+ * @package OCA\OpenLyrics\Service
  */
 class MetaService {
 

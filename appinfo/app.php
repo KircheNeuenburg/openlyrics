@@ -9,22 +9,22 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\OpenLP\AppInfo;
+namespace OCA\OpenLyrics\AppInfo;
 
 use OCP\AppFramework\App;
 
-$app = new App('openlp');
+$app = new App('openlyrics');
 $container = $app->getContainer();
 
 $container->query('OCP\INavigationManager')->add(function () use ($container) {
     $urlGenerator = $container->query('OCP\IURLGenerator');
     $l10n = $container->query('OCP\IL10N');
     return [
-        'id' => 'openlp',
+        'id' => 'openlyrics',
         'order' => 10,
-        'href' => $urlGenerator->linkToRoute('openlp.page.index'),
-        'icon' => $urlGenerator->imagePath('openlp', 'openlp.png'),
-        'name' => $l10n->t('OpenLP')
+        'href' => $urlGenerator->linkToRoute('openlyrics.page.index'),
+        'icon' => $urlGenerator->imagePath('openlyrics', 'openlyrics.png'),
+        'name' => $l10n->t('OpenLyrics')
     ];
 });
 

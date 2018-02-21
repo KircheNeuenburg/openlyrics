@@ -9,7 +9,7 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\OpenLP\Service;
+namespace OCA\OpenLyrics\Service;
 
 use OCP\Files\FileInfo;
 use OCP\IL10N;
@@ -17,13 +17,13 @@ use OCP\Files\IRootFolder;
 use OCP\Files\Folder;
 use OCP\ILogger;
 
-use OCA\OpenLP\Db\Song;
-use OCA\OpenLP\Db\OpenLyrics;
+use OCA\OpenLyrics\Db\Song;
+use OCA\OpenLyrics\Db\OpenLyrics;
 
 /**
  * Class SongsService
  *
- * @package OCA\OpenLP\Service
+ * @package OCA\OpenLyrics\Service
  */
 class SongsService {
 
@@ -149,7 +149,7 @@ class SongsService {
      * the title is generated from the first line of the content
      * @param int $mtime time of the song modification (optional)
      * @throws SongDoesNotExistException if song does not exist
-     * @return \OCA\OpenLP\Db\Song the updated song
+     * @return \OCA\OpenLyrics\Db\Song the updated song
      */
     public function update ($id, $content, $song, $userId, $category=null, $mtime=0) {
         $songsFolder = $this->getFolderForUser($userId);

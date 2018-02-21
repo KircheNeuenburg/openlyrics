@@ -7,13 +7,13 @@
  */
 
 
-script('openlp', [
+script('openlyrics', [
     '../build/build'
 
 ]);
 
-style('openlp', [
-    'openlp'
+style('openlyrics', [
+    'openlyrics'
 ]);
 
 ?>

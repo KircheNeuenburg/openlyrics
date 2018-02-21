@@ -9,7 +9,7 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\OpenLP\Controller;
+namespace OCA\OpenLyrics\Controller;
 
 use OCP\AppFramework\Controller;
 use OCP\AppFramework\Http\TemplateResponse;
@@ -17,13 +17,13 @@ use OCP\AppFramework\Http\ContentSecurityPolicy;
 use OCP\IRequest;
 use OCP\IConfig;
 
-use OCA\OpenLP\Service\SongsService;
-use OCA\OpenLP\Service\SongDoesNotExistException;
+use OCA\OpenLyrics\Service\SongsService;
+use OCA\OpenLyrics\Service\SongDoesNotExistException;
 
 /**
  * Class PageController
  *
- * @package OCA\OpenLP\Controller
+ * @package OCA\OpenLyrics\Controller
  */
 class PageController extends Controller {
 

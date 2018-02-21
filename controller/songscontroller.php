@@ -9,19 +9,19 @@
  * @copyright Bernhard Posselt 2012, 2014
  */
 
-namespace OCA\OpenLP\Controller;
+namespace OCA\OpenLyrics\Controller;
 
 use OCP\AppFramework\Controller;
 use OCP\IRequest;
 use OCP\IConfig;
 use OCP\AppFramework\Http\DataResponse;
 
-use OCA\OpenLP\Service\SongsService;
+use OCA\OpenLyrics\Service\SongsService;
 
 /**
  * Class SongsController
  *
- * @package OCA\OpenLP\Controller
+ * @package OCA\OpenLyrics\Controller
  */
 class SongsController extends Controller {
 
