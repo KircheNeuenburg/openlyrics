@@ -23,7 +23,7 @@ $container->query('OCP\INavigationManager')->add(function () use ($container) {
         'id' => 'openlyrics',
         'order' => 10,
         'href' => $urlGenerator->linkToRoute('openlyrics.page.index'),
-        'icon' => $urlGenerator->imagePath('openlyrics', 'openlyrics.png'),
+        'icon' => $urlGenerator->imagePath('openlyrics', 'openlyrics.svg'),
         'name' => $l10n->t('OpenLyrics')
     ];
 });
