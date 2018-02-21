@@ -136,7 +136,7 @@
 				  	<option value="fr">French</option>
 				  	<option value="es">Spanish</option>
 				</select>
-				<button @click="remove_verse(index)">Remove Verse</button>
+				<button v-if="!(index == 0 && index == song.lyrics.verses.length -1)" @click="remove_verse(index)">Remove Verse</button>
 				</li>
 				<li v-for="(line, index) in verse.lines">
 					<textarea class="song-textarea"  type="text" v-model="verse.lines[index]"></textarea>

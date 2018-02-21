@@ -122,7 +122,7 @@ export default new Vuex.Store({
             state.active_song.song.lyrics.verses.push(verse)
         },
         remove_verse(state,index) {
-            if (index > -1 ) {
+            if (index > -1 && (state.active_song.song.lyrics.verses.length > 1)) {
                 state.active_song.song.lyrics.verses.splice(index, 1);
             }
         },
