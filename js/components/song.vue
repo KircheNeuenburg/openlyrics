@@ -103,7 +103,7 @@
 				<button @click="remove_songbook(index)">Remove Songbook</button>
 			</li>
 			<button @click="add_songbook()">Add Songbook</button>
-			<li v-for="(theme, index) in song.properties.authors">
+			<li v-for="(theme, index) in song.properties.themes">
 				<label v-if="index == 0 && index == song.properties.themes.length -1" class="song-label">Theme </label>
 				<label v-if="!(index == 0 && index == song.properties.themes.length -1)" class="song-label">Theme {{index + 1}}</label>
 				<input class="song-txtinput" type="text" v-model="theme.value">		
@@ -121,12 +121,11 @@
 			<li v-for="(comment, index) in song.properties.comments">
 				<label v-if="index == 0 && index == song.properties.comments.length -1" class="song-label">Comment </label>
 				<label v-if="!(index == 0 && index == song.properties.comments.length -1)" class="song-label">Comment {{index + 1}}</label>
-				<input class="song-txtinput" type="text" v-model="comment.name">
-				<input class="song-txtinput" type="text" v-model="comment.entry">
+				<input class="song-txtinput" type="text" v-model="song.properties.comments[index]">
 				<button @click="remove_comment(index)">Remove Comment</button>
 			</li>
 			<button @click="add_comment()">Add Comment</button>
-			<div v-for="verse in song.lyrics.verses">
+			<div v-for="(verse, index) in song.lyrics.verses">
 				<li>
 				<label class="song-label">Name </label>
 				<input class="song-txtinput" type="text" v-model="verse.name">
@@ -137,12 +136,14 @@
 				  	<option value="fr">French</option>
 				  	<option value="es">Spanish</option>
 				</select>
+				<button @click="remove_verse(index)">Remove Verse</button>
 				</li>
 				<li v-for="(line, index) in verse.lines">
 					<textarea class="song-textarea"  type="text" v-model="verse.lines[index]"></textarea>
 					
 				</li>
 			</div>
+			<button @click="add_verse()">Add Verse</button>
 			
 		</ul>
 
@@ -176,6 +177,14 @@
 			'remove_title',
 			'add_author',
 			'remove_author',
+			'add_songbook',
+			'remove_songbook',
+			'add_theme',
+			'remove_theme',
+			'add_comment',
+			'remove_comment',
+			'add_verse',
+			'remove_verse',
 			'discard_changes',
 			'load_song'
       		])

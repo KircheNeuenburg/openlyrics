@@ -401,6 +401,14 @@ class OpenLyrics extends Entity {
 
             $this->properties->titles[] = $titleObject;
             unset($titleObject); 
+        }
+        if( empty($this->properties->titles))
+        {
+            $titleObject->value = '';
+            $titleObject->lang = '';
+            $titleObject->original = '';
+
+            $this->properties->titles[] = $titleObject;
         }   
     } 
 
@@ -416,7 +424,15 @@ class OpenLyrics extends Entity {
 
             $this->properties->authors[] = $authorObject;
             unset($authorObject); 
-        } 
+        }
+        if( empty($this->properties->authors))
+        {
+            $authorObject->value = '';
+            $authorObject->lang = '';
+            $authorObject->type = '';
+
+            $this->properties->authors[] = $authorObject;
+        }
     }
   
     private function process_copyright()
@@ -424,6 +440,10 @@ class OpenLyrics extends Entity {
         $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
         $copyright = $properties->getElementsByTagName('copyright')->item(0);
         $this->properties->copyright = $copyright->nodeValue;
+        if( empty($this->properties->copyright))
+        {
+            $this->properties->copyright = '';
+        }
     }
     
     private function process_ccli_number()
@@ -431,6 +451,10 @@ class OpenLyrics extends Entity {
         $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
         $ccli_number = $properties->getElementsByTagName('ccliNo')->item(0);
         $this->properties->ccli_number = $ccli_number->nodeValue;
+        if( empty($this->properties->ccli_number))
+        {
+            $this->properties->ccli_number = '';
+        }
     }
 
     private function process_release_date()
@@ -438,6 +462,10 @@ class OpenLyrics extends Entity {
         $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
         $release_date = $properties->getElementsByTagName('released')->item(0);
         $this->properties->release_date = $release_date->nodeValue;
+        if( empty($this->properties->release_date))
+        {
+            $this->properties->release_date = '';
+        }
     }
 
     private function process_transposition()
@@ -445,6 +473,10 @@ class OpenLyrics extends Entity {
         $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
         $transposition = $properties->getElementsByTagName('transposition')->item(0);
         $this->properties->transposition = $transposition->nodeValue;
+        if( empty($this->properties->transposition))
+        {
+            $this->properties->transposition = '';
+        }
     }
 
     private function process_tempo()
@@ -456,6 +488,12 @@ class OpenLyrics extends Entity {
             $this->properties->tempo->value = $tempo->nodeValue;
             $this->properties->tempo->type = $tempo->getAttribute('type');
         }
+        else
+        {
+            $this->properties->tempo->value = '';
+            $this->properties->tempo->type = '';
+        }
+
     }
 
     private function process_key()
@@ -463,6 +501,10 @@ class OpenLyrics extends Entity {
         $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
         $key = $properties->getElementsByTagName('key')->item(0);
         $this->properties->key = $key->nodeValue;
+        if( empty($this->properties->authors))
+        {
+            $this->properties->copyright = '';
+        }
     }
 
     private function process_variant()
@@ -470,6 +512,10 @@ class OpenLyrics extends Entity {
         $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
         $variant = $properties->getElementsByTagName('variant')->item(0);
         $this->properties->variant = $variant->nodeValue;
+        if( empty($this->properties->variant))
+        {
+            $this->properties->variant = '';
+        }
     }
 
     private function process_publisher()
@@ -477,6 +523,10 @@ class OpenLyrics extends Entity {
         $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
         $publisher = $properties->getElementsByTagName('publisher')->item(0);
         $this->properties->publisher = $publisher->nodeValue;
+        if( empty($this->properties->publisher))
+        {
+            $this->properties->publisher = '';
+        }
     }
 
     private function process_version()
@@ -484,6 +534,10 @@ class OpenLyrics extends Entity {
         $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
         $version = $properties->getElementsByTagName('version')->item(0);
         $this->properties->version = $version->nodeValue;
+        if( empty($this->properties->version))
+        {
+            $this->properties->version = '';
+        }
     }
 
     private function process_keywords()
@@ -491,6 +545,10 @@ class OpenLyrics extends Entity {
         $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
         $keywords = $properties->getElementsByTagName('keywords')->item(0);
         $this->properties->keywords = $keywords->nodeValue;
+        if( empty($this->properties->keywords))
+        {
+            $this->properties->keywords = '';
+        }
     }
 
     private function process_verse_order()
@@ -498,6 +556,10 @@ class OpenLyrics extends Entity {
         $properties = $this->song_dom->getElementsByTagName('properties')->item(0);
         $verse_order = $properties->getElementsByTagName('verseOrder')->item(0);
         $this->properties->verse_order = $verse_order->nodeValue;
+        if( empty($this->properties->verse_order))
+        {
+            $this->properties->verse_order = '';
+        }
     }
 
     private function process_songbooks() 
@@ -511,7 +573,14 @@ class OpenLyrics extends Entity {
 
             $this->properties->songbooks[] = $songbookObject;
             unset($songbookObject); 
-        }   
+        }
+        if( empty($this->properties->songbooks))
+        {
+            $songbookObject->name = '';
+            $songbookObject->entry = '';
+
+            $this->properties->songbooks[] = $songbookObject;   
+        }
     }
 
     private function process_themes() 
@@ -526,6 +595,13 @@ class OpenLyrics extends Entity {
             $this->properties->themes[] = $themeObject;
             unset($themeObject); 
         }   
+        if( empty($this->properties->songbooks))
+        {
+            $themeObject->value = '';
+            $themeObject->lang = '';
+
+            $this->properties->themes[] = $themeObject;
+        }
     } 
 
     private function process_comments() 
@@ -536,6 +612,11 @@ class OpenLyrics extends Entity {
         {
             $this->properties->comments[] = $comment->nodeValue;
         }   
+        if( empty($this->properties->comments))
+        {
+            $this->properties->comments[] = '';
+        }
+        
     } 
 
     private function process_lyrics()
@@ -565,6 +646,14 @@ class OpenLyrics extends Entity {
 
             $this->lyrics->verses[] = $verseObject;
             unset($verseObject); 
+        }
+        if(empty($this->lyrics->verses))
+        {
+            $verseObject->name = '';
+            $verseObject->lang = '';
+            $verseObject->translit = '';
+            $verseObject->lines[] = '';
+            $this->lyrics->verses[] = $verseObject;
         }
     }
 

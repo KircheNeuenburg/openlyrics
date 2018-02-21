@@ -94,6 +94,38 @@ export default new Vuex.Store({
                 state.active_song.song.properties.authors.splice(index, 1);
             }
         },
+        add_songbook(state, songbook) {
+            state.active_song.song.properties.songbooks.push(songbook)
+        },
+        remove_songbook(state,index) {
+            if (index > -1 ) {
+                state.active_song.song.properties.songbooks.splice(index, 1);
+            }
+        },
+        add_theme(state, theme) {
+            state.active_song.song.properties.themes.push(theme)
+        },
+        remove_theme(state,index) {
+            if (index > -1 ) {
+                state.active_song.song.properties.themes.splice(index, 1);
+            }
+        },
+        add_comment(state, comment) {
+            state.active_song.song.properties.comments.push(comment)
+        },
+        remove_comment(state,index) {
+            if (index > -1 ) {
+                state.active_song.song.properties.comments.splice(index, 1);
+            }
+        },
+        add_verse(state, verse) {
+            state.active_song.song.lyrics.verses.push(verse)
+        },
+        remove_verse(state,index) {
+            if (index > -1 ) {
+                state.active_song.song.lyrics.verses.splice(index, 1);
+            }
+        },
         discard_changes(state) {
             state.active_song = state.active_song_backup
         },
@@ -148,6 +180,34 @@ export default new Vuex.Store({
         },
         remove_author({commit}, index) {
             commit('remove_author', index)
+        },
+        add_songbook({commit}) {
+            let tmp_songbook = {name: '', entry: ''}
+            commit('add_songbook', tmp_songbook)
+        },
+        remove_songbook({commit}, index) {
+            commit('remove_songbook', index)
+        },
+        add_theme({commit}) {
+            let tmp_theme = {value: '', lang: ''}
+            commit('add_theme', tmp_theme)
+        },
+        remove_theme({commit}, index) {
+            commit('remove_theme', index)
+        },
+        add_comment({commit}) {
+            let tmp_comment = ''
+            commit('add_comment', tmp_comment)
+        },
+        remove_comment({commit}, index) {
+            commit('remove_comment', index)
+        },
+        add_verse({commit}) {
+            let tmp_verse = {name: '', lang: '', translit: '', lines: ['']}
+            commit('add_verse', tmp_verse)
+        },
+        remove_verse({commit}, index) {
+            commit('remove_verse', index)
         },
         discard_changes({commit}) {
             commit('discard_changes')
