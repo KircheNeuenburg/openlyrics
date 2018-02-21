@@ -4,29 +4,29 @@
  * See the COPYING file.
  */
 
- #app-navigation {
+ /* #app-navigation {
 	padding-bottom: 0; /* no settings bar, so no padding needed */
-}
+} */
 
-#app-navigation #song-add #new-song-button {
+/* #app-navigation #song-add #new-song-button {
 	margin: 14px auto;
 	width: calc(100% - 20px) !important;
 	text-align: left;
 	padding-left: 34px;
 	background-position: 10px center;
-}
+} */
 
-#app-navigation .active a {
+/* #app-navigation .active a {
 	padding-right: 70px;
-}
-
+} */
+/* 
 .app-content-list-button {
 	display: block;
 	margin: 10px auto;
 	padding: 10px;
-}
+} */
 
-#app-navigation li .nav-entry {
+/* #app-navigation li .nav-entry {
 	display: block;
 	width: 100%;
 	line-height: 44px;
@@ -38,19 +38,18 @@
 	text-overflow: ellipsis;
 	color: #000;
 	opacity: .57;
-}
+} */
 
-#app-navigation li:hover .nav-entry,
+/* #app-navigation li:hover .nav-entry,
 #app-navigation li:focus .nav-entry {
 	opacity: 1;
-}
+} */
 
-#app-navigation #song-add:hover span,
+ #app-navigation #song-add:hover span,
 #app-navigation #song-add:focus span {
     display: inline;
-}
-
-#app-navigation .utils button {
+} 
+ #app-navigation .utils button {
     margin: 0;
     background-position: center;
     background-repeat: no-repeat;
@@ -60,7 +59,7 @@
     display: none;
     height: 32px;
     width: 32px;
-}
+} 
 
 /* override snap.js animation causing loading icon to fly into app-content */
 #app-content.loading {
@@ -69,11 +68,11 @@
 }
 
 /* only display the delete button when the feed is active */
-#app-navigation .utils .delete-button {
+ #app-navigation .utils .delete-button {
     display: none;
-}
+}  
 
-#app-navigation .active > .utils .icon-delete,
+ #app-navigation .active > .utils .icon-delete,
 #app-navigation .active > .utils .icon-star {
     display: inline-block;
     opacity: .3;
@@ -81,7 +80,7 @@
 #app-navigation .utils .icon-starred {
     display: inline-block;
     opacity: 1 !important;
-}
+} 
 
 .song-search span {
     background-position: 0 center;
@@ -146,7 +145,7 @@
     -webkit-user-select: none;
 }
 
-#app-content .song-label {
+/* #app-content .song-label {
     position: 50%;
     padding: 0 10px 30px 30px;
     margin: 45px 0 0;
@@ -155,7 +154,7 @@
     -ms-user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
-}
+} */
 
 
 
