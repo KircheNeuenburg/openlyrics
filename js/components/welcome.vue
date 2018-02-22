@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<h1>Welcome</h1>
+		<h1></h1>
 		<p> edit songs here </p>
 	</div>
 </template>

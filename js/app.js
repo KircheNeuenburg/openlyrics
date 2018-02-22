@@ -41,7 +41,7 @@ axios.defaults.baseURL = '/nextcloud/index.php/apps/openlyrics'
 export class App {
 	start() {
 		Vue.mixin({
-			t: str => t('mail', str)
+			t: str => t('openlyrics', str)
 		});
 
 		let appView = new Vue({

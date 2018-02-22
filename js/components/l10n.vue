@@ -9,7 +9,7 @@
 			],
 			data: function() {
 				return {
-					translated: t('mail', this.text)
+					translated: t('openlyrics', this.text)
 				};
 			}
 		}
