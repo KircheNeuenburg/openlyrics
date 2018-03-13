@@ -21,6 +21,7 @@ return ['routes' => [
     ['name' => 'songs#update', 'url' => '/songs/{id}', 'verb' => 'PUT'],
     ['name' => 'songs#favorite', 'url' => '/songs/{id}/favorite', 'verb' => 'PUT'],
     ['name' => 'songs#destroy', 'url' => '/songs/{id}', 'verb' => 'DELETE'],
+    ['name' => 'settings#path', 'url' => '/folder', 'verb' => 'POST'],
 
     // api
     ['name' => 'songs_api#index', 'url' => '/api/v0.2/songs', 'verb' => 'GET'],

@@ -36,7 +36,6 @@ import router from './router/router'
 window.axios = axios;
 window.store = store;
 
-axios.defaults.baseURL = '/nextcloud/index.php/apps/openlyrics'
 
 export class App {
 	start() {
@@ -44,6 +43,8 @@ export class App {
 			t: str => t('openlyrics', str)
 		});
 
+		axios.defaults.headers.common.requesttoken = oc_requesttoken;
+		axios.defaults.baseURL = OC.generateUrl('/apps/openlyrics');
 		let appView = new Vue({
 			el: "#app",
 			router,

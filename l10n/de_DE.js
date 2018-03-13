@@ -2,6 +2,7 @@ OC.L10N.register(
 	"openlyrics",
 	{
     "Settings" : "Einstellungen",
+    "Choose folder": "Wähle Ordner",
     "Version": "Version",
     "Created in": "Erstellt in",
     "Modified in": "Geändert in",
@@ -23,6 +24,6 @@ OC.L10N.register(
     "Songbook": "Liederbuch",
     "Theme": "Thema",
     "Comment": "Kommentar",
-    "Name": "Name",
+    "Name": "Name"
 },
 "nplurals=2; plural=(n != 1);");

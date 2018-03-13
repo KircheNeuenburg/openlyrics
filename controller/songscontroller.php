@@ -53,7 +53,6 @@ class SongsController extends Controller {
 
     /**
      * @NoAdminRequired
-     * @NoCSRFRequired
      */
     public function index() {
         return new DataResponse($this->songsService->getAll($this->userId));
@@ -61,7 +60,6 @@ class SongsController extends Controller {
 
     /**
      * @NoAdminRequired
-     * @NoCSRFRequired
      * @param int $id
      * @return DataResponse
      */
@@ -71,14 +69,13 @@ class SongsController extends Controller {
 
     /**
      * @NoAdminRequired
-     * @NoCSRFRequired
      * @param int $id
      * @return DataResponse
      */
     public function get($id) {
         // save the last viewed song
         $this->settings->setUserValue(
-            $this->userId, $this->appName, 'songsLastViewedSong', $id
+            $this->userId, $this->appName, 'LastViewedSong', $id
         );
 
         return $this->respond(function ()  use ($id) {
@@ -103,7 +100,6 @@ class SongsController extends Controller {
 
     /**
      * @NoAdminRequired
-     * @NoCSRFRequired
      *
      * @param int $id
      * @param string $content

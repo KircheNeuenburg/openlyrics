@@ -16,6 +16,7 @@ use OCP\IL10N;
 use OCP\Files\IRootFolder;
 use OCP\Files\Folder;
 use OCP\ILogger;
+use OCP\IConfig;
 
 use OCA\OpenLyrics\Db\Song;
 use OCA\OpenLyrics\Db\OpenLyrics;
@@ -31,6 +32,7 @@ class SongsService {
     private $root;
     private $logger;
     private $appName;
+    private $settings;
 
     /**
      * @param IRootFolder $root
@@ -38,11 +40,12 @@ class SongsService {
      * @param ILogger $logger
      * @param String $appName
      */
-    public function __construct (IRootFolder $root, IL10N $l10n, ILogger $logger, $appName) {
+    public function __construct (IRootFolder $root, IL10N $l10n, ILogger $logger, IConfig $settings, $appName) {
         $this->root = $root;
         $this->l10n = $l10n;
         $this->logger = $logger;
         $this->appName = $appName;
+        $this->settings = $settings;
     }
 
 
@@ -190,8 +193,8 @@ class SongsService {
             $this->logger->error('Moving this song to the desired target is not allowed. Please check the song\'s target category.', array('app' => $this->appName));
         }*/
         //$song = json_decode(json_encode($song), FALSE);
-        $this->logger->error( var_export($openlyrics,true), array('app' => $this->appName));
-        $this->logger->error( var_export($song->metadata->version,true), array('app' => $this->appName));
+        //$this->logger->error( var_export($openlyrics,true), array('app' => $this->appName));
+        //$this->logger->error( var_export($song->metadata->version,true), array('app' => $this->appName));
         //$this->logger->error( serialize($openlyrics->metadata), array('app' => $this->appName));
         $file->putContent($openlyrics->export_xml());
         //$file->putContent($song);
@@ -294,8 +297,15 @@ class SongsService {
      * @return Folder
      */
     private function getFolderForUser ($userId) {
-        $path = '/' . $userId . '/files/Songs';
-        return $this->getOrCreateFolder($path);
+        $path = $this->settings->getUserValue($userId, $this->appName, 'path');
+        $userView = $this->root->getUserFolder($userId);
+		if ($path !== null && $path !== '/' && $path !== '') {
+			$userView = $userView->getFullPath($path);
+        }
+        else {
+            $userView = $userView->getFullPath('/Songs');
+        }
+        return $this->getOrCreateFolder($userView);
     }
 
 

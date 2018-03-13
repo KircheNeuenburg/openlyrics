@@ -33,6 +33,7 @@ export default new Vuex.Store({
 		songs: [],
         active_song: {},
         active_song_backup: {},
+        path: '',
 	},
 	mutations: {
 		set_song_list(state, payload) {
@@ -129,6 +130,9 @@ export default new Vuex.Store({
         discard_changes(state) {
             state.active_song = state.active_song_backup
         },
+        set_path(state,path) {
+            state.path = path
+        },
 	},
 	getters: {
 		
@@ -166,6 +170,18 @@ export default new Vuex.Store({
                 
                 }
                 )
+        },
+        update_path({commit},folder_path) {
+            axios.post('/folder', {
+                path: folder_path
+            })
+            .then(function (response) {
+                OC.Notification.showTemporary(t('openlyrics','saved'));
+                commit('set_path',folder_path)
+            })
+            .catch(function (error) {
+                OC.Notification.showTemporary(t('openlyrics','Invalid path!'));
+            });
         },
         add_title({commit}) {
             let tmp_title = {value: '', lang: '', original: false}
