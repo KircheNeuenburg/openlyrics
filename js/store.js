@@ -81,7 +81,7 @@ export default new Vuex.Store({
             state.active_song = song
         },
         add_title(state, title) {
-            state.active_song.openlyrics.add_title()
+            state.active_song.openlyrics.properties.titles.push(title);
         },
         remove_title(state,index) {
             if (index > -1 && (state.active_song.openlyrics.properties.titles.length > 1)) {
@@ -89,8 +89,7 @@ export default new Vuex.Store({
             }
         },
         add_author(state, author) {
-            console.log(state.active_song.properties)
-            state.active_song.properties.authors.push(author)
+            state.active_song.openlyrics.properties.authors.push(author)
         },
         remove_author(state,index) {
             if (index > -1 ) {

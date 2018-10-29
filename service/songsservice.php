@@ -162,7 +162,6 @@ class SongsService {
 
         
         //var_export($openlyrics["properties"]);
-        $song = json_decode($openlyrics, FALSE);
         //var_export($song);
         $openlyrics1 = new OpenLyrics("");
         $openlyrics1->load($openlyrics);
