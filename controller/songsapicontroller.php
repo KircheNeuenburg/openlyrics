@@ -153,6 +153,7 @@ class SongsApiController extends ApiController {
      * @return DataResponse
      */
     public function update($id, $content=null, $category=null, $modified=0, $favorite=null) {
+        var_export($content);
         return $this->respond(function () use ($id, $content, $category, $modified, $favorite) {
             return $this->updateData($id, $content, $category, $modified, $favorite);
         });

@@ -22,6 +22,7 @@
 
 import Vue from 'vue';
 import Vuex from 'vuex';
+import {openlyrics} from './openlyrics';
 
 Vue.use(Vuex);
 
@@ -37,7 +38,8 @@ export default new Vuex.Store({
 	},
 	mutations: {
 		set_song_list(state, payload) {
-			state.songs = payload;
+            state.songs = payload;
+            state.active_song = state.songs[0]
 			
 		},
 		set_song(state, payload) {
@@ -77,54 +79,54 @@ export default new Vuex.Store({
 		
 		set_active_song (state, song) {
             state.active_song = song
-            state.active_song_backup = song
         },
         add_title(state, title) {
-            state.active_song.song.properties.titles.push(title)
+            state.active_song.openlyrics.add_title()
         },
         remove_title(state,index) {
-            if (index > -1 && (state.active_song.song.properties.titles.length > 1)) {
-                state.active_song.song.properties.titles.splice(index, 1);
+            if (index > -1 && (state.active_song.openlyrics.properties.titles.length > 1)) {
+                state.active_song.openlyrics.properties.titles.splice(index, 1);
             }
         },
         add_author(state, author) {
-            state.active_song.song.properties.authors.push(author)
+            console.log(state.active_song.properties)
+            state.active_song.properties.authors.push(author)
         },
         remove_author(state,index) {
             if (index > -1 ) {
-                state.active_song.song.properties.authors.splice(index, 1);
+                state.active_song.openlyrics.properties.authors.splice(index, 1);
             }
         },
         add_songbook(state, songbook) {
-            state.active_song.song.properties.songbooks.push(songbook)
+            state.active_song.openlyrics.properties.songbooks.push(songbook)
         },
         remove_songbook(state,index) {
             if (index > -1 ) {
-                state.active_song.song.properties.songbooks.splice(index, 1);
+                state.active_song.openlyrics.properties.songbooks.splice(index, 1);
             }
         },
         add_theme(state, theme) {
-            state.active_song.song.properties.themes.push(theme)
+            state.active_song.openlyrics.properties.themes.push(theme)
         },
         remove_theme(state,index) {
             if (index > -1 ) {
-                state.active_song.song.properties.themes.splice(index, 1);
+                state.active_song.openlyrics.properties.themes.splice(index, 1);
             }
         },
         add_comment(state, comment) {
-            state.active_song.song.properties.comments.push(comment)
+            state.active_song.openlyrics.properties.comments.push(comment)
         },
         remove_comment(state,index) {
             if (index > -1 ) {
-                state.active_song.song.properties.comments.splice(index, 1);
+                state.active_song.openlyrics.properties.comments.splice(index, 1);
             }
         },
         add_verse(state, verse) {
-            state.active_song.song.lyrics.verses.push(verse)
+            state.active_song.openlyrics.lyrics.verses.push(verse)
         },
         remove_verse(state,index) {
-            if (index > -1 && (state.active_song.song.lyrics.verses.length > 1)) {
-                state.active_song.song.lyrics.verses.splice(index, 1);
+            if (index > -1 && (state.active_song.openlyrics.lyrics.verses.length > 1)) {
+                state.active_song.openlyrics.lyrics.verses.splice(index, 1);
             }
         },
         discard_changes(state) {
@@ -144,7 +146,8 @@ export default new Vuex.Store({
 		load_song_list( {commit}) {
 			return new Promise(function(resolve) {
 				axios.get('/songs').then(response => 
-					{commit('set_song_list', response.data);
+					{
+                        commit('set_song_list', response.data);
 					
 					}
 					)
@@ -165,6 +168,7 @@ export default new Vuex.Store({
             commit('set_active_song', song)
         },
         save_song({commit}) {
+            console.log("save song")
             axios.put('/songs/'+ store.state.active_song.id,store.state.active_song).then(response => 
                 {commit('set_song', response.data);
                 

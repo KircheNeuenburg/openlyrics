@@ -34,6 +34,10 @@ class OpenLyrics extends Entity {
         
             $song_dom = new DOMDocument('1.0', 'utf-8');
             $song_dom->loadXML($xml_content);
+            //var_dump($song_dom->relaxNGValidate("./openlyrics-0.8.rng"));
+            // {
+            //     process_metadata();
+            // }
             $this->song_dom = $song_dom->getElementsByTagName('song')->item(0);
 
             $this->process_metadata();
@@ -702,8 +706,185 @@ class OpenLyrics extends Entity {
         }
         return $text;
     }
-    
+
+    public function load($song)
+    {
+        $this->load_metadata($song['metadata']);
+        $this->load_properties($song['properties']);
+        $this->load_lyrics($song['lyrics']);
+        // $this->metadata = $song['metadata'];
+        // $this->properties = $song['properties'];
+        // $this->lyrics = $song['lyrics'];
+
+    }
+
+    private function load_metadata($metadata)
+    {
+        $this->metadata->version = $metadata['version'];
+        $this->metadata->created_in = $metadata['createdIn'];
+        $this->metadata->modified_in = $metadata['modifiedIn'];
+        $this->metadata->modified_date = $metadata['modifiedDate'];
+    }
        
+    private function load_properties($properties)
+    {
+        $this->load_titles($properties['titles']);
+        $this->load_authors($properties['authors']);
+        $this->properties->copyright = $properties['copyright'];
+        $this->properties->ccli_number = $properties['ccli_number'];
+        $this->properties->release_date = $properties['release_date'];
+        $this->properties->transposition = $properties['transposition'];
+        $this->load_tempo($properties['tempo']);
+        $this->properties->key = $properties['key'];
+        $this->properties->variant = $properties['variant'];
+        $this->properties->publisher = $properties['publisher'];
+        $this->properties->version = $properties['version'];
+        $this->properties->keywords = $properties['keywords'];
+        $this->properties->verse_order = $properties['verse_order'];
+        $this->load_songbooks($properties['songbooks']) ;
+        $this->load_themes($properties['themes']) ;
+        $this->load_comments($properties['comments']); 
+    }
+
+    private function load_titles($titles) 
+    {    
+        foreach( $titles as $title)
+        {
+            $titleObject->value = $title['value'];
+            $titleObject->lang = $title['lang'];
+            $titleObject->original = $title['original'];
+
+            $this->properties->titles[] = $titleObject;
+            unset($titleObject); 
+        }
+        if( empty($this->properties->titles))
+        {
+            $titleObject->value = '';
+            $titleObject->lang = '';
+            $titleObject->original = '';
+
+            $this->properties->titles[] = $titleObject;
+        }   
+    } 
+
+    public function load_authors($authors)
+    {
+        foreach( $authors as $author)
+        {
+            $authorObject->value = $author['value'];
+            $authorObject->lang = $author['lang'];
+            $authorObject->type = $author['type'];
+
+            $this->properties->authors[] = $authorObject;
+            unset($authorObject); 
+        }
+        if( empty($this->properties->authors))
+        {
+            $authorObject->value = '';
+            $authorObject->lang = '';
+            $authorObject->type = '';
+
+            $this->properties->authors[] = $authorObject;
+        }
+    }
+
+    private function load_tempo($tempo)
+    {
+        if($tempo)
+        {
+            $this->properties->tempo->value = $tempo['value'];
+            $this->properties->tempo->type = $tempo['type'];
+        }
+        else
+        {
+            $this->properties->tempo->value = '';
+            $this->properties->tempo->type = '';
+        }
+
+    }
+
+    private function load_songbooks($songbooks) 
+    {    
+        foreach( $songbooks as $songbook)
+        {
+            $songbookObject->name = $songbook['name'];
+            $songbookObject->entry = $songbook['entry'];
+
+            $this->properties->songbooks[] = $songbookObject;
+            unset($songbookObject); 
+        }
+        if( empty($this->properties->songbooks))
+        {
+            $songbookObject->name = '';
+            $songbookObject->entry = '';
+
+            $this->properties->songbooks[] = $songbookObject;   
+        }
+    }
+
+    private function load_themes($themes) 
+    {    
+        foreach( $themes as $theme)
+        {
+            $themeObject->value = $theme['value'];
+            $themeObject->lang = $theme['lang'];
+
+            $this->properties->themes[] = $themeObject;
+            unset($themeObject); 
+        }   
+        if( empty($this->properties->songbooks))
+        {
+            $themeObject->value = '';
+            $themeObject->lang = '';
+
+            $this->properties->themes[] = $themeObject;
+        }
+    } 
+
+    private function load_comments($comments) 
+    {
+        foreach( $comments as $comment)
+        {
+            $this->properties->comments[] = $comment;
+        }   
+        if( empty($this->properties->comments))
+        {
+            $this->properties->comments[] = '';
+        }
+        
+    } 
+
+    private function load_lyrics($lyrics)
+    {
+        $verses = $lyrics['verses'];
+
+        foreach($verses as $verse) { 
+
+            
+            $verseObject->name = $verse['name'];
+            $verseObject->lang = $verse['lang'];
+            $verseObject->translit = $verse['translit'];
+
+            $lines = $verse['lines'];
+
+            foreach($lines as $line)
+            {
+                $verseObject->lines[] = $line;
+                 
+            }
+
+            $this->lyrics->verses[] = $verseObject;
+            unset($verseObject); 
+        }
+        if(empty($this->lyrics->verses))
+        {
+            $verseObject->name = '';
+            $verseObject->lang = '';
+            $verseObject->translit = '';
+            $verseObject->lines[] = '';
+            $this->lyrics->verses[] = $verseObject;
+        }
+    }
 
     private $song_xml;
     public $lyrics;

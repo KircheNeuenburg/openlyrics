@@ -15,6 +15,7 @@ use OCP\AppFramework\Controller;
 use OCP\IRequest;
 use OCP\IConfig;
 use OCP\AppFramework\Http\DataResponse;
+use OCP\AppFramework\Http\JSONResponse;
 
 use OCA\OpenLyrics\Service\SongsService;
 
@@ -55,22 +56,22 @@ class SongsController extends Controller {
      * @NoAdminRequired
      */
     public function index() {
-        return new DataResponse($this->songsService->getAll($this->userId));
+        return new JSONResponse($this->songsService->getAll($this->userId));
     }
 
     /**
      * @NoAdminRequired
      * @param int $id
-     * @return DataResponse
+     * @return JSONResponse
      */
     public function getSongList() {
-        return new DataResponse($this->songsService->get_song_list($this->userId));
+        return new JSONResponse($this->songsService->get_song_list($this->userId));
     }
 
     /**
      * @NoAdminRequired
      * @param int $id
-     * @return DataResponse
+     * @return JSONResponse
      */
     public function get($id) {
         // save the last viewed song
@@ -94,7 +95,7 @@ class SongsController extends Controller {
         $song = $this->songsService->update(
             $song->getId(), $this->userId
         );
-        return new DataResponse($song);
+        return new JSONResponse($song);
     }
 
 
@@ -103,11 +104,12 @@ class SongsController extends Controller {
      *
      * @param int $id
      * @param string $content
-     * @return DataResponse
+     * @param string $song
+     * @return JSONResponse
      */
-    public function update($id, $content, $song) {
-        return $this->respond(function () use ($id, $content, $song) {
-            return $this->songsService->update($id, $content, $song, $this->userId);
+    public function update($id, $content, $openlyrics) {
+        return $this->respond(function () use ($id, $content, $openlyrics) {
+            return $this->songsService->update($id, $content, $openlyrics, $this->userId);
         });
     }
 
@@ -117,7 +119,7 @@ class SongsController extends Controller {
      *
      * @param int $id
      * @param boolean $favorite
-     * @return DataResponse
+     * @return JSONResponse
      */
     public function favorite($id, $favorite) {
         return $this->respond(function () use ($id, $favorite) {
@@ -130,7 +132,7 @@ class SongsController extends Controller {
      * @NoAdminRequired
      *
      * @param int $id
-     * @return DataResponse
+     * @return JSONResponse
      */
     public function destroy($id) {
         return $this->respond(function () use ($id) {

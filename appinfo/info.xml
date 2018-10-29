@@ -23,7 +23,7 @@ The Notes app is a distraction free notes taking app. It supports formatting usi
     <repository type="git">https://github.com/kircheneuenburg/openlyrics.git</repository>
     <screenshot small-thumbnail="https://raw.githubusercontent.com/nextcloud/screenshots/master/apps/Notes/notes-thumbnail.jpg">https://raw.githubusercontent.com/nextcloud/screenshots/master/apps/Notes/notes.png</screenshot>
     <dependencies>
-        <nextcloud min-version="13" max-version="13" />
+        <nextcloud min-version="14" max-version="14" />
     </dependencies>
     <ocsid>174554</ocsid>
 </info>

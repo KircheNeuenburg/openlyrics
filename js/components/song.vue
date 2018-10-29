@@ -164,7 +164,7 @@
 				'active_song'
       		]),
       		song () {
-        		return this.active_song.song
+        		return this.active_song.openlyrics
 			},
 			id () {
 				return parseInt(this.$route.params.id)

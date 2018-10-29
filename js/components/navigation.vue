@@ -5,7 +5,7 @@
 				<li v-on:click="update_active_song(song)" v-bind:class="{ active: song.id == active_song.id }">
 					<router-link :to="{name: 'song', params: {id: song.id}}" >
 					
-						{{ song.title }}
+						{{ song.openlyrics.properties.titles[0].value + ' ( ' + song.openlyrics.properties.authors[0].value + ' )'}}
 					
                     	<span v-if="song.unsaved">*</span>
 						<span class="utils">
@@ -50,6 +50,7 @@
   			},
 			created () {
 				store.dispatch('load_song_list');
+				
 			},
 			methods: {
 				...mapActions([

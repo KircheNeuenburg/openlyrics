@@ -154,18 +154,19 @@ class SongsService {
      * @throws SongDoesNotExistException if song does not exist
      * @return \OCA\OpenLyrics\Db\Song the updated song
      */
-    public function update ($id, $content, $song, $userId, $category=null, $mtime=0) {
+    public function update ($id, $content, $openlyrics, $userId, $category=null, $mtime=0) {
         $songsFolder = $this->getFolderForUser($userId);
         $file = $this->getFileById($songsFolder, $id);
         $folder = $file->getParent();
         $title = $this->getSafeTitleFromContent($content);
 
-        $song = json_decode(json_encode($song), FALSE);
-        $openlyrics = new OpenLyrics("");
-        $openlyrics->properties = $song->properties;
-        $openlyrics->metadata = $song->metadata;
-        $openlyrics->lyrics = $song->lyrics;
-
+        
+        //var_export($openlyrics["properties"]);
+        $song = json_decode($openlyrics, FALSE);
+        //var_export($song);
+        $openlyrics1 = new OpenLyrics("");
+        $openlyrics1->load($openlyrics);
+        // var_export($openlyrics1->export_xml());
         // rename/move file with respect to title/category
         // this can fail if access rights are not sufficient or category name is illegal
         /*try {
@@ -196,8 +197,7 @@ class SongsService {
         //$this->logger->error( var_export($openlyrics,true), array('app' => $this->appName));
         //$this->logger->error( var_export($song->metadata->version,true), array('app' => $this->appName));
         //$this->logger->error( serialize($openlyrics->metadata), array('app' => $this->appName));
-        $file->putContent($openlyrics->export_xml());
-        //$file->putContent($song);
+        $file->putContent($openlyrics1->export_xml());
 
         if($mtime) {
             $file->touch($mtime);

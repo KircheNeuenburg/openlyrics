@@ -70,11 +70,11 @@ class Song extends Entity {
         {
             $song->setContent(self::convertEncoding($file->getContent()));
             $openlyrics = new OpenLyrics($song->getContent());
-            $song->song->metadata = $openlyrics->metadata;
-            $song->song->properties = $openlyrics->properties;
+            $song->openlyrics->metadata = $openlyrics->metadata;
+            $song->openlyrics->properties = $openlyrics->properties;
         
-            $song->song->lyrics = $openlyrics->lyrics;
-            $song->xml_output = $openlyrics->export_xml();
+            $song->openlyrics->lyrics = $openlyrics->lyrics;
+            //$song->xml_output = $openlyrics->export_xml();
         }
         $song->setModified($file->getMTime());
         $song->setTitle(pathinfo($file->getName(),PATHINFO_FILENAME)); // remove extension
